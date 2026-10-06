@@ -10,3 +10,4 @@ paper/*.log
 paper/*.out
 paper/*.pdf
 *_smoke*
+results/*.log

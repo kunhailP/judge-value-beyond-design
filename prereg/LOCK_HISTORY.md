@@ -5,12 +5,12 @@ unchanged, from the development repository in which the work started). Commit ti
 
 | Commit | Time (UTC) | Event |
 |---|---|---|
-| `19eebfd` | 2026-10-06 07:03 | **Lock v0.8** (MT and Arena hypotheses H1–H5, validity). Before any LLM or COMET judgment was joined with a human label. Human-only MT designs and the chrF judge had been examined in development (stated in the lock). |
-| `3118575` | 07:43 | Deviation: Arena pair id parsed as an integer (type fix; no analysis change). |
-| `4205d55` | 08:03 | Deviation: Arena pilot charged one vote per battle instead of two (accounting fix; v0.8 Arena rerun). |
-| `6bca4d1` | 08:05 | **Lock v0.9**: the v0.8 Arena decision was uninformative (gaps 0.10–0.56 ≫ ε); six close pairs chosen on human votes only. No judge output existed for these battles. Adds H6. |
-| `d4b98f3`, `09a5891` | 09:07 | **Lock v1.0**: frontier-model judges; inputs exported and hashed, scoring fixed, H2′ and H7. No frontier request had been made. Not yet run. |
-| `0191fdc` | 09:31 | Exploratory (post-lock) analyses: judge anatomy, estimation tax, position bias, semi-synthetic ρ dial, cost law. Labelled exploratory everywhere. |
+| `a6ba3a3` | 2026-10-06 07:03 | **Lock v0.8** (MT and Arena hypotheses H1–H5, validity). Before any LLM or COMET judgment was joined with a human label. Human-only MT designs and the chrF judge had been examined in development (stated in the lock). |
+| `0bd64f2` | 07:43 | Deviation: Arena pair id parsed as an integer (type fix; no analysis change). |
+| `47dffcd` | 08:03 | Deviation: Arena pilot charged one vote per battle instead of two (accounting fix; v0.8 Arena rerun). |
+| `73a7695` | 08:05 | **Lock v0.9**: the v0.8 Arena decision was uninformative (gaps 0.10–0.56 ≫ ε); six close pairs chosen on human votes only. No judge output existed for these battles. Adds H6. |
+| `520c889`, `80fd0f1` | 09:07 | **Lock v1.0**: frontier-model judges; inputs exported and hashed, scoring fixed, H2′ and H7. No frontier request had been made. Not yet run. |
+| `1811c18` | 09:31 | Exploratory (post-lock) analyses: judge anatomy, estimation tax, position bias, semi-synthetic ρ dial, cost law. Labelled exploratory everywhere. |
 
 Corrections to the lock documents themselves:
 * The lock files were written with the date 2026-10-07 in their file names; they were committed on 2026-10-06
