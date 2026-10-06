@@ -8,14 +8,14 @@
 \usepackage{inconsolata}
 \usepackage{graphicx}
 \usepackage{booktabs}
-\usepackage{amsmath,amssymb}
+\usepackage{amsmath,amssymb,amsthm}
 \usepackage{xcolor}
-\newcommand{\res}[1]{\textcolor{red}{[#1]}}   % pending result; must be empty before submission
+\newtheorem{proposition}{Proposition}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\J}{J_{\tau}}
 \newcommand{\HES}{\mathrm{HES}}
+\newcommand{\Jt}{J_{50}}
 
-\title{What Is an LLM Judge Worth?\\ Human Labels Saved Beyond the Best Annotation Design}
+\title{From System Ranking to Decision Value:\\ How Much Human Evaluation Do Automatic Evaluators Actually Save?}
 
 \author{Anonymous ACL submission}
 
@@ -23,122 +23,313 @@
 \maketitle
 
 \begin{abstract}
-LLM judges are increasingly credited with the human annotation they save. That credit is usually measured against uniform
-annotation: label a random subset, then correct the judge's bias with the labels. We measure it instead against the
-cheapest annotation design that uses no judge, for a concrete decision: certifying that a selected system is within
-$\eps$ of the best of a menu. We define a judge's value as the fraction of human labels it saves for that decision
-(HES), and measure it in three domains: retrieval (nine fully judged collections), machine translation (WMT22 MQM) and
-open-ended chat (LMArena), with eleven judges, pre-registered hypotheses and a held-out locked test.
-\res{Abstract numbers: (i) decision-aware human designs save X--Y\%; judges add A--B\% on top; (ii) inflation; (iii)
-pair-conditional value, accuracy vs $\rho$; (iv) pilot predicts relative cost, not near-threshold adoption.}
+Automatic evaluators, from learned metrics to LLM judges, are increasingly credited with the human labels they save, and
+that credit is usually inferred from their correlation with human scores. We measure it directly for a concrete decision:
+certifying, from a human audit, that a selected system is within $\eps$ of the best of a menu of close competitors. The
+human-evidence saving (HES) of an evaluator is the fraction of human labels, pilot included, that it saves for this
+decision over the best fixed annotation design that uses no evaluator. Across retrieval, machine translation
+(WMT22 MQM, all 31 submitted metrics plus open LLM judges) and chat (LMArena), under four pre-registered locks, we find
+that evaluator quality depends on the level at which it is measured: metrics with system-level correlations of
+0.93--0.99 reach correlations of only 0.15--0.38 on the paired differences a close decision depends on, and with a
+50-item human pilot the best of the 31 WMT metrics saves at most 7\% of human labels, while a judge-free decision-aware
+design saves 8--16\% in MT and 41--57\% in retrieval. Two effects that correlation-based estimates of saving ignore
+account for the gap: the judge-free design already captures much of the structure an evaluator would exploit, and
+fitting the evaluator's correction coefficient on a finite pilot costs 2.5--4.3 points of saving on average. A
+finite-pilot cost law, $[\rho^2-(1-\rho^2)/P_{\mathrm{eff}}](1-P/J)$, describes the dependence on the decision-level
+correlation $\rho$ under controlled variation ($r=0.975$); by it, an evaluator needs $\rho\approx0.5$ to save 10\%.
 \end{abstract}
 
 \section{Introduction}
-Human evaluation is the reference against which NLP systems are compared, and it is expensive. LLM judges promise to
-stretch it: label everything with the judge, and spend human effort only on correcting the judge's bias
-\citep{angelopoulos2023ppi,angelopoulos2023ppipp,boyeau2024autoeval,chen2026noisy}. A growing line of work reports how
-much this saves, as an effective sample size or a ratio of human labels \citep{boyeau2024autoeval,gao2026ppsr,dorner2025limits}.
+Human judgments remain the reference for comparing NLP systems, and they are expensive. Automatic evaluators promise to
+stretch them: score everything automatically and spend human effort only on correcting the evaluator's bias, as in
+prediction-powered inference \citep[PPI;][]{angelopoulos2023ppi,angelopoulos2023ppipp}. How much an evaluator saves
+under such a correction is now measured directly \citep{boyeau2024autoeval,chen2026noisy}, and \citet{gao2026ppsr}
+propose to rank MT metrics by the annotation they save (PPSR), which is governed by the squared correlation between
+human and metric score \emph{differences}.
 
-These savings are almost always computed against a single baseline: humans label a uniformly random subset of
-the evaluation items. But uniform sampling is rarely the best use of a human budget. When the question is a decision,
-\emph{is system $A$ within $\eps$ of the best alternative?}, many items cannot move the answer (two systems return the
-same output, or a document lies outside both systems' cutoffs), and others move it a lot. An annotation design that
-knows this, with no judge at all, can need far fewer labels. A judge's saving over uniform sampling therefore mixes two
-things: what the judge contributes, and what any decision-aware design would have contributed anyway.
-
-We separate the two. For a decision $d$ (a menu of systems, a tolerance $\eps$, a confidence level), an annotation
-design $s$ and a judge $f$, we measure $\J(s,f;d)$, the number of human labels, pilot included, at which the decision is
-certified with probability $\tau$, and define the judge's \emph{human-evidence saving}
-$\HES_s(f;d)=1-\J(s,f;d)/\J(s,\emptyset;d)$. We report HES over the best judge-free design rather than over uniform
-sampling, and the difference between the two, which we call \emph{inflation}.
+We ask what that saving amounts to for the decision an evaluation is usually run for. A team has a short list of strong
+systems that are close in quality, and wants to certify from a human audit that the one it picks is within $\eps$ of the
+best. Three things separate this setting from the asymptotic picture. First, the decision is local: the systems that
+matter are the top few, not the whole field over which system-level correlation is computed. Second, a human audit need
+not sample uniformly: items whose paired difference is known to be zero (identical outputs, documents outside every
+system's cutoff) need no label, and others can be sampled in proportion to how much they can move the decision. Third,
+the coefficient that corrects the evaluator must itself be estimated from the few human labels the audit has.
 
 \paragraph{Contributions.}
 \begin{enumerate}
-\item \textbf{Most of the saving belongs to the design.} \res{Retrieval: decision-weight sampling saves 41--57\% of the
-human labels of uniform sampling; the best judge saves a further 3--20\%. MT: ... Chat: ...}
-\item \textbf{Judge value is inflated when measured over uniform sampling.} \res{MT/IR numbers.}
-\item \textbf{Judge value is decision-conditional.} The same judge saves different amounts for different system pairs;
-across judges and pairs, the saving follows the correlation $\rho$ between true and judge-predicted paired differences,
-not label accuracy \res{(numbers per domain)}.
-\item \textbf{A small pilot predicts relative cost, not adoption near the threshold.} \res{...} In a locked test on a
-retrieval collection never used in development the pilot ranked designs correctly but over-estimated the judge's own
-saving.
+\item \textbf{A decision-level measure of evaluator value.} The human-evidence saving
+$\HES=1-\Jt(\text{design}+\text{evaluator})/\Jt(\text{best fixed judge-free design})$, with $\Jt$ the number of unique
+human labels, pilot included, at which the decision is certified with probability $1/2$ (\S\ref{sec:setup}).
+\item \textbf{Evaluator quality collapses across levels.} On WMT22 en$\to$de and zh$\to$en, metrics with system-level
+Pearson 0.93--0.99 rank the four closest systems no better than chance in several cases, reach decision-level
+correlations of 0.15--0.38, and realise HES between $-10\%$ and $+7\%$ (\S\ref{sec:levels}).
+\item \textbf{The design takes most of the saving.} In all four pre-registered MT cells, a judge-free decision-aware
+design saves more than the best of 31 metrics adds on top of it (8--16\% vs.\ $\le 7\%$); in retrieval 41--57\% vs.\
+3--21\% (\S\ref{sec:design}).
+\item \textbf{A finite-pilot estimation tax.} Fitting the correction on a 50-item pilot costs 4.3 [3.5, 5.2] (en$\to$de) and
+2.5 [2.0, 3.1] (zh$\to$en) points of saving over the 31 metrics; a cost law with this term describes realised savings
+under controlled variation of $\rho$ (\S\ref{sec:law}).
+\item \textbf{Pre-registered, with failures reported.} Four locks fixed hypotheses before the corresponding evaluator
+outputs were joined with human labels; three of eleven hypotheses failed and are reported with their explanations (\S\ref{sec:prereg}).
 \end{enumerate}
-We introduce no estimator: the corrected estimator is PPI++ \citep{angelopoulos2023ppipp} and the allocation is
-active statistical inference \citep{zrnic2024active} for the functional the decision requires. The contribution is the
-measurement target (labels to a decision, against the best judge-free design), its evaluation across three NLP
-evaluation settings under pre-registration, and what it shows.
+We propose no estimator: the corrected estimator is PPI++ with a pilot-fixed coefficient, and the allocation is
+active statistical inference \citep{zrnic2024active} for the decision's functional.
 
 \section{Setup}\label{sec:setup}
 \paragraph{Decision.} A menu $\mathcal M$ of systems is evaluated on a fixed set of $N$ items with human utilities
-$u_m(i)$; $\mu_m$ is the mean over the set. An audit selects a candidate $\hat m$ on a pilot and \emph{certifies} it if,
-for every competitor $j$, a one-sided upper confidence bound on $\mu_j-\mu_{\hat m}$ is at most $\eps$ (Bonferroni over
-competitors, $\alpha=0.10$). A certificate is \emph{wrong} if $\max_j\mu_j-\mu_{\hat m}>\eps$.
+$u_m(i)$ and means $\mu_m$. An audit labels a pilot of $P$ items fully, picks the candidate $\hat m$ with the best pilot
+mean, and \emph{certifies} it if for every competitor $j$ a one-sided upper bound on $\mu_j-\mu_{\hat m}$ is at most
+$\eps$ (normal bound, Bonferroni over competitors, $\alpha=0.10$). A certificate is wrong if
+$\max_j\mu_j-\mu_{\hat m}>\eps$. Menus are deliberately hard: we use the full human labels only to construct them
+(the top-4 systems by human MQM, or the closest Arena pairs); menu construction is not part of the audit.
 
-\paragraph{Designs.} After a fully labelled pilot of $P$ items, human labels are drawn by Poisson sampling with inclusion
-probabilities $\pi_i$; the paired difference $D_j=u_j-u_{\hat m}$ is estimated by
+\paragraph{Estimator.} After the pilot, items are drawn by Poisson sampling with probabilities $\pi_i$. For
+$D_j=u_j-u_{\hat m}$ and an evaluator's predicted difference $\hat D_j$,
 \begin{equation}
-\hat\Delta_j=\tfrac1N\Big[\sum_{i\in\text{pilot}}D_j(i)+\sum_{i\notin\text{pilot}}\lambda_j\hat D_j(i)+\sum_{i\in S}\tfrac{D_j(i)-\lambda_j\hat D_j(i)}{\pi_i}\Big],
+\hat\Delta_j=\tfrac1N\Big[\sum_{\text{pilot}}D_j+\sum_{\text{rest}}\lambda_j\hat D_j+\sum_{i\in S}\tfrac{D_j(i)-\lambda_j\hat D_j(i)}{\pi_i}\Big],\label{eq:est}
 \end{equation}
-where $\hat D_j$ is the judge's predicted difference and $\lambda_j\ge0$ is fitted on the pilot and then frozen
-($\lambda=0$: humans only). The estimator is unbiased for any judge given the pilot; its variance is estimated by
-$\sum_{S}(1-\pi_i)R_i^2/\pi_i^2/N^2$ with $R=D-\lambda\hat D$. \emph{Uniform} designs use constant $\pi$ and label every
-system's output of a sampled item. \emph{Decision-aware} designs use the structure of the decision: they never label an
-item whose difference is known to be zero (identical outputs; documents outside every cutoff), label a shared output
-once for all comparisons, and sample the rest in proportion to a label-free proxy of $|D|$ (closed-form decision
-weights in retrieval, output dissimilarity in MT). \emph{Active} designs replace the proxy by the pilot-estimated
-residual variance of the judge \citep{zrnic2024active}.
+with $\lambda_j=\max(0,\widehat{\mathrm{Cov}}(D_j,\hat D_j)/\widehat{\mathrm{Var}}(\hat D_j))$ fitted on the pilot and
+frozen; $\lambda=0$ is the human-only estimator. Given the pilot, (\ref{eq:est}) is unbiased for the finite-population
+mean for any evaluator; its variance is estimated by $\sum_S(1-\pi_i)R_i^2/(\pi_i^2N^2)$, $R=D-\lambda\hat D$.
 
-\paragraph{Cost and metric.} Cost counts unique human labels, pilot included. Each budget is a separate pre-committed
-audit; $\J$ interpolates the certification rate over budgets ($\tau=0.5$ primary, $0.8$ where reached). HES, inflation
-and selection regret are defined in the introduction and Section~\ref{sec:select}; intervals are paired bootstraps over
-audits.
+\paragraph{Designs.} \emph{Uniform}: constant $\pi$, every menu output of a sampled item is labelled. \emph{Judge-free
+decision-aware}: never label an item whose difference is known to be zero, label a shared output once for all
+comparisons, and sample the rest in proportion to a label-free proxy of $|D|$ (closed-form decision weights of
+documents in retrieval; output dissimilarity in MT). The \emph{best fixed judge-free baseline} of a cell is the cheapest
+of these human-only designs there; it is a benchmark, not a procedure an auditor selects. An evaluator enters as the
+control variate of (\ref{eq:est}) on top of a design.
 
-\section{Domains, judges and protocol}\label{sec:domains}
-\paragraph{Retrieval.} Policies are three cutoff rules over a shared ranked pool \res{(describe)}; four development
-collections (ANTIQUE, CAsT 2019, DBpedia-Entity, TREC DL 21--23), two collections used for a locked rule test
-(TREC-COVID, Touché) and one never used in development (NeuCLIRBench). Judges: Qwen3-8B (UMBRELA prompt), Qwen3-Reranker-0.6B,
-the inverted reranker (adversarial).
-\paragraph{Machine translation.} WMT22 MQM \citep{freitag2021mqm} en$\to$de (1{,}315 segments) and zh$\to$en (1{,}875),
-the top four WMT submissions by human MQM. Judges: COMET-22 \citep{rei2022comet}, Qwen3-8B and Mistral-7B with the
-GEMBA-DA prompt \citep{kocmi2023gemba}, chrF (development), inverted COMET (adversarial).
-\paragraph{Chat.} LMArena human-preference battles \citep{chiang2024arena}, the six model pairs with the most decisive
-English single-turn battles (494--922 per pair). Judges: Qwen3-8B and Mistral-7B as pairwise judges (both orders
-averaged), ``the longer response wins'', and inverted Qwen3-8B.
-\paragraph{Pre-registration.} Hypotheses H1--H5 for MT and chat were committed before any LLM or COMET judgment was
-joined with a human label (Appendix~\res{X}); the retrieval held-out test followed an earlier lock.
+\paragraph{Cost.} $\Jt$ counts unique human labels, pilot included, at which a pre-committed budget certifies in half of
+300 simulated audits (linear interpolation over a budget grid); intervals are paired bootstraps over audits.
 
-\section{Where the savings come from}\label{sec:where}
-\res{Figure 1 waterfall; Table 1 J50 per domain; H1.}
+\section{Data, evaluators and protocol}\label{sec:data}
+\textbf{MT:} WMT22 MQM \citep{freitag2021mqm} en$\to$de (1{,}315 segments) and zh$\to$en (1{,}875), Google weights,
+$u=-\min(\mathrm{MQM},25)/25$, identical outputs of a segment share one label; menus of the four best WMT submissions
+(MBR systems excluded). Evaluators: all 31 WMT22 submitted metrics \citep[mt-metrics-eval;][]{rei2022comet}
+(reference-based against refA and QE), COMET-22, and Qwen3-8B and Mistral-7B with GEMBA-DA \citep{kocmi2023gemba}.
+\textbf{Chat:} LMArena human-preference battles \citep{chiang2024arena}; the six English single-turn pairs with the
+smallest win-rate gaps among those with $\ge300$ battles (311--472 battles; gaps 0.011--0.084). Evaluators: Qwen3-8B and
+Mistral-7B as pairwise judges (both presentation orders averaged), ``the longer response wins''.
+\textbf{Retrieval:} a re-analysis of fixed-budget audits of three cutoff policies on four fully judged collections
+(ANTIQUE, CAsT 2019, DBpedia-Entity, TREC DL 21--23) with Qwen3-8B (UMBRELA prompt) and Qwen3-Reranker as judges; pilot
+20 queries. MT and chat use a 50-item pilot (100 and 25 as ablations), $\eps\in\{0.01,0.02\}$ (MT) and
+$\{0.05,0.1\}$ (chat).
 
-\section{Judge value is inflated over uniform sampling}\label{sec:inflation}
-\res{Figure 2; H2.}
+\paragraph{Pre-registration.} Lock v0.8 (MT, chat) was committed before any LLM or COMET judgment was joined with a human
+label; v0.9 replaced the uninformative v0.8 chat decision (gaps 0.10--0.56 were settled by the pilot alone) by close
+pairs before they were judged; v1.1 fixed the 31-metric test before any of its savings were computed; v1.0 (frontier
+judges) is committed and not yet run. All locks, deviations and outcomes are in the supplementary repository.
 
-\section{Judge value is decision-conditional}\label{sec:conditional}
-\res{Figure 3 heatmap + accuracy vs rho; H3. Retrieval query-level evidence; MT pairs; Arena pairs.}
+\section{Evaluator quality depends on the level of measurement}\label{sec:levels}
+Figure~\ref{fig:levels} places the 31 WMT22 metrics on three levels against their realised HES. At the global level
+(Pearson over the 11 WMT submissions) nearly all strong metrics are above 0.9; this is the quantity metric shared tasks
+report. Among the four closest systems the ranking is fragile: MetricX-XL-DA and MetricX-XXL-DA reach system-level
+Pearson 0.994--0.995 on zh$\to$en and Kendall $\tau=0$ among the top four; BLEURT-20 reaches 0.980 and $\tau=-0.33$. The
+quantity that governs a control variate is the correlation $\rho$ of per-item paired differences, and it is low
+everywhere: 0.29--0.38 for the best metrics on en$\to$de, 0.21--0.25 on zh$\to$en, and 0.17--0.29 for COMET-22 and the
+GEMBA judges (system-level 0.97--0.99). Realised HES over the best judge-free baseline lies between $-10\%$ and $+7\%$ for
+every metric and cell. Across metrics, HES is ranked slightly better by $\rho$ than by system-level Pearson (Spearman 0.39 vs.\
+0.36 on en$\to$de, 0.23 vs.\ 0.07 on zh$\to$en; H11), but neither predicts it well among real metrics, because all of
+them sit in the region where the saving is small (\S\ref{sec:law}).
 
-\section{Choosing a judge from a pilot}\label{sec:select}
-\res{Table 2 selection: accuracy, rho, pilot-cost, global-best, humans-only, oracle; H4, H5; NeuCLIR locked result.}
+\begin{figure*}[t]\centering
+\includegraphics[width=\textwidth]{figures/F1_levels.pdf}
+\caption{Thirty WMT22 metrics at three levels of quality against their realised human-evidence saving over the best
+fixed judge-free baseline (pilot 50, mean over $\eps\in\{0.01,0.02\}$). (c) open markers: the same metrics with the
+population-optimal (oracle) correction coefficient; dashed: $\rho^2$, the asymptotic saving. REUSE (negatively
+correlated, switched off by $\lambda\ge0$) is omitted.}\label{fig:levels}
+\end{figure*}
+
+\section{Where the savings come from}\label{sec:design}
+Figure~\ref{fig:waterfall} and Table~\ref{tab:main} decompose the saving over uniform sampling into the part a judge-free design obtains and the
+part the best evaluator adds on top. In retrieval, skipping documents that no comparison depends on and sampling the rest
+by decision weight saves 41--56\% of the labels of uniform sampling; the Qwen3-8B judge adds 1--9 points of that total
+(HES 3--21\% over the design). In MT, identical outputs (14--51\% of segment pairs among the top systems on en$\to$de, 3--9\% on zh$\to$en) need no label
+and many paired MQM differences are exactly zero (45--54\%); exploiting this saves 16\% (en$\to$de) and 8\%
+(zh$\to$en) at $\eps=0.01$. The best of the 31 metrics, chosen \emph{post hoc} and therefore favoured, adds 7\% and
+$-1\%$. In all four pre-registered MT cells the design's saving exceeds the best metric's increment (H8, 4/4; H1 with
+the open judges, 4/4).
+
+In retrieval, the evaluator's increment follows its decision-level correlation as well: across 54 settings of an
+earlier query-level study the realised gain correlated 0.75 with $\rho$ and 0.03 with label accuracy; an identical-model
+judge over-credited its own policy by 0.14 F1, a bias the correction removes, while the noise that accompanied it lowered
+$\rho$ and the saving. In a locked test on a collection never used in development (NeuCLIRBench), a 20-query pilot
+predicted the relative cost of designs (correlation 0.83--0.97) but over-estimated the judge's own increment
+(predicted cost ratio 0.71--0.76, realised 0.82--0.93), the estimation-tax pattern of \S\ref{sec:law}.
+
+\begin{figure}[t]\centering
+\includegraphics[width=\columnwidth]{figures/F2_waterfall.pdf}
+\caption{Share of uniform-sampling human labels ($\Jt$) saved by the best fixed judge-free design and added by the best
+evaluator on top (retrieval: Qwen3-8B, $\eps=0.02$; MT: best of 31 metrics post hoc, $\eps=0.01$).}\label{fig:waterfall}
+\end{figure}
+
+\begin{table}[t]\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\resizebox{\columnwidth}{!}{\begin{tabular}{lrrrr}\toprule
+Cell & uniform & judge-free & + evaluator & evaluator\\
+ & $\Jt$ & best fixed & best (median) & HES\\\midrule
+IR ANTIQUE & 1{,}405 & 836 & 770 & 8\%\\
+IR CAsT 2019 & 4{,}778 & 2{,}127 & 1{,}720 & 19\%\\
+IR DBpedia-Entity & 5{,}563 & 2{,}543 & 2{,}046 & 20\%\\
+IR DL 21--23 & 4{,}092 & 1{,}783 & 1{,}722 & 3\%\\\midrule
+MT en$\to$de, $\eps$=.01 & 463 & 389 & 362 (390) & 7\% (0\%)\\
+MT en$\to$de, $\eps$=.02 & 261 & 238 & 233 (242) & 2\% ($-2$\%)\\
+MT zh$\to$en, $\eps$=.01 & 2{,}990 & 2{,}738 & 2{,}764 (2{,}838) & $-1$\% ($-4$\%)\\
+MT zh$\to$en, $\eps$=.02 & 1{,}166 & 1{,}066 & 1{,}058 (1{,}100) & 1\% ($-3$\%)\\\bottomrule
+\end{tabular}}
+\caption{Unique human labels ($\Jt$, pilot included) for uniform sampling, the best fixed judge-free design, and that
+design with an evaluator. Retrieval: Qwen3-8B judge, $\eps=0.02$, pilot 20 queries. MT: the best of the 31 WMT22 metrics
+chosen post hoc, and the median metric in parentheses; pilot 50 segments.}\label{tab:main}
+\end{table}
+
+\section{Why correlation overstates saving}\label{sec:law}
+\begin{proposition}[Finite-pilot cost law]\label{prop:law}
+Let a design need $L_0$ post-pilot labels for a fixed decision without an evaluator and let the evaluator's paired
+differences have correlation $\rho$ with the human ones. If $\lambda$ is fitted by least squares on $P_{\mathrm{eff}}$
+informative pilot items (items with a non-zero difference), then, to first order and under the normal fixed-budget
+approximation, the variance of the corrected estimator is $(1-\rho^2)(1+1/P_{\mathrm{eff}})$ times that of the
+uncorrected one and
+\begin{equation}
+\HES\approx\Big[\rho^2-\frac{1-\rho^2}{P_{\mathrm{eff}}}\Big]\Big(1-\frac{P}{J_0}\Big),\qquad J_0=P+L_0 .\label{eq:law}
+\end{equation}
+\end{proposition}
+The first factor combines the PPI++ variance reduction $\rho^2$ \citep{angelopoulos2023ppipp} with the classical
+inflation of a regression estimator whose coefficient is estimated \citep{cochran1977}; the second is the share of the
+cost that remains after the pilot. The derivation is in Appendix~\ref{app:law}. Equation~(\ref{eq:law}) implies that an
+evaluator with $\rho^2<1/(P_{\mathrm{eff}}+1)$ costs labels, about $\rho<0.2$ for the 50-item MT pilot, where half the
+paired differences are zero.
+
+\paragraph{Controlled variation.} To test (\ref{eq:law}) over the whole range we built semi-synthetic evaluators, human
+utility plus Gaussian noise scaled to a target $\rho\in\{0.1,\dots,0.9\}$, and ran them through the same audits (MT
+pilots 50 and 100, three Arena pairs; 126 cells). Predicted and realised HES correlate 0.975 (mean absolute error 0.035;
+Figure~\ref{fig:dial}); the realised saving is 11\% at $\rho=0.5$ and 32\% at $\rho=0.8$. The law describes controlled
+variation of $\rho$; for the real evaluators, which lie at $\rho\le0.38$, realised savings are within a few points of
+zero, dominated by Monte-Carlo noise, and exceed the ceiling $\rho^2(1-P/J)$ by more than 0.03 in only 2--4\% of cells.
+
+\begin{figure}[t]\centering
+\includegraphics[width=\columnwidth]{figures/F3_rho_dial.pdf}
+\caption{Realised HES of semi-synthetic evaluators with a set decision-level $\rho$ (grey: individual runs) against the
+cost law (\ref{eq:law}) and its oracle-$\lambda$ ceiling. Shaded: the range of the real evaluators.}\label{fig:dial}
+\end{figure}
+
+\paragraph{The estimation tax on real metrics.} Replacing the pilot-fitted coefficient by the population-optimal one
+isolates the tax. Over the 31 WMT metrics it is 4.3 [3.5, 5.2] points on en$\to$de and 2.5 [2.0, 3.1] on zh$\to$en
+(metric-level bootstrap; H9). For the five metrics with the largest $\rho^2$ (0.13--0.15 on en$\to$de, PPSR's range),
+the realised saving over uniform sampling is between $-4\%$ and $+6\%$ (en$\to$de) and $-6\%$ and $+1\%$ (zh$\to$en), below $\rho^2$ in every cell (H10, also with
+PPSR's mean-of-squares definition). With the oracle coefficient the same en$\to$de metrics reach 6--12\% on the decision-aware
+design: the asymptotic saving is not wrong, it is what an auditor who already knew $\lambda$ would obtain.
+
+\paragraph{Pilot size trades tax for fixed cost.} Equation~(\ref{eq:law}) predicts that a larger pilot lowers the tax
+$(1-\rho^2)/P_{\mathrm{eff}}$ but raises the fixed cost $P$. Both effects appear. Doubling the MT pilot to 100 segments
+shrinks the losses of the weak LLM judges (Mistral-7B on en$\to$de at $\eps=0.01$: $-7.1\%\to-0.9\%$) without making any
+open judge save more than 4\%; for the semi-synthetic evaluator with $\rho=0.9$ on en$\to$de, the same doubling halves the
+saving (32\%$\to$15\%) because the pilot becomes most of the cost. No pilot size makes a $\rho\approx0.2$ evaluator pay.
+
+\section{Chat: close pairs and presentation order}\label{sec:arena}
+For the six close Arena pairs the pairwise judges reach decision-level $\rho$ of 0.07--0.29. The best judge saves at least
+5\% with an interval above zero in two pairs (Figure~\ref{fig:arena}a; H6 required three). Position bias explains part of
+the low $\rho$: judging one presentation order only gives $\rho$ of 0.19 (Qwen3-8B) and 0.12 (Mistral-7B); averaging both
+orders raises it to 0.25 and 0.16 and turns Mistral's realised saving from $-1$ to $-2\%$ into $+0.5\%$. As with a
+mean bias toward a policy in retrieval, the bias itself is corrected by the human labels; the noise it adds lowers $\rho$
+and costs efficiency.
+
+\begin{figure*}[t]\centering
+\includegraphics[width=\textwidth]{figures/F4_arena.pdf}
+\caption{(a) HES over uniform sampling of three evaluators on six close LMArena pairs ($\Delta$: human win-rate gap;
+pilot 50, $\eps=0.05$; 95\% intervals). (b) Decision-level $\rho$ with one presentation order and with both orders averaged.}\label{fig:arena}
+\end{figure*}
+
+\section{Pre-registered outcomes and validity}\label{sec:prereg}
+Table~\ref{tab:prereg} lists every pre-registered hypothesis. The design-dominance and estimation-tax hypotheses held;
+three did not. H2 predicted that evaluator value measured over uniform sampling would be inflated by at least 5 points
+relative to the best design; with the open judges the value was near zero on both baselines, so there was nothing to
+inflate. H5 predicted that selecting an evaluator by its pilot-predicted cost would beat selecting by pilot accuracy; it
+did worse in both domains (excess cost over the best fixed arm 3.2\% vs.\ 2.3\% in MT, 2.8\% vs.\ 1.7\% in chat): when
+every candidate is near break-even, a 50-item pilot cannot resolve their differences, which by (\ref{eq:law}) are a few
+points. H4 (pilot predicts relative design cost) held in MT (median correlation 0.82) but not in chat (0.37), where
+the only lever is the evaluator and the cost ratios differ by little.
+
+\begin{table}[t]\centering\footnotesize\setlength{\tabcolsep}{2.5pt}
+\resizebox{\columnwidth}{!}{\begin{tabular}{llc}\toprule
+& Hypothesis & Outcome\\\midrule
+H1 & design saving $>$ best open judge (MT) & 4/4\\
+H2 & inflation $\ge$ 0.05 (MT) & \textbf{0/4}\\
+H3 & HES tracks $\rho$ $>$ accuracy & held (MT weak)\\
+H4 & pilot predicts cost ($r\ge.8$) & MT; \textbf{chat no}\\
+H5 & pilot selector beats accuracy & \textbf{no (both)}\\
+H6 & chat HES $\ge$5\% in $\ge$3/6 & \textbf{2/6}\\
+H8 & design $\ge$ best of 31 metrics & 4/4\\
+H9 & estimation tax $>0$ & both pairs\\
+H10 & realised HES $<\rho^2$ (top 5) & all cells\\
+H11 & HES tracks $\rho$ $>$ system $r$ & both\\\bottomrule
+\end{tabular}}
+\caption{Pre-registered hypotheses (locks v0.8, v0.9, v1.1). H7 and H2$'$ belong to the frontier-judge lock v1.0, not yet run.}\label{tab:prereg}
+\end{table}
+
+\paragraph{Validity.} Over all locked cells the observed wrong-certificate rate is at most 0.070 (Clopper--Pearson upper
+limit 0.105). Under boundary stress (the runner-up as candidate, $\eps$ at 0.9 times its regret) the largest observed
+type-I error among 882 chat cells is 0.143 at nominal 0.10; an exact binomial test per cell finds no cell significantly
+above $\alpha$ after Bonferroni correction (0.5\% of cells at $p<0.05$), and a Student-$t$ bound changes the maximum to
+0.140. These are Monte-Carlo checks of an asymptotic bound, not finite-sample guarantees.
 
 \section{Related work}
-\paragraph{Judges as system rankers.} JuStRank \citep{gera2025justrank} and \citet{gao2025reeval} show that instance-level
-judge accuracy does not determine system-level ranking quality; \citet{zhang2026utility} show that judgment quality and
-downstream utility need not align. We move the target one step further, to the human labels a decision requires.
+\paragraph{Judges and metrics as system rankers.} JuStRank \citep{gera2025justrank} and \citet{gao2025reeval} show that
+instance-level accuracy does not determine system-ranking quality and that ranking degrades for close systems;
+\citet{zhang2026utility} separate judgment quality from downstream utility. We follow quality one level further, to the
+human labels a close decision requires.
 \paragraph{Prediction-powered evaluation.} PPI and PPI++ \citep{angelopoulos2023ppi,angelopoulos2023ppipp}, active
-inference \citep{zrnic2024active}, AutoEval \citep{boyeau2024autoeval} and prediction-powered ranking \citep{chatzi2024ppr}
-on Chatbot Arena, efficient noisy-judge inference \citep{chen2026noisy}, PRECISE for ranking metrics \citep{divekar2026precise},
-and PPSR, which ranks MT metrics by annotation saved \citep{gao2026ppsr}. All of these measure savings over uniform labelling;
-\citet{dorner2025limits} bound them by a factor of two. We measure them over the best judge-free design.
-\paragraph{Annotation design for evaluation.} Active comparison of models \citep{sawade2012active}, active testing
-\citep{kossen2021active}, topic-set design and active judgment selection in IR \citep{sakai2016topic,li2017active}.
+inference \citep{zrnic2024active}, AutoEval and prediction-powered ranking on Chatbot Arena
+\citep{boyeau2024autoeval,chatzi2024ppr}, efficient noisy-judge inference \citep{chen2026noisy}, PRECISE for ranking
+metrics \citep{divekar2026precise}, and the bound of \citet{dorner2025limits} that an evaluator no better than the
+evaluated model saves at most half the labels. Closest to us, \citet{gao2026ppsr} rank WMT metrics by the annotation they
+save under prediction-powered evaluation (PPSR, the mean squared correlation of paired differences), with uniform
+labelling and the coefficient estimated on the evaluation labels. We take PPSR's quantity as the starting point and
+measure what remains of it under a decision-aware design and a pilot-fixed coefficient.
+\paragraph{Annotation design.} Active comparison of models \citep{sawade2012active}, active testing
+\citep{kossen2021active} and judgment selection in IR \citep{sakai2016topic,li2017active}.
 
-\section{Limitations}
-\res{fill}
+\section{Conclusion}
+For a close system decision, an automatic evaluator's value is set by the correlation of the differences the decision
+depends on, discounted by the cost of learning its correction from a small pilot and by what a judge-free design
+already obtains. Under these conditions the strongest WMT22 metrics and open LLM judges save between nothing and a few
+percent of human labels, while organising the human annotation itself saves more. Reporting the decision-level
+correlation next to system-level agreement, and crediting the annotation design before the evaluator, would make
+claims of evaluator savings comparable to what an audit actually obtains.
+
+\section*{Limitations}
+The menus are built from full human labels to be deliberately hard; easier decisions leave less to save for any method.
+The certificate uses a normal bound whose calibration we checked by simulation, not proved. MT savings are computed on
+the MQM-rated subsets of WMT22 (two language pairs), chat on six pairs from a 2023 Arena release, retrieval on
+re-analysed audits of an earlier study with two judges. The cost law is a first-order approximation; it describes
+controlled variation of $\rho$ and bounds, but does not predict cell by cell, the savings of real evaluators. Frontier
+LLM judges are not evaluated here; their pre-registration is committed. HES depends on the pilot size, and larger pilots
+lower the estimation tax while raising the fixed cost (\S\ref{sec:law}).
 
 \bibliography{refs}
 
 \appendix
-\section{Pre-registration record}\label{app:lock}
-\res{lock text, deviations}
+\section{Derivation of the cost law}\label{app:law}
+Write $D$ for the paired difference of an informative item, $\sigma^2=\mathrm{Var}(D)$, and $\hat D$ for the evaluator's
+prediction with $\mathrm{Corr}(D,\hat D)=\rho$. For a fixed coefficient $\lambda$ the residual $R=D-\lambda\hat D$ has
+variance $\sigma^2-2\lambda\rho\sigma\hat\sigma+\lambda^2\hat\sigma^2$, minimised at $\lambda^\star=\rho\sigma/\hat\sigma$ to
+$\sigma^2(1-\rho^2)$ \citep{angelopoulos2023ppipp}. With $\hat\lambda$ the least-squares coefficient from
+$P_{\mathrm{eff}}$ pilot items, independent of the post-pilot sample, $\mathrm{E}[(\hat\lambda-\lambda^\star)^2]\approx
+\sigma^2(1-\rho^2)/(P_{\mathrm{eff}}\hat\sigma^2)$, so the expected residual variance is
+$\sigma^2(1-\rho^2)(1+1/P_{\mathrm{eff}})$ \citep[\S7]{cochran1977}. Under the normal fixed-budget approximation the
+post-pilot labels needed to bring $z\sqrt{v/L}$ below the slack scale with the variance factor, so
+$L\approx L_0(1-\rho^2)(1+1/P_{\mathrm{eff}})$ and $1-L/L_0\approx\rho^2-(1-\rho^2)/P_{\mathrm{eff}}$ to first order in
+$1/P_{\mathrm{eff}}$. With the pilot cost $P$ common to both arms, $\HES=1-(P+L)/(P+L_0)=(1-L/L_0)(1-P/J_0)$. Clipping
+$\lambda$ at zero bounds the loss of an evaluator with $\rho\le0$ by the variance of $\hat\lambda$ only; zero-difference
+items reduce $P_{\mathrm{eff}}$ below $P$, which is why MT, with about half its paired differences zero, pays more tax.
+
+\section{Pre-registration record}\label{app:prereg}
+Lock v0.8 (MT, chat; hypotheses H1--H5 and validity) was committed before any LLM or COMET judgment was joined with a
+human label; the human-only MT designs and chrF had been examined in development and are reported as such. Two
+deviations followed (a type fix and an accounting fix charging one Arena vote per battle). Lock v0.9 replaced the v0.8
+chat decision, whose pairs had win-rate gaps of 0.10--0.56 and were certified by every design right after the pilot, by
+the six closest pairs; no judge output existed for these battles. Lock v1.1 fixed the 31-metric test (H8--H11) before
+any of its savings were computed; H10 as locked uses $(\bar\rho)^2$ and is reported with PPSR's mean of squared
+correlations as a post-lock robustness check, and H9's interval is a metric-level bootstrap. Lock v1.0 (frontier
+judges) is committed with its exported inputs and scoring rule and has not been run. Analyses not listed in a lock
+(three-level anatomy, oracle-$\lambda$ tax for open judges, presentation order, semi-synthetic $\rho$) are exploratory.
 
 \end{document}

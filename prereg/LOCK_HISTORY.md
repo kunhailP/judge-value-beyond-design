@@ -12,6 +12,9 @@ unchanged, from the development repository in which the work started). Commit ti
 | `520c889`, `80fd0f1` | 09:07 | **Lock v1.0**: frontier-model judges; inputs exported and hashed, scoring fixed, H2′ and H7. No frontier request had been made. Not yet run. |
 | `1811c18` | 09:31 | Exploratory (post-lock) analyses: judge anatomy, estimation tax, position bias, semi-synthetic ρ dial, cost law. Labelled exploratory everywhere. |
 
+| `a014725` | 11:07 | **Lock v1.1**: all 31 WMT22 submitted metrics as MT judges; H8–H11. Before any HES/J50 of these metrics was computed. |
+| `d7bb23a` | — | v1.1 results. Post-lock corrections: H9 interval as a metric-level bootstrap (the two ε of a metric are not independent); H10 additionally reported with PPSR's mean of squared correlations (locked: squared mean). Both leave the verdicts unchanged. |
+
 Corrections to the lock documents themselves:
 * The lock files were written with the date 2026-10-07 in their file names; they were committed on 2026-10-06
   (table above). The files were renamed without the date; their content is unchanged.

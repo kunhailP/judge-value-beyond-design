@@ -29,7 +29,7 @@ for lp in ("ende", "zhen"):
         Jm = j.pivot(index="seg_id", columns="system", values="score").loc[U.index]
         rhos = [np.corrcoef(U[a] - U[b], Jm[a] - Jm[b])[0, 1] for a, b in itertools.combinations(menu, 2)]
         r = dict(lp=lp, metric=f[5:], sys_pearson=pearsonr(sysj, sysu)[0], top4_kendall=kendalltau(sysj[menu], sysu[menu])[0],
-                 rho_bar=float(np.mean(rhos)))
+                 rho_bar=float(np.mean(rhos)), mean_rho2=float(np.mean(np.square(rhos))))   # (mean rho)^2 as locked; mean rho^2 = PPSR-style
         for eps in (0.01, 0.02):
             J = S[(S.metric == "J50") & (S.eps == eps)].set_index("design").value
             bh = S[(S.metric == "best_human") & (S.eps == eps)].design.iloc[0]
@@ -48,27 +48,29 @@ for lp in ("ende", "zhen"):
     for eps in (0.01, 0.02):
         best = g.loc[g[f"hes_best_{eps}"].idxmax()]
         h8.append(best[f"design_save_{eps}"] >= best[f"hes_best_{eps}"])
-        md.append(f"- {lp} ε={eps}: best human design saves {best[f'design_save_{eps}']:+.3f} vs uniform; best metric {best.metric} HES over it {best[f'hes_best_{eps}']:+.3f}")
+        md.append(f"- {lp} ε={eps}: best fixed judge-free baseline saves {best[f'design_save_{eps}']:+.3f} vs uniform; best metric {best.metric} HES over it {best[f'hes_best_{eps}']:+.3f}")
 md += ["", f"**H8**: {sum(h8)}/4 cells → {'SUPPORTED' if sum(h8) >= 3 else 'NOT SUPPORTED'}", ""]
-# H9
+# H9 — bootstrap unit = metric (the two epsilon values of a metric are averaged first; they are not independent)
 for lp in ("ende", "zhen"):
     g = T[T.lp == lp]
-    tax = np.concatenate([(g[f"hes_w_oracle_{e}"] - g[f"hes_w_pilot_{e}"]).values for e in (0.01, 0.02)])
-    bs = [rng.choice(tax, len(tax)).mean() for _ in range(2000)]; lo, hi = np.percentile(bs, [2.5, 97.5])
-    md.append(f"**H9 {lp}**: mean tax {tax.mean():+.3f} [{lo:+.3f}, {hi:+.3f}] over {len(tax)} metric×ε → {'SUPPORTED' if lo > 0 else 'NOT SUPPORTED'}")
+    tax = ((g["hes_w_oracle_0.01"] - g["hes_w_pilot_0.01"]) + (g["hes_w_oracle_0.02"] - g["hes_w_pilot_0.02"])).values / 2
+    bs = [rng.choice(tax, len(tax)).mean() for _ in range(5000)]; lo, hi = np.percentile(bs, [2.5, 97.5])
+    md.append(f"**H9 {lp}**: mean tax {tax.mean():+.3f} [{lo:+.3f}, {hi:+.3f}] (metric-level bootstrap, {len(tax)} metrics) → {'SUPPORTED' if lo > 0 else 'NOT SUPPORTED'}")
 md.append("")
-# H10
-h10 = True
-for lp in ("ende", "zhen"):
-    g = T[T.lp == lp].assign(r2=lambda x: x.rho_bar ** 2).nlargest(5, "r2")
-    for eps in (0.01, 0.02):
-        ok = (g[f"hes_uniform_{eps}"] < g.r2).all(); h10 &= ok
-        md.append(f"- {lp} ε={eps}: top-5 ρ̄² " + ", ".join(f"{m} {a:.3f}→{b:+.3f}" for m, a, b in zip(g.metric, g.r2, g[f'hes_uniform_{eps}'])))
-md += ["", f"**H10** (realised HES over uniform < ρ̄² for all top-5 metrics in every cell) → {'SUPPORTED' if h10 else 'NOT SUPPORTED'}", ""]
-# H11
+# H10 — as locked: (mean rho)^2. Post-lock robustness: mean of squared per-pair correlations (the PPSR definition).
+for label, col in (("as locked, (mean ρ)²", "r2_locked"), ("post-lock robustness, mean ρ² (PPSR definition)", "mean_rho2")):
+    ok_all = True
+    for lp in ("ende", "zhen"):
+        g = T[T.lp == lp].assign(r2_locked=lambda x: x.rho_bar ** 2).nlargest(5, col)
+        for eps in (0.01, 0.02):
+            ok = (g[f"hes_uniform_{eps}"] < g[col]).all(); ok_all &= ok
+            md.append(f"- [{label}] {lp} ε={eps}: " + ", ".join(f"{m} {a:.3f}→{b:+.3f}" for m, a, b in zip(g.metric, g[col], g[f'hes_uniform_{eps}'])))
+    md += ["", f"**H10 [{label}]** (realised HES over uniform < the correlation-based saving for all top-5 metrics in every cell) → {'SUPPORTED' if ok_all else 'NOT SUPPORTED'}", ""]
+# H11 (as locked) + descriptive: local top-4 Kendall
 for lp in ("ende", "zhen"):
     g = T[T.lp == lp]; y = np.concatenate([g[f"hes_best_{e}"] for e in (0.01, 0.02)])
-    a = spearmanr(y, np.tile(g.rho_bar, 2))[0]; b = spearmanr(y, np.tile(g.sys_pearson, 2))[0]
-    md.append(f"**H11 {lp}**: Spearman(HES_best, ρ̄) = {a:.3f} vs Spearman(HES_best, system Pearson) = {b:.3f} → {'SUPPORTED' if a > b else 'NOT SUPPORTED'}")
+    a = spearmanr(y, np.tile(g.rho_bar, 2))[0]; b = spearmanr(y, np.tile(g.sys_pearson, 2))[0]; c = spearmanr(y, np.tile(g.top4_kendall, 2))[0]
+    md.append(f"**H11 {lp}**: Spearman(HES over best fixed judge-free baseline, ρ̄) = {a:.3f} vs system Pearson = {b:.3f} "
+              f"(descriptive: top-4 Kendall = {c:.3f}) → {'SUPPORTED' if a > b else 'NOT SUPPORTED'}; neither predicts HES well among real metrics")
 md += ["", "## Per-metric table (sorted by ρ̄)", "", T.sort_values(["lp", "rho_bar"], ascending=[True, False]).round(3).to_markdown(index=False)]
 open(f"{R}/MTME_VERDICTS.md", "w").write("\n".join(md)); print("\n".join(md[:40]))
