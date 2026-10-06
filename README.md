@@ -14,9 +14,12 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
   the design itself saves 8–16% (MT) and 41–57% (retrieval) of uniform sampling's human labels (pre-registered H1, H8: 4/4).
 * **Committing to the coefficient early has a price, not the evaluator.** Fitting the correction coefficient on a 50-item
   pilot and freezing it costs 4.3 [3.5, 5.2] (en→de) and 2.5 [2.0, 3.1] (zh→en) points over the 31 metrics (H9).
-  Refitting it on all labels, as in standard PPI++, removes this tax with no detected loss of calibration in our
-  boundary-stress simulations; cross-fitting recovers it on zh→en but not on en→de (`results/ROBUSTNESS.md`). Even with
-  refitting, the mean saving of the eleven strongest evaluators over the best judge-free design is 0–7%.
+  Refitting it on all labels (exploratory, analogous to standard PPI++) removes this tax with nominal coverage of the
+  upper bounds in our simulations; cross-fitting recovers it only partly (`results/ROBUSTNESS.md`).
+* **Across 30 two-system decisions (exploratory; `code/RUN_PAIRS_MTME.sh`, `code/122_decisions.py`, `results/DECISIONS.md`).**
+  In the 33 informative decision × ε cells (19 decisions) the judge-free design saves a median 5.5% and beats the mean
+  of 34 evaluators in 82–94% of cells; the post-hoc best evaluator's lead is within selection noise. Refitted HES
+  follows the tax-free ceiling ρ²(1 − P/J), which is below 5% in 94% of decision–evaluator pairs.
 * **The design saving in MT is mostly deduplication** (not re-rating identical outputs): 13%/6% of uniform-sampling labels on
   en→de and all of the 8% on zh→en.
 * **A finite-pilot cost law describes the dependence on ρ.** HES ≈ [ρ² − (1−ρ²)/P_eff](1 − P/J). Under *controlled*
@@ -35,6 +38,7 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
 | `prereg/` | Locks v0.8 (MT, Arena), v0.9 (Arena close pairs), v1.0 (frontier judges, not yet run), v1.1 (all 31 WMT22 metrics) and `LOCK_HISTORY.md` |
 | `code/110_unit_audit.py` | Fixed-budget certification audits (designs, pilot-fixed λ control variate, certificates, pilot predictions) |
 | `code/111_summarize.py` | J_τ, HES, inflation, selection, pilot-prediction scores with paired bootstrap intervals |
+| `code/121_robustness.py`, `code/122_decisions.py`, `code/RUN_PAIRS_MTME.sh`, `code/RUN_ARENA_ROBUST2.sh` | Exploratory: coefficient rules (pilot / refit / cross-fit / oracle), thirty two-system decisions, coverage, selection-noise test |
 | `code/112–120`, `mtme_import.py` | Judge anatomy, cost law, ρ dial, position bias, estimation tax, hypothesis verdicts, boundary calibration, v1.1 verdicts, figures; WMT22 metric import |
 | `code/101_ir_hes.py` | Retrieval block: J_τ, HES and selection from the per-draw records of an earlier retrieval study |
 | `code/mt_*.py`, `code/arena_*.py` | Pool builders (WMT22 MQM, LMArena 55k) and judges (COMET-22, GEMBA-DA, pairwise LLM judge) |

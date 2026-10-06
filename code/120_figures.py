@@ -100,4 +100,33 @@ ax[1].set_xticks(np.arange(3) + 0.19, ["one order\n(x first)", "one order\n(y fi
 ax[1].set_ylabel("decision-level ρ"); ax[1].legend(fontsize=7); ax[1].set_title("(b) position bias lowers ρ", fontsize=8, loc="left")
 ax[1].grid(axis="x", visible=False)
 save(fig, "F4_arena")
+# ---------------------------------------------------------------- Figure 5: thirty two-system MT decisions and six chat pairs
+if os.path.exists(f"{R}/DECISIONS.csv"):
+    T = pd.read_csv(f"{R}/DECISIONS.csv"); T = T[T.informative]
+    G = T[T.lp != "chat"].groupby(["lp", "pair", "eps"]).agg(save=("save", "first"), mean=("refit", "mean"), best=("refit", "max")).reset_index()   # chat has no judge-free design
+    fig, ax = plt.subplots(1, 2, figsize=(7.0, 2.5)); fig.subplots_adjust(wspace=0.28)
+    sty = (("ende", BLUE, "o", "en→de"), ("zhen", ORANGE, "s", "zh→en"), ("chat", AQUA, "^", "chat"))
+    for lp, c, mk, lab in sty:
+        g = G[G.lp == lp]
+        if len(g):
+            ax[0].scatter(g.save, g["mean"], s=16, c=c, marker=mk, edgecolor="white", linewidth=0.5, label=lab, zorder=3)
+            ax[0].scatter(g.save, g.best, s=16, facecolor="none", edgecolor=c, marker=mk, linewidth=0.7, zorder=2)
+    lim = [min(-0.05, G[["save", "mean"]].min().min() - 0.01), max(G[["save", "best"]].max().max() + 0.02, 0.2)]
+    ax[0].plot(lim, lim, color=GREY, lw=1, ls="--"); ax[0].set_xlim(lim); ax[0].set_ylim(lim)
+    ax[0].text(lim[1] * 0.62, lim[1] * 0.80, "evaluator = design", color=INK2, fontsize=7, rotation=38)
+    ax[0].set_xlabel("saving of the best fixed judge-free design\nover uniform sampling"); ax[0].set_ylabel("evaluator HES on top\n(refitted coefficient)")
+    ax[0].legend(loc="upper left", fontsize=7, handletextpad=0.2); ax[0].text(0.03, 0.76, "filled: mean of evaluators\nopen: best, post hoc", transform=ax[0].transAxes, ha="left", va="top", fontsize=6.5, color=INK2)
+    ax[0].set_title("(a) MT: per decision and ε", fontsize=8, loc="left")
+    T["ceil"] = np.clip(T.rho, 0, None) ** 2 * (1 - T.pilot_cost / T.J_best)
+    for lp, c, mk, lab in sty:
+        g = T[T.lp == lp]
+        if len(g):
+            ax[1].scatter(g.ceil, g.refit, s=5, c=c, marker=mk, alpha=0.45, linewidth=0, zorder=3, label=lab)
+    m = max(T.ceil.max(), 0.05) * 1.05
+    ax[1].plot([0, m], [0, m], color=GREY, lw=1, ls="--"); ax[1].axhline(0, color=GREY, lw=0.8)
+    ax[1].set_xlabel("tax-free ceiling ρ²(1 − P/J)"); ax[1].set_ylabel("realised HES (refitted)")
+    ax[1].set_title("(b) per decision, ε and evaluator", fontsize=8, loc="left")
+    leg = ax[1].legend(loc="lower right", fontsize=7, handletextpad=0.2, markerscale=2.5)
+    [h.set_alpha(1) for h in leg.legend_handles]
+    save(fig, "F5_decisions")
 print("figures written to", OUT)

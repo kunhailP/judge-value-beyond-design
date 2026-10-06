@@ -162,7 +162,7 @@ def run_draw(args):
     pil, rest = perm[:P], perm[P:]
     mu = Y.mean(0)
     if cfg.get("boundary"):
-        order = np.argsort(-mu); c = int(order[1]); eps_list = [0.9 * (mu[order[0]] - mu[c])]
+        order = np.argsort(-mu); c = int(order[1]); eps_list = [cfg.get("boundary_frac", 0.9) * (mu[order[0]] - mu[c])]
     else:
         c = int(np.argmax(Y[pil].mean(0))); eps_list = cfg["eps"]
     comp = [j for j in range(M) if j != c]
@@ -239,6 +239,7 @@ def run_draw(args):
                 designs[f"{bname}_cvu:{f}"] = dict(g=bg, cost=bc, lam=f, mode="xfit", unweighted=True)    # cross-fitted, unweighted least squares
                 designs[f"{bname}_cvq:{f}"] = dict(g=bg, cost=bc, lam=f, mode="refit", unweighted=True)   # refit on all labels, unweighted
     z = norm.ppf(1 - ALPHA / len(comp))
+    Dbar = D.mean(0)
     known = D[pil].sum(0)
     rows, pred = [], []
     rest_mask = np.zeros(N, bool); rest_mask[rest] = True
@@ -288,10 +289,11 @@ def run_draw(args):
                 var = ((1 - pi[samp])[:, None] * Rx[samp] ** 2 * w[:, None] ** 2).sum(0) / N ** 2
             zq = z if cfg.get("bound", "normal") == "normal" else tdist.ppf(1 - ALPHA / len(comp), max(int(samp.sum()) - 1, 1))
             ucb = est + zq * np.sqrt(var)
+            cover = int((ucb >= Dbar - 1e-9).all())      # simultaneous one-sided coverage of the true mean differences (nominal 1 - alpha; tolerance for census rounding)
             for eps in eps_list:
                 act = bool((ucb <= eps).all())
                 rows.append(dict(draw=i, design=name, budget=n, eps=eps, cost=float(cost), act=int(act),
-                                 wrong=int(act and regret > eps), regret=float(regret)))
+                                 wrong=int(act and regret > eps), regret=float(regret), cover=cover))
     meta = dict(draw=i, cand=c, regret=float(regret), pilot_cost=pilot_cost,
                 **{f"lam:{f}": float(lam[f].mean()) for f in J}, **{f"lamo:{f}": float(lam[f"__o:{f}"].mean()) for f in J if f"__o:{f}" in lam}, **{f"acc:{f}": acc[f] for f in J}, **{f"rho:{f}": rho[f] for f in J})
     return rows, pred, meta
@@ -310,6 +312,7 @@ def main():
     ap.add_argument("--draws", type=int, default=300)
     ap.add_argument("--seed", type=int, default=20261007)
     ap.add_argument("--boundary", action="store_true")
+    ap.add_argument("--boundary_frac", type=float, default=0.9, help="boundary stress: eps as a fraction of the true gap")
     ap.add_argument("--bound", choices=["normal", "t"], default="normal", help="robustness: Student-t quantile with (sampled units - 1) df")
     ap.add_argument("--extra", action="store_true", help="exploratory: dedup+evaluator, refit-lambda (*_cvr) and cross-fitted-lambda (*_cvx) arms")
     ap.add_argument("--oracle", action="store_true", help="exploratory: add population-lambda arms *_cvo")
@@ -320,7 +323,7 @@ def main():
     data = load_mt(a.unit, a.menu_k, a.menu, a.judges) if a.domain == "mt" else load_arena(a.unit, a.judges)
     N = data["Y"].shape[0]
     budgets = a.budgets or sorted({int(x) for x in np.geomspace(10, N - a.pilot, 14)})
-    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, oracle=a.oracle, bound=a.bound, extra=a.extra)
+    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, boundary_frac=a.boundary_frac, oracle=a.oracle, bound=a.bound, extra=a.extra)
     with Pool(a.procs) as pool:
         res = pool.map(run_draw, [(data, cfg, i) for i in range(a.draws)])
     rows = pd.DataFrame([r for x in res for r in x[0]]); pred = pd.DataFrame([r for x in res for r in x[1]])
