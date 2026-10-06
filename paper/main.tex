@@ -31,10 +31,10 @@ over the best fixed annotation design that uses no evaluator. Across machine tra
 metric variants and open LLM judges), chat (LMArena) and retrieval, with prospectively locked MT and chat evaluations,
 evaluator quality turns out to depend on the level at which it is measured: metrics with system-level correlations of
 0.93--0.99 reach correlations of only 0.11--0.38 on the paired differences a close decision depends on. Correspondingly,
-the eleven strongest evaluators save on average 0--7\% of human labels on top of a judge-free design, even when the
-correction coefficient is refitted on all labels as in standard PPI++, while the judge-free design itself, mostly by not
+eleven strong evaluators save on average 0--7\% of human labels on top of a judge-free design, also in an exploratory
+analysis that refits the correction coefficient on all labels, analogous to standard PPI++, while the judge-free design itself, mostly by not
 re-rating identical outputs, saves 8--16\% in MT and 41--56\% in retrieval. Fixing the coefficient on a 50-item pilot
-before the audit costs a further 2.5--4.3 points, which refitting removes and cross-fitting only partly recovers.
+before the audit costs a further 2.5--4.3 points, which refitting removes in our simulations and cross-fitting only partly recovers.
 \end{abstract}
 
 \section{Introduction}
@@ -63,14 +63,15 @@ Pearson 0.93--0.99 rank the top-4 zh$\to$en systems in exactly reversed order fo
 correlations of 0.11--0.38, and realise HES between $-10\%$ and $+7\%$ (\S\ref{sec:levels}).
 \item \textbf{A judge-free design saves more than the typical evaluator.} In all four pre-registered MT cells the
 design saves more than the best of 31 metric variants adds on top of it with a pilot-fixed coefficient (8--16\% vs.\
-$\le 7\%$), and more than the mean of the eleven strongest evaluators under every coefficient rule we tried; the best
+$\le 7\%$), and more than the mean of eleven strong evaluators (the eight highest-$\rho$ metric variants per pair, COMET-22 and two
+open LLM judges) under every coefficient rule we tried; the best
 evaluator chosen post hoc exceeds it in two of four cells when the coefficient is refitted. Retrieval: 41--56\% of
 uniform-sampling labels vs.\ 1--9 further points (\S\ref{sec:design}).
 \item \textbf{Committing to the coefficient early has a price.} Fitting the correction on a 50-item pilot costs 4.3 [3.5,
-5.2] (en$\to$de) and 2.5 [2.0, 3.1] (zh$\to$en) points over the 31 variants; refitting on all labels removes this tax with
+5.2] (en$\to$de) and 2.5 [2.0, 3.1] (zh$\to$en) points over the 31 variants; in an exploratory analysis, refitting on all labels removes this tax with
 no detected loss of calibration in our simulations, and cross-fitting recovers it on zh$\to$en but not on en$\to$de
 (\S\ref{sec:law}).
-\item \textbf{Pre-registered, with failures reported.} Four locks fixed hypotheses before the corresponding evaluator
+\item \textbf{Pre-registered, with failures reported.} Three prospective locks fixed hypotheses before the corresponding evaluator
 outputs were joined with human labels; of the ten hypotheses tested, H2, H5 and H6 failed and H4 failed in chat; all are reported with their explanations (\S\ref{sec:prereg}).
 \end{enumerate}
 We propose no estimator: the corrected estimator is PPI++ with a pilot-fixed coefficient, and the allocation is
@@ -126,8 +127,7 @@ $\{0.05,0.1\}$ (chat).
 
 \paragraph{Pre-registration.} Lock v0.8 (MT, chat) was committed before any LLM or COMET judgment was joined with a human
 label; v0.9 replaced the uninformative v0.8 chat decision (gaps 0.10--0.56 were settled by the pilot alone) by close
-pairs before they were judged; v1.1 fixed the 31-metric test before any of its savings were computed; v1.0 (frontier
-judges) is committed and not yet run. All locks were committed within one day on public data whose human labels
+pairs before they were judged; v1.1 fixed the 31-metric test before any of its savings were computed. All locks were committed within one day on public data whose human labels
 exist; before v0.8 the human-only MT designs had been run in development (they saved 8--19\% over
 uniform sampling and chrF saved about nothing, so H1 was not a blind test), and v1.1 was written after the exploratory
 estimation-tax and $\rho$-dial analyses of the open judges, so H9 tests on 31 new evaluators a phenomenon first seen
@@ -198,7 +198,7 @@ MT zh$\to$en, $\eps$=.02 & 1{,}166 & 1{,}066 & 1{,}058 (1{,}100) & 1\% ($-3$\%)\
 \caption{Unique human labels ($\Jt$, pilot included) for uniform sampling, the best fixed judge-free design, and that
 design with an evaluator. Retrieval: Qwen3-8B judge, $\eps=0.02$, pilot 20 queries. MT: the best of the 31 WMT22 metric variants
 chosen post hoc, and the median metric in parentheses; pilot 50 segments. MT evaluators are applied on the weighted
-design; for zh$\to$en the best fixed judge-free design is dedup, and on that matched base the best of the 11 strongest
+design; for zh$\to$en the best fixed judge-free design is dedup, and on that matched base the best of the 11 strong evaluators
 evaluators saves 7.3\% ($\eps=0.01$) and $-0.5\%$ ($\eps=0.02$), \S\ref{sec:law}.}\label{tab:main}
 \end{table}
 
@@ -208,7 +208,8 @@ Let a design need $L_0$ post-pilot labels for a fixed decision without an evalua
 differences $\hat D$ have correlation $\rho$ with the human ones $D$. Assume that, over informative items (those with a
 non-zero difference), $D$ is a linear projection on $\hat D$ with a residual whose variance does not depend on $\hat D$
 (homoskedastic; joint normality is a sufficient case), and that $\lambda$ is fitted by least squares on
-$P_{\mathrm{eff}}$ informative pilot items independent of the post-pilot sample. Then, to first order in
+a pilot independent of the post-pilot sample, with effective informative size $P_{\mathrm{eff}}$ (the number of pilot
+items that contribute variation to the paired regression, approximated by those with a non-zero paired difference). Then, to first order in
 $1/P_{\mathrm{eff}}$ and under the normal fixed-budget approximation, the variance of the corrected estimator is
 $(1-\rho^2)(1+1/P_{\mathrm{eff}})$ times that of the uncorrected one and
 \begin{equation}
@@ -251,7 +252,9 @@ $+6.8\%$ with refitting and $+1.6\%$ with cross-fitting on en$\to$de, against $+
 zh$\to$en from $-0.4\%$ to $+2.0\%$ and $+1.1\%$, against $+1.3\%$; on the six chat pairs from $+1.1\%$ to $+2.3\%$ and $+1.5\%$, against $+2.1\%$. Under boundary stress the refitted certificate's largest
 type-I error was 0.05 and no cell was significantly above $\alpha$, although its variance estimate ignores the
 coefficient's estimation error. The tax is therefore the price of committing to the coefficient before the audit (for
-instance to plan the budget), not a property of the evaluator. The evaluators remain modest even without it: on the
+instance to plan the budget), not a property of the evaluator. Refitting is a descriptive check rather than the guaranteed estimator: the same labels set the
+coefficient and the inference, and our setting adds unequal-probability sampling to standard PPI++; the locked
+analysis freezes $\lambda$, and cross-fitting is the safer adaptive comparison. The evaluators remain modest even without it: on the
 best fixed judge-free base, the mean over the eleven with refitting is 6.9\% and 6.7\% (en$\to$de, $\eps=0.01, 0.02$) and
 4.8\% and $-0.3\%$ (zh$\to$en), below the design's 15.9\%, 9.0\%, 8.4\% and 8.5\%; the best of the eleven, chosen post hoc,
 reaches 10.6\%, 12.1\%, 15.4\% and 1.0\%.
@@ -303,8 +306,8 @@ H10 & realised HES $<\rho^2$ (top 5)$^c$ & all cells\\
 H11 & HES tracks $\rho$ $>$ system $r$ & both\\\bottomrule
 \end{tabular}}
 \caption{Pre-registered hypotheses (locks v0.8, v0.9, v1.1). $^a$on two-system menus. $^b$with the locked pilot-fixed
-coefficient; with a refitted coefficient the post-hoc best of the eleven strongest exceeds the design in 2/4 cells.
-$^c$largely implied by the dilution factor $1-P/J$. H7 and H2$'$ belong to the frontier-judge lock v1.0, not yet run.}\label{tab:prereg}
+coefficient; with a refitted coefficient the post-hoc best of the eleven strong evaluators exceeds the design in 2/4 cells.
+$^c$largely implied by the dilution factor $1-P/J$. H7 and H2$'$ concern frontier judges and are recorded in Appendix~\ref{app:prereg}.}\label{tab:prereg}
 \end{table}
 
 \paragraph{Validity.} Over all locked cells the observed wrong-certificate rate is at most 0.070 (Clopper--Pearson upper
@@ -348,7 +351,7 @@ The certificate uses a normal bound whose calibration we checked by simulation, 
 the MQM-rated subsets of WMT22 (two language pairs), chat on six pairs from a 2023 Arena release, retrieval on
 re-analysed audits of an earlier study with two judges. The cost law is a first-order approximation; it describes
 controlled variation of $\rho$ and bounds, but does not predict cell by cell, the savings of real evaluators. Frontier
-LLM judges are not evaluated here; their pre-registration is committed. HES depends on the pilot size, and larger pilots
+LLM judges are not evaluated here. HES depends on the pilot size, and larger pilots
 lower the estimation tax while raising the fixed cost (\S\ref{sec:law}). The results should not be read as showing
 that automatic evaluators are useless: they concern close decisions, small human pilots and evaluators with
 decision-level $\rho\le0.38$; by the cost law, an evaluator with $\rho\approx0.8$ would save about a third of the labels.
@@ -360,8 +363,8 @@ decision-level $\rho\le0.38$; by the cost law, an evaluator with $\rho\approx0.8
 Write $D$ for the paired difference of an informative item, $\sigma^2=\mathrm{Var}(D)$, and $\hat D$ for the evaluator's
 prediction with $\mathrm{Corr}(D,\hat D)=\rho$. For a fixed coefficient $\lambda$ the residual $R=D-\lambda\hat D$ has
 variance $\sigma^2-2\lambda\rho\sigma\hat\sigma+\lambda^2\hat\sigma^2$, minimised at $\lambda^\star=\rho\sigma/\hat\sigma$ to
-$\sigma^2(1-\rho^2)$ \citep{angelopoulos2023ppipp}. With $\hat\lambda$ the least-squares coefficient from
-$P_{\mathrm{eff}}$ pilot items, independent of the post-pilot sample, and a homoskedastic residual ($\mathrm{E}[R^2\mid\hat D]=\sigma^2(1-\rho^2)$), $\mathrm{E}[(\hat\lambda-\lambda^\star)^2]\approx
+$\sigma^2(1-\rho^2)$ \citep{angelopoulos2023ppipp}. With $\hat\lambda$ the least-squares coefficient from a
+pilot of effective informative size $P_{\mathrm{eff}}$, independent of the post-pilot sample, and a homoskedastic residual ($\mathrm{E}[R^2\mid\hat D]=\sigma^2(1-\rho^2)$), $\mathrm{E}[(\hat\lambda-\lambda^\star)^2]\approx
 \sigma^2(1-\rho^2)/(P_{\mathrm{eff}}\hat\sigma^2)$, so the expected residual variance is
 $\sigma^2(1-\rho^2)(1+1/P_{\mathrm{eff}})$ \citep[\S7]{cochran1977}. Under the normal fixed-budget approximation the
 post-pilot labels needed to bring $z\sqrt{v/L}$ below the slack scale with the variance factor, so
