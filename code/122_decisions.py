@@ -35,7 +35,7 @@ def j50(x, y, tau=0.5):
 
 def main():
     sysr = pd.read_csv(f"{R}/MTME_TABLE.csv").set_index(["lp", "metric"]).sys_pearson
-    rows, cov, sel = [], [], []
+    rows, cov, sel, covj = [], [], [], []
     files = sorted(glob.glob(f"{R}/mt/mt_*_m2_p50_pairmtme*_draws.parquet")) + sorted(glob.glob(f"{R}/arena/arena_1[0-5]_m2_p50_robust2_draws.parquet"))
     for f in files:
         stem = f[:-len("_draws.parquet")]
@@ -58,6 +58,7 @@ def main():
         ei = np.searchsorted(epss, D.eps.to_numpy())
         ACT = np.full((len(epss), len(bud), len(dr), len(dcat)), np.nan); CST = ACT.copy()
         ACT[ei, bi, di, dcode] = D.act.to_numpy(); CST[ei, bi, di, dcode] = D.cost.to_numpy()
+        COV = np.full((len(epss), len(bud), len(dr), len(dcat)), np.nan); COV[ei, bi, di, dcode] = D.cover.to_numpy()
         rng = np.random.default_rng(0)
         idx = np.vstack([np.arange(len(dr))] + [rng.integers(0, len(dr), len(dr)) for _ in range(B)])   # row 0 = point
         Wt = np.zeros((B + 1, len(dr))); np.add.at(Wt, (np.repeat(np.arange(B + 1), len(dr)), idx.ravel()), 1.0 / len(dr))
@@ -92,6 +93,11 @@ def main():
                         v = 1 - J[:, col[k]] / h[b]
                         r[m], r[m + "_lo"], r[m + "_hi"] = q(v)
                 rows.append(r)
+            # coverage at the budget whose mean cost is nearest each design's J50 (where the certification decision is made)
+            for k, w in enumerate(want):
+                if np.isfinite(J[0, k]):
+                    mc = np.nanmean(CST[e_][:, :, wi[k]], 1); bn = int(np.nanargmin(np.abs(mc - J[0, k])))
+                    covj.append(dict(lp=lp, pair=pair, eps=eps, design=w, mode=mode_of[wi[k]], cover=float(np.nanmean(COV[e_][bn, :, wi[k]]))))
             # is the post-hoc best evaluator distinguishable from selection noise? null: all evaluators share their mean;
             # bootstrap deviations (correlated across evaluators through common random numbers) give max - mean under it
             for m, s in (("pilot", "cvl"), ("refit", "cvq"), ("xfit", "cvu")):
@@ -105,10 +111,12 @@ def main():
     T = pd.DataFrame(rows); T.to_csv(f"{R}/DECISIONS.csv", index=False)
     C = pd.concat(cov); C.to_csv(f"{R}/DECISIONS_coverage.csv", index=False)
     S = pd.DataFrame(sel); S.to_csv(f"{R}/DECISIONS_selection_noise.csv", index=False)
+    pd.DataFrame(covj).to_csv(f"{R}/DECISIONS_coverage_at_J50.csv", index=False)
     report(T, C, S)
 
 
 def report(T, C, S):
+    lab = {"human": "human-only", "cvl": "pilot", "cvq": "refit", "cvu": "xfit", "cvr": "refit_HT", "cvx": "xfit_HT", "cvo": "oracle"}
     md = ["# Thirty two-system MT decisions (exploratory, post-lock)", ""]
     cells = T.drop_duplicates(["lp", "pair", "eps"])
     inf = cells[cells.informative]
@@ -143,13 +151,21 @@ def report(T, C, S):
     for m in ("pilot", "refit", "oracle"):
         a = spearmanr(mt.rho, mt[m], nan_policy="omit")[0]; b = spearmanr(mt.sys_r, mt[m], nan_policy="omit")[0]
         md.append(f"* Spearman over (decision, metric): HES_{m} vs pilot rho {a:.3f}, vs system-level Pearson {b:.3f}")
+    Smt = S[S.lp != "chat"].merge(T.drop_duplicates(["lp", "pair", "eps"])[["lp", "pair", "eps", "informative"]], on=["lp", "pair", "eps"])
+    Smt = Smt[Smt.informative]
+    md += ["", "## Post-hoc best evaluator vs selection noise (MT informative decisions only)", "",
+           Smt.groupby("mode").agg(cells=("p", "size"), gap_median=("gap", "median"), null_median=("null_med", "median"),
+                                   share_p_below_05=("p", lambda x: (x < .05).mean())).round(3).to_markdown()]
     Si = S.merge(T.drop_duplicates(["lp", "pair", "eps"])[["lp", "pair", "eps", "informative"]], on=["lp", "pair", "eps"])
     Si = Si[Si.informative]
     md += ["", "## Post-hoc best evaluator vs selection noise (informative decisions)", "",
            Si.groupby("mode").agg(cells=("p", "size"), gap_median=("gap", "median"), null_median=("null_med", "median"),
                                   share_p_below_05=("p", lambda x: (x < .05).mean())).round(3).to_markdown()]
+    CJ = pd.read_csv(f"{R}/DECISIONS_coverage_at_J50.csv").dropna(subset=["cover"])
+    CJ["mode"] = CJ["mode"].map(lab)
+    md += ["", "## Coverage at the budget nearest each design's J50 (all decisions with a finite J50; nominal 0.90)", "",
+           CJ.groupby("mode").cover.agg(["count", "mean", "median", lambda x: (x < 0.85).mean()]).rename(columns={"<lambda_0>": "share_below_0.85"}).round(3).to_markdown()]
     md += ["", "## Coverage of the true mean difference by the upper bound (nominal 0.90), over all 30 decisions", ""]
-    lab = {"human": "human-only", "cvl": "pilot", "cvq": "refit", "cvu": "xfit", "cvr": "refit_HT", "cvx": "xfit_HT", "cvo": "oracle"}
     C = C.assign(mode=C["mode"].map(lab))
     C["bq"] = pd.qcut(C.groupby(["lp", "pair"]).budget.rank(method="dense"), 3, labels=["small", "medium", "large"])
     tab = C.groupby(["mode", "bq"], observed=True).cover.agg(["mean", "min"]).unstack()

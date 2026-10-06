@@ -71,6 +71,14 @@ Decisions x eps: 72; informative (1 - P/J50_uniform >= 0.3): 45 (en-de 4, zh-en 
 * Spearman over (decision, metric): HES_refit vs pilot rho 0.443, vs system-level Pearson 0.330
 * Spearman over (decision, metric): HES_oracle vs pilot rho 0.513, vs system-level Pearson 0.332
 
+## Post-hoc best evaluator vs selection noise (MT informative decisions only)
+
+| mode   |   cells |   gap_median |   null_median |   share_p_below_05 |
+|:-------|--------:|-------------:|--------------:|-------------------:|
+| pilot  |      33 |        0.05  |         0.048 |              0.061 |
+| refit  |      33 |        0.046 |         0.044 |              0     |
+| xfit   |      33 |        0.043 |         0.043 |              0     |
+
 ## Post-hoc best evaluator vs selection noise (informative decisions)
 
 | mode   |   cells |   gap_median |   null_median |   share_p_below_05 |
@@ -78,6 +86,16 @@ Decisions x eps: 72; informative (1 - P/J50_uniform >= 0.3): 45 (en-de 4, zh-en 
 | pilot  |      45 |        0.042 |         0.042 |              0.044 |
 | refit  |      45 |        0.042 |         0.039 |              0     |
 | xfit   |      45 |        0.036 |         0.04  |              0     |
+
+## Coverage at the budget nearest each design's J50 (all decisions with a finite J50; nominal 0.90)
+
+| mode       |   count |   mean |   median |   share_below_0.85 |
+|:-----------|--------:|-------:|---------:|-------------------:|
+| human-only |     192 |  0.904 |    0.903 |              0     |
+| oracle     |    2076 |  0.905 |    0.907 |              0.018 |
+| pilot      |    4116 |  0.903 |    0.903 |              0.01  |
+| refit      |    4116 |  0.902 |    0.9   |              0.017 |
+| xfit       |    4116 |  0.903 |    0.903 |              0.011 |
 
 ## Coverage of the true mean difference by the upper bound (nominal 0.90), over all 30 decisions
 
