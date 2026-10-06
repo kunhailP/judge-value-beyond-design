@@ -145,6 +145,13 @@ def fit_bin_var(vals, bins, nb):
     return np.maximum(out, 1e-8)
 
 
+def wlam(Dv, Jv, wv):
+    """weighted least-squares coefficient per comparison (columns), clipped at 0."""
+    sw = wv.sum(); md = (wv[:, None] * Dv).sum(0) / sw; mj = (wv[:, None] * Jv).sum(0) / sw
+    cov = (wv[:, None] * (Dv - md) * (Jv - mj)).sum(0); var = (wv[:, None] * (Jv - mj) ** 2).sum(0)
+    return np.where(var > 0, np.maximum(cov / np.where(var > 0, var, 1), 0.0), 0.0)
+
+
 # ----------------------------------------------------------------------------------------------- one draw
 def run_draw(args):
     data, cfg, i = args
@@ -221,6 +228,14 @@ def run_draw(args):
             designs[f"uniform_cvo:{f}"] = dict(g=np.ones(N), cost=c_naive, lam=f"__o:{f}")
             if data["structural"]:
                 designs[f"weighted_cvo:{f}"] = dict(g=g_w, cost=c_dedup, lam=f"__o:{f}")
+    if cfg.get("extra"):                                    # post-lock robustness arms (exploratory)
+        for f in J:
+            if data["structural"]:
+                designs[f"dedup_cvl:{f}"] = dict(g=relevant.astype(float), cost=c_dedup, lam=f)
+            bases = [("uniform", np.ones(N), c_naive)] + ([("weighted", g_w, c_dedup), ("dedup", relevant.astype(float), c_dedup)] if data["structural"] else [])
+            for bname, bg, bc in bases:
+                designs[f"{bname}_cvr:{f}"] = dict(g=bg, cost=bc, lam=f, mode="refit")    # lambda refit on pilot + all post-pilot labels (same labels)
+                designs[f"{bname}_cvx:{f}"] = dict(g=bg, cost=bc, lam=f, mode="xfit")     # lambda cross-fitted over two folds of the post-pilot sample
     z = norm.ppf(1 - ALPHA / len(comp))
     known = D[pil].sum(0)
     rows, pred = [], []
@@ -245,8 +260,26 @@ def run_draw(args):
             samp = (U < pi) & (pi > 0)
             cost = pilot_cost + dz["cost"][samp].sum()
             w = 1.0 / pi[samp]
-            est = (known + base_rest + (R[samp] * w[:, None]).sum(0)) / N
-            var = ((1 - pi[samp])[:, None] * R[samp] ** 2 * w[:, None] ** 2).sum(0) / N ** 2
+            mode = dz.get("mode", "fixed")
+            if mode == "fixed":
+                est = (known + base_rest + (R[samp] * w[:, None]).sum(0)) / N
+                var = ((1 - pi[samp])[:, None] * R[samp] ** 2 * w[:, None] ** 2).sum(0) / N ** 2
+            elif mode == "refit":
+                idx = np.concatenate([pil, np.where(samp)[0]]); wv = np.concatenate([np.ones(len(pil)), w])
+                lr = wlam(D[idx], jd[idx], wv); Rr = D - lr * jd
+                est = (known + (lr * jd)[rest].sum(0) + (Rr[samp] * w[:, None]).sum(0)) / N
+                var = ((1 - pi[samp])[:, None] * Rr[samp] ** 2 * w[:, None] ** 2).sum(0) / N ** 2
+            else:   # xfit: every unit gets a fold; its residual uses lambda fitted on pilot + the sampled units of the other fold
+                fold = np.random.default_rng((cfg["seed"] * 100003 + i) * 7919 + n).random(N) < 0.5
+                lam_f = {}
+                for fo in (True, False):
+                    So = samp & (fold != fo)
+                    idx = np.concatenate([pil, np.where(So)[0]]); wv = np.concatenate([np.ones(len(pil)), 1.0 / pi[So]])
+                    lam_f[fo] = wlam(D[idx], jd[idx], wv)
+                lu = np.where(fold[:, None], lam_f[True], lam_f[False])            # [N, K] unit-specific coefficient
+                Rx = D - lu * jd
+                est = (known + (lu * jd)[rest].sum(0) + (Rx[samp] * w[:, None]).sum(0)) / N
+                var = ((1 - pi[samp])[:, None] * Rx[samp] ** 2 * w[:, None] ** 2).sum(0) / N ** 2
             zq = z if cfg.get("bound", "normal") == "normal" else tdist.ppf(1 - ALPHA / len(comp), max(int(samp.sum()) - 1, 1))
             ucb = est + zq * np.sqrt(var)
             for eps in eps_list:
@@ -272,6 +305,7 @@ def main():
     ap.add_argument("--seed", type=int, default=20261007)
     ap.add_argument("--boundary", action="store_true")
     ap.add_argument("--bound", choices=["normal", "t"], default="normal", help="robustness: Student-t quantile with (sampled units - 1) df")
+    ap.add_argument("--extra", action="store_true", help="exploratory: dedup+evaluator, refit-lambda (*_cvr) and cross-fitted-lambda (*_cvx) arms")
     ap.add_argument("--oracle", action="store_true", help="exploratory: add population-lambda arms *_cvo")
     ap.add_argument("--tag", default="")
     ap.add_argument("--out", default=os.path.join(HERE, "..", "results"))
@@ -280,7 +314,7 @@ def main():
     data = load_mt(a.unit, a.menu_k, a.menu, a.judges) if a.domain == "mt" else load_arena(a.unit, a.judges)
     N = data["Y"].shape[0]
     budgets = a.budgets or sorted({int(x) for x in np.geomspace(10, N - a.pilot, 14)})
-    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, oracle=a.oracle, bound=a.bound)
+    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, oracle=a.oracle, bound=a.bound, extra=a.extra)
     with Pool(a.procs) as pool:
         res = pool.map(run_draw, [(data, cfg, i) for i in range(a.draws)])
     rows = pd.DataFrame([r for x in res for r in x[0]]); pred = pd.DataFrame([r for x in res for r in x[1]])

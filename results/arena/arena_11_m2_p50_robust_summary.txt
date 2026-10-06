@@ -1,0 +1,70 @@
+eps                                                             0.05                       0.10
+metric             design                                                                      
+HES_uniform_J50    longer                      -0.003 [-0.018,0.017]      -0.005 [-0.037,0.015]
+                   mistral_7b                  -0.003 [-0.011,0.000]      -0.007 [-0.028,0.003]
+                   qwen3_8b                     0.009 [-0.011,0.039]      -0.003 [-0.028,0.019]
+HES_uniform_J80    longer                     -0.010 [-0.029,-0.002]      -0.011 [-0.035,0.001]
+                   mistral_7b                 -0.014 [-0.041,-0.000]      -0.010 [-0.038,0.003]
+                   qwen3_8b                    -0.009 [-0.044,0.017]      -0.021 [-0.070,0.010]
+J50                active_cvl:longer       202.922 [182.331,213.713]  109.435 [105.209,114.385]
+                   active_cvl:mistral_7b   202.489 [186.129,213.557]  110.723 [105.419,118.718]
+                   active_cvl:qwen3_8b     199.953 [180.546,209.978]  109.368 [103.181,115.420]
+                   sel_accuracy            204.083 [184.088,213.257]  110.889 [106.834,118.473]
+                   sel_pilotcost           202.814 [185.132,212.011]  109.435 [105.761,113.778]
+                   sel_rho                 203.587 [183.247,213.272]  110.281 [106.002,117.467]
+                   uniform                 202.309 [184.763,211.796]  108.914 [105.264,113.464]
+                   uniform_cvl:longer      202.919 [182.328,213.713]  109.435 [105.209,114.385]
+                   uniform_cvl:mistral_7b  202.919 [184.773,213.363]  109.650 [105.843,115.440]
+                   uniform_cvl:qwen3_8b    200.569 [183.596,211.235]  109.282 [105.406,114.774]
+                   uniform_cvo:longer      201.397 [183.683,213.261]  108.809 [103.469,115.105]
+                   uniform_cvo:mistral_7b  202.309 [184.763,211.796]  108.914 [105.264,113.464]
+                   uniform_cvo:qwen3_8b    198.911 [181.962,210.644]  107.999 [102.100,112.362]
+                   uniform_cvr:longer      202.540 [185.366,213.525]   107.688 [99.566,113.367]
+                   uniform_cvr:mistral_7b  202.309 [184.763,211.796]  108.692 [103.631,113.053]
+                   uniform_cvr:qwen3_8b    198.083 [182.400,209.162]  107.979 [102.380,113.751]
+                   uniform_cvx:longer      201.292 [182.808,211.649]  109.840 [105.152,117.558]
+                   uniform_cvx:mistral_7b  202.932 [185.605,212.682]  109.230 [105.692,112.931]
+                   uniform_cvx:qwen3_8b    200.307 [183.870,210.710]  109.580 [105.028,114.812]
+J80                active_cvl:longer       293.823 [282.063,305.141]  182.622 [171.276,195.173]
+                   active_cvl:mistral_7b   305.628 [292.090,314.788]  185.695 [175.761,202.569]
+                   active_cvl:qwen3_8b     296.306 [281.502,309.220]  187.504 [175.815,201.243]
+                   sel_accuracy            293.693 [278.649,305.675]  186.538 [170.781,202.100]
+                   sel_pilotcost           291.776 [277.826,305.893]  180.310 [166.679,191.870]
+                   sel_rho                 296.095 [281.696,308.522]  186.190 [171.647,201.483]
+                   uniform                 290.834 [277.943,303.924]  181.038 [170.562,191.337]
+                   uniform_cvl:longer      293.820 [282.061,305.136]  182.979 [171.829,195.220]
+                   uniform_cvl:mistral_7b  294.934 [280.627,308.357]  182.891 [172.078,195.143]
+                   uniform_cvl:qwen3_8b    293.561 [279.237,306.963]  184.753 [168.803,198.901]
+                   uniform_cvo:longer      293.693 [279.760,305.136]  180.068 [169.242,189.549]
+                   uniform_cvo:mistral_7b  290.834 [277.943,303.924]  181.038 [170.562,191.337]
+                   uniform_cvo:qwen3_8b    292.129 [279.031,303.532]  180.774 [167.218,191.913]
+                   uniform_cvr:longer      293.423 [279.760,305.136]  181.210 [168.643,191.850]
+                   uniform_cvr:mistral_7b  290.834 [277.943,303.924]  182.009 [172.166,193.010]
+                   uniform_cvr:qwen3_8b    293.129 [279.433,305.894]  183.199 [171.104,197.225]
+                   uniform_cvx:longer      293.561 [280.077,305.136]  181.621 [169.495,192.944]
+                   uniform_cvx:mistral_7b  290.834 [278.229,303.924]  182.979 [173.862,193.664]
+                   uniform_cvx:qwen3_8b    290.834 [277.082,304.998]  185.453 [174.364,199.564]
+best_human         uniform                                                                     
+inflation_J50      longer                        0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   mistral_7b                    0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   qwen3_8b                      0.000 [0.000,0.000]        0.000 [0.000,0.000]
+inflation_J80      longer                        0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   mistral_7b                    0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   qwen3_8b                      0.000 [0.000,0.000]        0.000 [0.000,0.000]
+max_wrong          ALL                                         0.000                      0.000
+pred_corr_logratio ALL                                         0.705                      0.065
+ eps               selector  excess_vs_best_fixed     lo    hi           best_fixed                                                                                                     picks
+0.05                uniform                 0.009  0.000 0.039 uniform_cvl:qwen3_8b                                                                                                          
+0.05     uniform_cvl:longer                 0.012  0.000 0.042 uniform_cvl:qwen3_8b                                                                                                          
+0.05 uniform_cvl:mistral_7b                 0.012  0.001 0.040 uniform_cvl:qwen3_8b                                                                                                          
+0.05   uniform_cvl:qwen3_8b                 0.000  0.000 0.015 uniform_cvl:qwen3_8b                                                                                                          
+0.05           sel_accuracy                 0.017  0.007 0.047 uniform_cvl:qwen3_8b                 {'uniform_cvl:qwen3_8b': 0.53, 'uniform_cvl:longer': 0.3, 'uniform_cvl:mistral_7b': 0.17}
+0.05                sel_rho                 0.015  0.003 0.043 uniform_cvl:qwen3_8b                {'uniform_cvl:qwen3_8b': 0.73, 'uniform_cvl:longer': 0.23, 'uniform_cvl:mistral_7b': 0.04}
+0.05          sel_pilotcost                 0.011 -0.004 0.046 uniform_cvl:qwen3_8b {'uniform': 0.8, 'uniform_cvl:qwen3_8b': 0.17, 'uniform_cvl:longer': 0.03, 'uniform_cvl:mistral_7b': 0.0}
+0.10                uniform                 0.000  0.000 0.020              uniform                                                                                                          
+0.10     uniform_cvl:longer                 0.005  0.000 0.038              uniform                                                                                                          
+0.10 uniform_cvl:mistral_7b                 0.007  0.000 0.034              uniform                                                                                                          
+0.10   uniform_cvl:qwen3_8b                 0.003  0.000 0.028              uniform                                                                                                          
+0.10           sel_accuracy                 0.018  0.006 0.079              uniform                 {'uniform_cvl:qwen3_8b': 0.53, 'uniform_cvl:longer': 0.3, 'uniform_cvl:mistral_7b': 0.17}
+0.10                sel_rho                 0.013  0.003 0.082              uniform                {'uniform_cvl:qwen3_8b': 0.73, 'uniform_cvl:longer': 0.23, 'uniform_cvl:mistral_7b': 0.04}
+0.10          sel_pilotcost                 0.005  0.000 0.027              uniform                               {'uniform': 0.93, 'uniform_cvl:qwen3_8b': 0.07, 'uniform_cvl:longer': 0.01}
