@@ -38,6 +38,15 @@ MBR = ("bleu_bestmbr", "bleurt_bestmbr", "comet_bestmbr", "chrf_bestmbr")
 
 
 # ----------------------------------------------------------------------------------------------- data adapters
+def _synthetic(Y, rho, seed):
+    """Judge = human utility + i.i.d. Gaussian noise per output, with the noise scale set so that the correlation of the
+    paired differences (averaged over menu pairs, all units) is approximately rho. Exploratory calibration device only."""
+    import zlib
+    rng = np.random.default_rng(zlib.crc32(f"{rho:.3f}".encode()))
+    M = Y.shape[1]
+    vD = np.mean([np.var(Y[:, a] - Y[:, b]) for a in range(M) for b in range(a + 1, M)])
+    sig = np.sqrt(vD * (1 / rho ** 2 - 1) / 2) if rho < 1 else 0.0
+    return Y + sig * rng.standard_normal(Y.shape)
 def load_mt(lp, menu_k=4, menu=None, judges=("chrf",), judge_dir="/root/naacl_data/mt"):
     from mt_common import load_pool, dissimilarity
     d = load_pool(lp)
@@ -63,6 +72,8 @@ def load_mt(lp, menu_k=4, menu=None, judges=("chrf",), judge_dir="/root/naacl_da
     for f in judges:
         if f == "chrf":
             J[f] = piv("chrf").to_numpy(float)
+        elif f.startswith("syn"):                       # exploratory: utility + Gaussian noise, paired-difference rho ~ target
+            J[f] = _synthetic(Y, float(f[3:]), seed=hash(f) % 2**31)
         else:
             base, inv = (f[4:], True) if f.startswith("inv_") else (f, False)
             jd = pd.read_parquet(os.path.join(judge_dir, lp, f"judge_{base}.parquet"))
@@ -81,12 +92,15 @@ def load_arena(pair_id, judges=("qwen3_8b",), root="/root/naacl_data/arena"):
     N = len(p)
     J = {}
     for f in judges:
+        if f.startswith("syn"):
+            J[f] = _synthetic(Y, float(f[3:]), seed=hash(f) % 2**31); continue
         if f == "longer":
             s = (p.len_x.to_numpy(float) > p.len_y.to_numpy(float)) + 0.5 * (p.len_x.to_numpy() == p.len_y.to_numpy())
         else:
             base, inv = (f[4:], True) if f.startswith("inv_") else (f, False)
+            base, col = (base.split("@")[0], {"o1": "p_x_order1", "o2": "p_x_order2"}[base.split("@")[1]]) if "@" in base else (base, "p_x")
             jd = pd.read_parquet(os.path.join(root, f"judge_{base}{sfx}.parquet")).set_index("battle_id").loc[p.battle_id]
-            s = jd.p_x.to_numpy(float)
+            s = jd[col].to_numpy(float)                 # @o1 / @o2: a single presentation order (exploratory)
             s = np.where(np.isnan(s), 0.5, s)
             s = 1 - s if inv else s
         J[f] = np.stack([s, 1 - s], 1)
@@ -196,6 +210,14 @@ def run_draw(args):
             ab = np.searchsorted(edges_a, aj, side="right") + 1
             sigr = fit_bin_var(R2[pil, 0], ab[pil], 6)
             designs[f"active_cvl:{f}"] = dict(g=np.sqrt(sigr[ab]), cost=c_naive, lam=f)
+    if cfg.get("oracle"):                                   # diagnostic: lambda from the whole population (not available to an auditor)
+        for f in J:
+            lo_ = np.array([max(0.0, np.cov(D[:, k], JD[f][:, k])[0, 1] / JD[f][:, k].var(ddof=1)) if JD[f][:, k].var() > 0 else 0.0
+                            for k in range(len(comp))])
+            lam[f"__o:{f}"] = lo_; JD[f"__o:{f}"] = JD[f]
+            designs[f"uniform_cvo:{f}"] = dict(g=np.ones(N), cost=c_naive, lam=f"__o:{f}")
+            if data["structural"]:
+                designs[f"weighted_cvo:{f}"] = dict(g=g_w, cost=c_dedup, lam=f"__o:{f}")
     z = norm.ppf(1 - ALPHA / len(comp))
     known = D[pil].sum(0)
     rows, pred = [], []
@@ -228,7 +250,7 @@ def run_draw(args):
                 rows.append(dict(draw=i, design=name, budget=n, eps=eps, cost=float(cost), act=int(act),
                                  wrong=int(act and regret > eps), regret=float(regret)))
     meta = dict(draw=i, cand=c, regret=float(regret), pilot_cost=pilot_cost,
-                **{f"lam:{f}": float(lam[f].mean()) for f in J}, **{f"acc:{f}": acc[f] for f in J}, **{f"rho:{f}": rho[f] for f in J})
+                **{f"lam:{f}": float(lam[f].mean()) for f in J}, **{f"lamo:{f}": float(lam[f"__o:{f}"].mean()) for f in J if f"__o:{f}" in lam}, **{f"acc:{f}": acc[f] for f in J}, **{f"rho:{f}": rho[f] for f in J})
     return rows, pred, meta
 
 
@@ -245,6 +267,7 @@ def main():
     ap.add_argument("--draws", type=int, default=300)
     ap.add_argument("--seed", type=int, default=20261007)
     ap.add_argument("--boundary", action="store_true")
+    ap.add_argument("--oracle", action="store_true", help="exploratory: add population-lambda arms *_cvo")
     ap.add_argument("--tag", default="")
     ap.add_argument("--out", default=os.path.join(HERE, "..", "results"))
     ap.add_argument("--procs", type=int, default=64)
@@ -252,7 +275,7 @@ def main():
     data = load_mt(a.unit, a.menu_k, a.menu, a.judges) if a.domain == "mt" else load_arena(a.unit, a.judges)
     N = data["Y"].shape[0]
     budgets = a.budgets or sorted({int(x) for x in np.geomspace(10, N - a.pilot, 14)})
-    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary)
+    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, oracle=a.oracle)
     with Pool(a.procs) as pool:
         res = pool.map(run_draw, [(data, cfg, i) for i in range(a.draws)])
     rows = pd.DataFrame([r for x in res for r in x[0]]); pred = pd.DataFrame([r for x in res for r in x[1]])
