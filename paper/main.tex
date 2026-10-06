@@ -59,7 +59,7 @@ the coefficient that corrects the evaluator must itself be estimated from the fe
 $\HES=1-\Jt(\text{design}+\text{evaluator})/\Jt(\text{best fixed judge-free design})$, with $\Jt$ the number of unique
 human labels, pilot included, at which the decision is certified with probability $1/2$ (\S\ref{sec:setup}).
 \item \textbf{Evaluator quality collapses across levels.} On WMT22 en$\to$de and zh$\to$en, metric variants with system-level
-Pearson 0.93--0.99 rank the top-4 systems no better than chance for several zh$\to$en metrics, reach decision-level
+Pearson 0.93--0.99 rank the top-4 zh$\to$en systems in exactly reversed order for 10 of 31 variants, reach decision-level
 correlations of 0.11--0.38, and realise HES between $-10\%$ and $+7\%$ (\S\ref{sec:levels}).
 \item \textbf{The design takes most of the saving.} In all four pre-registered MT cells, a judge-free decision-aware
 design saves more than the best of 31 metric variants adds on top of it (8--16\% vs.\ $\le 7\%$); in retrieval 41--56\% vs.\
@@ -118,14 +118,15 @@ Mistral-7B as pairwise judges (both presentation orders averaged), ``the longer 
 shared ranked pool (an expected-F1 gate, a global score threshold and a learned truncation) are compared by precision
 at their cutoffs, $\eps$ in precision units, on four fully judged collections
 (ANTIQUE, CAsT 2019, DBpedia-Entity, TREC DL 21--23; \citealp{hashemi2020antique,dalton2020cast,hasibi2017dbpedia,craswell2021dl21,craswell2022dl22,craswell2023dl23}) with Qwen3-8B (UMBRELA prompt; \citealp{upadhyay2024umbrela}) and Qwen3-Reranker-0.6B \citep{zhang2025qwen3embedding} as judges; pilot
-20 queries. MT and chat use a 50-item pilot (100 and 25 as ablations), $\eps\in\{0.01,0.02\}$ (MT) and
+20 queries. MT and chat use a 50-item pilot (ablations: 100 for MT, 25 for chat), $\eps\in\{0.01,0.02\}$ (MT) and
 $\{0.05,0.1\}$ (chat).
 
 \paragraph{Pre-registration.} Lock v0.8 (MT, chat) was committed before any LLM or COMET judgment was joined with a human
 label; v0.9 replaced the uninformative v0.8 chat decision (gaps 0.10--0.56 were settled by the pilot alone) by close
 pairs before they were judged; v1.1 fixed the 31-metric test before any of its savings were computed; v1.0 (frontier
 judges) is committed and not yet run. All locks were committed within one day on public data whose human labels
-exist; before v0.8 the human-only MT designs had been run in development, and v1.1 was written after the exploratory
+exist; before v0.8 the human-only MT designs had been run in development (they saved 8--19\% over
+uniform sampling and chrF saved about nothing, so H1 was not a blind test), and v1.1 was written after the exploratory
 estimation-tax and $\rho$-dial analyses of the open judges, so H9 tests on 31 new evaluators a phenomenon first seen
 on four. The retrieval results are a re-analysis; their held-out test (NeuCLIRBench) followed a lock of the earlier
 study that is not part of this repository. All locks, deviations and outcomes are in the supplementary material.
@@ -134,23 +135,23 @@ study that is not part of this repository. All locks, deviations and outcomes ar
 Figure~\ref{fig:levels} places the 30 positively correlated WMT22 metric variants (REUSE omitted) on three levels against their realised HES. At the global level
 (Pearson over the 11 WMT submissions) nearly all strong metrics are above 0.9; this is the quantity metric shared tasks
 report. Among the four closest systems the ranking is fragile: MetricX-XL-DA and MetricX-XXL-DA reach system-level
-Pearson 0.994--0.995 on zh$\to$en and Kendall $\tau=0$ among the top four; BLEURT-20 reaches 0.980 and $\tau=-0.33$ (zh$\to$en). The human top-4 order is itself not
-fully resolved (adjacent gaps of 0.0005--0.001 MQM utility, standard error 0.002--0.004), so these $\tau$ values show
-fragility rather than error. The
+Pearson 0.994--0.995 on zh$\to$en and Kendall $\tau=0$ among the top four; BLEURT-20 reaches 0.980 and $\tau=-0.33$ (zh$\to$en). The second- and third-ranked systems differ by
+only 0.0009 (en$\to$de) and 0.0017 (zh$\to$en) in utility (standard error 0.002--0.004), so $\tau=0$ can reflect fragility;
+but 10 of the 31 zh$\to$en variants reach $\tau=-1$, reversing gaps that are resolved. The
 quantity that governs a control variate is the correlation $\rho$ of per-item paired differences, and it is low
-everywhere: 0.29--0.38 for the best metrics on en$\to$de, 0.21--0.25 on zh$\to$en, and 0.17--0.29 for COMET-22 and the
-Qwen3-8B GEMBA judge (system-level 0.97--0.99; medians over pairs of the top-6 systems), while the Mistral-7B GEMBA
+everywhere: 0.30--0.38 for the best metrics on en$\to$de (mean over the menu's pairs), 0.21--0.25 on zh$\to$en, and 0.17--0.29 for COMET-22 and the
+Qwen3-8B GEMBA judge (system-level 0.97--0.99; here medians over pairs of the top-6 systems), while the Mistral-7B GEMBA
 judge reaches only 0.04--0.09. Realised HES over the best judge-free baseline lies between $-10\%$ and $+7\%$ for
 every metric and cell. Across metrics, HES is ranked slightly better by $\rho$ than by system-level Pearson (Spearman 0.39 vs.\
-0.36 on en$\to$de, 0.23 vs.\ 0.07 on zh$\to$en; H11), but neither predicts it well among real metrics, because all of
+0.36 on en$\to$de, 0.22 vs.\ 0.07 on zh$\to$en; H11), but neither predicts it well among real metrics, because all of
 them sit in the region where the saving is small (\S\ref{sec:law}).
 
 \begin{figure*}[t]\centering
 \includegraphics[width=\textwidth]{figures/F1_levels.pdf}
 \caption{Thirty WMT22 metric variants at three levels of quality against their realised human-evidence saving over the best
 fixed judge-free baseline (pilot 50, mean over $\eps\in\{0.01,0.02\}$). (c) open markers: the same metrics with the
-population-optimal (oracle) correction coefficient; dashed: $\rho^2$, the asymptotic saving. REUSE (negatively
-correlated, switched off by $\lambda\ge0$) is omitted.}\label{fig:levels}
+population-optimal (oracle) correction coefficient; dashed: $\rho^2$, the asymptotic saving. REUSE (negative system-level
+correlation; switched off by $\lambda\ge0$) is omitted.}\label{fig:levels}
 \end{figure*}
 
 \section{Where the savings come from}\label{sec:design}
@@ -219,8 +220,9 @@ paired differences are zero.
 \paragraph{Controlled variation.} To test (\ref{eq:law}) over the whole range we built semi-synthetic evaluators, human
 utility plus Gaussian noise scaled to a target $\rho\in\{0.1,\dots,0.9\}$, and ran them through the same audits (MT
 pilots 50 and 100, three Arena pairs; 126 cells). Predicted and realised HES correlate 0.975 (mean absolute error 0.035;
-Figure~\ref{fig:dial}); the realised saving is 11\% at $\rho=0.5$ and 32\% at $\rho=0.8$. The law describes controlled
-variation of $\rho$; for the real evaluators, which lie at $\rho\le0.38$, realised savings have an interquartile range of $-1\%$ to $+1\%$ (range $-18\%$ to $+11\%$), dominated by
+Figure~\ref{fig:dial}), but the tax-free ceiling $\rho^2(1-P/J)$ does almost as well (0.974, 0.040), and the law
+over-predicts by 0.02 on average, so this experiment supports the $\rho^2$ and dilution factors more than the tax term; the realised saving is 11\% at $\rho=0.5$ and 32\% at $\rho=0.8$. The law describes controlled
+variation of $\rho$; for the open evaluators on the two-system menus ($\rho\le0.36$), predicted and realised HES correlate only 0.20 and realised savings have an interquartile range of $-1\%$ to $+1\%$ (range $-18\%$ to $+11\%$), dominated by
 Monte-Carlo noise, and exceed the ceiling $\rho^2(1-P/J)$ by more than 0.03 in only 2--4\% of cells.
 
 \begin{figure}[t]\centering
@@ -316,8 +318,11 @@ evaluated model saves at most half the labels. Closest to us, \citet{gao2026ppsr
 save under prediction-powered evaluation (PPSR, the mean squared correlation of paired differences), with uniform
 labelling and the coefficient estimated on the evaluation labels. We take PPSR's quantity as the starting point and
 measure what remains of it under a decision-aware design and a pilot-fixed coefficient.
-\paragraph{Annotation design.} Active comparison of models \citep{sawade2012active}, active testing
-\citep{kossen2021active} and judgment selection in IR \citep{sakai2016topic,li2017active}.
+\paragraph{Annotation design.} Choosing which items humans label has long been studied for model comparison
+\citep{sawade2012active}, active testing \citep{kossen2021active} and IR test collections
+\citep{sakai2016topic,li2017active}, and within prediction-powered inference by cross-prediction
+\citep{zrnic2024cross} and stratification \citep{fisch2024stratified}. Our judge-free designs are simple instances
+(skipping known zeros, deduplication, proxy-weighted sampling); the point is to credit them before the evaluator.
 
 \section{Conclusion}
 For a close system decision, an automatic evaluator's value is set by the correlation of the differences the decision
@@ -373,7 +378,7 @@ Chat (6 pairs) & uniform & 1.1 & 2.3 & 0.9 & 2.1\\\bottomrule
 Values in \%, averaged over $\eps$. With $J_{80}$ in place of $\Jt$ the MT values are 0.1--1.2 (pilot), 2.1--4.4 (refit),
 0.7--2.9 (xfit) and 1.9--2.5 (oracle). Under boundary stress the largest type-I errors were 0.04 (pilot), 0.07 (refit),
 0.05 (xfit) and 0.06 (human-only) on en$\to$de. Evaluator-driven allocation (sampling by the pilot-estimated residual
-variance, as in active inference) changed $\Jt$ relative to the weighted design with the same evaluator by $-1.6\%$ to
+variance, as in active inference) reduced $\Jt$ relative to the weighted design with the same evaluator by $-1.6\%$ to
 $+1.7\%$ on average over the 31 metric variants (individual cells $-11\%$ to $+19\%$).
 
 \section{Pre-registration record}\label{app:prereg}
