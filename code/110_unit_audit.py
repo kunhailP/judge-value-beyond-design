@@ -73,7 +73,7 @@ def load_mt(lp, menu_k=4, menu=None, judges=("chrf",), judge_dir="/root/naacl_da
 
 def load_arena(pair_id, judges=("qwen3_8b",), root="/root/naacl_data/arena"):
     p = pd.read_parquet(os.path.join(root, "pool.parquet"))
-    p = p[p.pair_id == pair_id].sort_values("battle_id")
+    p = p[p.pair_id == int(pair_id)].sort_values("battle_id")
     y = p.human.to_numpy(float)
     Y = np.stack([y, 1 - y], 1)
     N = len(p)

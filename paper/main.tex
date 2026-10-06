@@ -1,0 +1,144 @@
+\documentclass[11pt]{article}
+\usepackage[review]{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\newcommand{\res}[1]{\textcolor{red}{[#1]}}   % pending result; must be empty before submission
+\newcommand{\eps}{\varepsilon}
+\newcommand{\J}{J_{\tau}}
+\newcommand{\HES}{\mathrm{HES}}
+
+\title{What Is an LLM Judge Worth?\\ Human Labels Saved Beyond the Best Annotation Design}
+
+\author{Anonymous ACL submission}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+LLM judges are increasingly credited with the human annotation they save. That credit is usually measured against uniform
+annotation: label a random subset, then correct the judge's bias with the labels. We measure it instead against the
+cheapest annotation design that uses no judge, for a concrete decision: certifying that a selected system is within
+$\eps$ of the best of a menu. We define a judge's value as the fraction of human labels it saves for that decision
+(HES), and measure it in three domains: retrieval (nine fully judged collections), machine translation (WMT22 MQM) and
+open-ended chat (LMArena), with eleven judges, pre-registered hypotheses and a held-out locked test.
+\res{Abstract numbers: (i) decision-aware human designs save X--Y\%; judges add A--B\% on top; (ii) inflation; (iii)
+pair-conditional value, accuracy vs $\rho$; (iv) pilot predicts relative cost, not near-threshold adoption.}
+\end{abstract}
+
+\section{Introduction}
+Human evaluation is the reference against which NLP systems are compared, and it is expensive. LLM judges promise to
+stretch it: label everything with the judge, and spend human effort only on correcting the judge's bias
+\citep{angelopoulos2023ppi,angelopoulos2023ppipp,boyeau2024autoeval,chen2026noisy}. A growing line of work reports how
+much this saves, as an effective sample size or a ratio of human labels \citep{boyeau2024autoeval,gao2026ppsr,dorner2025limits}.
+
+These savings are almost always computed against a single baseline: humans label a uniformly random subset of
+the evaluation items. But uniform sampling is rarely the best use of a human budget. When the question is a decision,
+\emph{is system $A$ within $\eps$ of the best alternative?}, many items cannot move the answer (two systems return the
+same output, or a document lies outside both systems' cutoffs), and others move it a lot. An annotation design that
+knows this, with no judge at all, can need far fewer labels. A judge's saving over uniform sampling therefore mixes two
+things: what the judge contributes, and what any decision-aware design would have contributed anyway.
+
+We separate the two. For a decision $d$ (a menu of systems, a tolerance $\eps$, a confidence level), an annotation
+design $s$ and a judge $f$, we measure $\J(s,f;d)$, the number of human labels, pilot included, at which the decision is
+certified with probability $\tau$, and define the judge's \emph{human-evidence saving}
+$\HES_s(f;d)=1-\J(s,f;d)/\J(s,\emptyset;d)$. We report HES over the best judge-free design rather than over uniform
+sampling, and the difference between the two, which we call \emph{inflation}.
+
+\paragraph{Contributions.}
+\begin{enumerate}
+\item \textbf{Most of the saving belongs to the design.} \res{Retrieval: decision-weight sampling saves 41--57\% of the
+human labels of uniform sampling; the best judge saves a further 3--20\%. MT: ... Chat: ...}
+\item \textbf{Judge value is inflated when measured over uniform sampling.} \res{MT/IR numbers.}
+\item \textbf{Judge value is decision-conditional.} The same judge saves different amounts for different system pairs;
+across judges and pairs, the saving follows the correlation $\rho$ between true and judge-predicted paired differences,
+not label accuracy \res{(numbers per domain)}.
+\item \textbf{A small pilot predicts relative cost, not adoption near the threshold.} \res{...} In a locked test on a
+retrieval collection never used in development the pilot ranked designs correctly but over-estimated the judge's own
+saving.
+\end{enumerate}
+We introduce no estimator: the corrected estimator is PPI++ \citep{angelopoulos2023ppipp} and the allocation is
+active statistical inference \citep{zrnic2024active} for the functional the decision requires. The contribution is the
+measurement target (labels to a decision, against the best judge-free design), its evaluation across three NLP
+evaluation settings under pre-registration, and what it shows.
+
+\section{Setup}\label{sec:setup}
+\paragraph{Decision.} A menu $\mathcal M$ of systems is evaluated on a fixed set of $N$ items with human utilities
+$u_m(i)$; $\mu_m$ is the mean over the set. An audit selects a candidate $\hat m$ on a pilot and \emph{certifies} it if,
+for every competitor $j$, a one-sided upper confidence bound on $\mu_j-\mu_{\hat m}$ is at most $\eps$ (Bonferroni over
+competitors, $\alpha=0.10$). A certificate is \emph{wrong} if $\max_j\mu_j-\mu_{\hat m}>\eps$.
+
+\paragraph{Designs.} After a fully labelled pilot of $P$ items, human labels are drawn by Poisson sampling with inclusion
+probabilities $\pi_i$; the paired difference $D_j=u_j-u_{\hat m}$ is estimated by
+\begin{equation}
+\hat\Delta_j=\tfrac1N\Big[\sum_{i\in\text{pilot}}D_j(i)+\sum_{i\notin\text{pilot}}\lambda_j\hat D_j(i)+\sum_{i\in S}\tfrac{D_j(i)-\lambda_j\hat D_j(i)}{\pi_i}\Big],
+\end{equation}
+where $\hat D_j$ is the judge's predicted difference and $\lambda_j\ge0$ is fitted on the pilot and then frozen
+($\lambda=0$: humans only). The estimator is unbiased for any judge given the pilot; its variance is estimated by
+$\sum_{S}(1-\pi_i)R_i^2/\pi_i^2/N^2$ with $R=D-\lambda\hat D$. \emph{Uniform} designs use constant $\pi$ and label every
+system's output of a sampled item. \emph{Decision-aware} designs use the structure of the decision: they never label an
+item whose difference is known to be zero (identical outputs; documents outside every cutoff), label a shared output
+once for all comparisons, and sample the rest in proportion to a label-free proxy of $|D|$ (closed-form decision
+weights in retrieval, output dissimilarity in MT). \emph{Active} designs replace the proxy by the pilot-estimated
+residual variance of the judge \citep{zrnic2024active}.
+
+\paragraph{Cost and metric.} Cost counts unique human labels, pilot included. Each budget is a separate pre-committed
+audit; $\J$ interpolates the certification rate over budgets ($\tau=0.5$ primary, $0.8$ where reached). HES, inflation
+and selection regret are defined in the introduction and Section~\ref{sec:select}; intervals are paired bootstraps over
+audits.
+
+\section{Domains, judges and protocol}\label{sec:domains}
+\paragraph{Retrieval.} Policies are three cutoff rules over a shared ranked pool \res{(describe)}; four development
+collections (ANTIQUE, CAsT 2019, DBpedia-Entity, TREC DL 21--23), two collections used for a locked rule test
+(TREC-COVID, Touché) and one never used in development (NeuCLIRBench). Judges: Qwen3-8B (UMBRELA prompt), Qwen3-Reranker-0.6B,
+the inverted reranker (adversarial).
+\paragraph{Machine translation.} WMT22 MQM \citep{freitag2021mqm} en$\to$de (1{,}315 segments) and zh$\to$en (1{,}875),
+the top four WMT submissions by human MQM. Judges: COMET-22 \citep{rei2022comet}, Qwen3-8B and Mistral-7B with the
+GEMBA-DA prompt \citep{kocmi2023gemba}, chrF (development), inverted COMET (adversarial).
+\paragraph{Chat.} LMArena human-preference battles \citep{chiang2024arena}, the six model pairs with the most decisive
+English single-turn battles (494--922 per pair). Judges: Qwen3-8B and Mistral-7B as pairwise judges (both orders
+averaged), ``the longer response wins'', and inverted Qwen3-8B.
+\paragraph{Pre-registration.} Hypotheses H1--H5 for MT and chat were committed before any LLM or COMET judgment was
+joined with a human label (Appendix~\res{X}); the retrieval held-out test followed an earlier lock.
+
+\section{Where the savings come from}\label{sec:where}
+\res{Figure 1 waterfall; Table 1 J50 per domain; H1.}
+
+\section{Judge value is inflated over uniform sampling}\label{sec:inflation}
+\res{Figure 2; H2.}
+
+\section{Judge value is decision-conditional}\label{sec:conditional}
+\res{Figure 3 heatmap + accuracy vs rho; H3. Retrieval query-level evidence; MT pairs; Arena pairs.}
+
+\section{Choosing a judge from a pilot}\label{sec:select}
+\res{Table 2 selection: accuracy, rho, pilot-cost, global-best, humans-only, oracle; H4, H5; NeuCLIR locked result.}
+
+\section{Related work}
+\paragraph{Judges as system rankers.} JuStRank \citep{gera2025justrank} and \citet{gao2025reeval} show that instance-level
+judge accuracy does not determine system-level ranking quality; \citet{zhang2026utility} show that judgment quality and
+downstream utility need not align. We move the target one step further, to the human labels a decision requires.
+\paragraph{Prediction-powered evaluation.} PPI and PPI++ \citep{angelopoulos2023ppi,angelopoulos2023ppipp}, active
+inference \citep{zrnic2024active}, AutoEval \citep{boyeau2024autoeval} and prediction-powered ranking \citep{chatzi2024ppr}
+on Chatbot Arena, efficient noisy-judge inference \citep{chen2026noisy}, PRECISE for ranking metrics \citep{divekar2026precise},
+and PPSR, which ranks MT metrics by annotation saved \citep{gao2026ppsr}. All of these measure savings over uniform labelling;
+\citet{dorner2025limits} bound them by a factor of two. We measure them over the best judge-free design.
+\paragraph{Annotation design for evaluation.} Active comparison of models \citep{sawade2012active}, active testing
+\citep{kossen2021active}, topic-set design and active judgment selection in IR \citep{sakai2016topic,li2017active}.
+
+\section{Limitations}
+\res{fill}
+
+\bibliography{refs}
+
+\appendix
+\section{Pre-registration record}\label{app:lock}
+\res{lock text, deviations}
+
+\end{document}
