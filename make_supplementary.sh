@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Build the anonymous supplementary zip for ARR from the committed tree.
+# usage: SUPP_IDENT_REGEX='<account>|<surname>|<e-mail>|...' ./make_supplementary.sh out.zip
+# Excludes: .git, the internal design log (docs/), the paper sources (submitted separately).
+# Prints every file that still matches an identifying pattern; the expected answer is "none".
+set -euo pipefail
+OUT=$(realpath -m "${1:-supplementary.zip}")
+: "${SUPP_IDENT_REGEX:?set SUPP_IDENT_REGEX to the identifying strings (account, names, e-mail)}"
+TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
+git archive --format=tar HEAD | tar -x -C "$TMP"
+rm -rf "$TMP/docs" "$TMP/paper" "$TMP/make_supplementary.sh"
+cat > "$TMP/ANONYMITY_NOTE.md" <<'EOF'
+This archive is the anonymised research artifact. Commit identifiers in prereg/LOCK_HISTORY.md refer to the
+version-controlled repository, which will be made public after review; the timing record they document is self-reported.
+Pools and judge outputs are not redistributed (see README, "Data").
+EOF
+HITS=$(grep -rIl -i -E "$SUPP_IDENT_REGEX" "$TMP" || true)
+echo "files with identifying strings: ${HITS:-none}"
+(cd "$TMP" && zip -qr "$OUT" .)
+du -h "$OUT"

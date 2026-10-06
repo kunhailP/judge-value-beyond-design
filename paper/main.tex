@@ -103,13 +103,13 @@ control variate of (\ref{eq:est}) on top of a design.
 \section{Data, evaluators and protocol}\label{sec:data}
 \textbf{MT:} WMT22 MQM \citep{freitag2021mqm} en$\to$de (1{,}315 segments) and zh$\to$en (1{,}875), Google weights,
 $u=-\min(\mathrm{MQM},25)/25$, identical outputs of a segment share one label; menus of the four best WMT submissions
-(MBR systems excluded). Evaluators: the 31 WMT22 metric variants available at segment level in mt-metrics-eval \citep{rei2022comet}
-(reference-based variants scored against refA, and reference-free QE variants), COMET-22, and Qwen3-8B and Mistral-7B with GEMBA-DA \citep{kocmi2023gemba}.
+(MBR systems excluded). Evaluators: the 31 WMT22 metric variants available at segment level in mt-metrics-eval \citep{freitag2022wmt22metrics}, including COMET-22 \citep{rei2022comet},
+(reference-based variants scored against refA, and reference-free QE variants), COMET-22, and Qwen3-8B \citep{yang2025qwen3} and Mistral-7B-Instruct-v0.3 \citep{jiang2023mistral} with the GEMBA-DA prompt \citep{kocmi2023gemba}.
 \textbf{Chat:} LMArena human-preference battles \citep{chiang2024arena}; the six English single-turn pairs with the
 smallest win-rate gaps among those with $\ge300$ battles (311--472 battles; gaps 0.011--0.084). Evaluators: Qwen3-8B and
 Mistral-7B as pairwise judges (both presentation orders averaged), ``the longer response wins''.
 \textbf{Retrieval:} a re-analysis of fixed-budget audits of three cutoff policies on four fully judged collections
-(ANTIQUE, CAsT 2019, DBpedia-Entity, TREC DL 21--23) with Qwen3-8B (UMBRELA prompt) and Qwen3-Reranker as judges; pilot
+(ANTIQUE, CAsT 2019, DBpedia-Entity, TREC DL 21--23; \citealp{hashemi2020antique,dalton2020cast,hasibi2017dbpedia,craswell2021dl21,craswell2022dl22,craswell2023dl23}) with Qwen3-8B (UMBRELA prompt; \citealp{upadhyay2024umbrela}) and Qwen3-Reranker-0.6B \citep{zhang2025qwen3embedding} as judges; pilot
 20 queries. MT and chat use a 50-item pilot (100 and 25 as ablations), $\eps\in\{0.01,0.02\}$ (MT) and
 $\{0.05,0.1\}$ (chat).
 
@@ -151,7 +151,7 @@ the open judges, 4/4).
 In retrieval, the evaluator's increment follows its decision-level correlation as well: across 54 settings of an
 earlier query-level study the realised gain correlated 0.75 with $\rho$ and 0.03 with label accuracy; an identical-model
 judge over-credited its own policy by 0.14 F1, a bias the correction removes, while the noise that accompanied it lowered
-$\rho$ and the saving. In a locked test on a collection never used in development (NeuCLIRBench), a 20-query pilot
+$\rho$ and the saving. In a locked test on a collection never used in development (NeuCLIRBench; \citealp{lawrie2025neuclirbench}), a 20-query pilot
 predicted the relative cost of designs (correlation 0.83--0.97) but over-estimated the judge's own increment
 (predicted cost ratio 0.71--0.76, realised 0.82--0.93), the estimation-tax pattern of \S\ref{sec:law}.
 
@@ -303,7 +303,9 @@ the MQM-rated subsets of WMT22 (two language pairs), chat on six pairs from a 20
 re-analysed audits of an earlier study with two judges. The cost law is a first-order approximation; it describes
 controlled variation of $\rho$ and bounds, but does not predict cell by cell, the savings of real evaluators. Frontier
 LLM judges are not evaluated here; their pre-registration is committed. HES depends on the pilot size, and larger pilots
-lower the estimation tax while raising the fixed cost (\S\ref{sec:law}).
+lower the estimation tax while raising the fixed cost (\S\ref{sec:law}). The results should not be read as showing
+that automatic evaluators are useless: they concern close decisions, small human pilots and evaluators with
+decision-level $\rho\le0.38$; by the cost law, an evaluator with $\rho\approx0.8$ would save about a third of the labels.
 
 \bibliography{refs}
 
