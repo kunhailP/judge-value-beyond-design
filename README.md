@@ -12,9 +12,13 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
 * **The design takes most of the saving.** Against the best fixed judge-free design (skip known-zero differences, label
   shared outputs once, sample by a label-free proxy of |D|), the best of the 31 metrics, chosen post hoc, adds at most 7%;
   the design itself saves 8–16% (MT) and 41–57% (retrieval) of uniform sampling's human labels (pre-registered H1, H8: 4/4).
-* **Finite-pilot estimation tax.** Fitting the correction coefficient on a 50-item pilot costs 4.3 [3.5, 5.2] (en→de) and
-  2.5 [2.0, 3.1] (zh→en) points of saving over the 31 metrics (H9); the realised saving of the top-5 metrics is below their
-  correlation-based (PPSR-style) saving ρ² in every cell (H10).
+* **Committing to the coefficient early has a price, not the evaluator.** Fitting the correction coefficient on a 50-item
+  pilot and freezing it costs 4.3 [3.5, 5.2] (en→de) and 2.5 [2.0, 3.1] (zh→en) points over the 31 metrics (H9).
+  Refitting it on all labels, as in standard PPI++, removes this tax with no detected loss of calibration in our
+  boundary-stress simulations; cross-fitting recovers it on zh→en but not on en→de (`results/ROBUSTNESS.md`). Even with
+  refitting, the mean saving of the eleven strongest evaluators over the best judge-free design is 0–7%.
+* **The design saving in MT is mostly deduplication** (not re-rating identical outputs): 13%/6% of uniform-sampling labels on
+  en→de and all of the 8% on zh→en.
 * **A finite-pilot cost law describes the dependence on ρ.** HES ≈ [ρ² − (1−ρ²)/P_eff](1 − P/J). Under *controlled*
   variation of ρ (semi-synthetic evaluators, ρ = 0.1–0.9, 126 cells) prediction and realisation correlate 0.975; about
   ρ ≈ 0.5 is needed to save 10%, ρ ≈ 0.8 to save 30%. Real evaluators lie at ρ ≤ 0.38, where realised savings are within a
