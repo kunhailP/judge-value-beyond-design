@@ -6,6 +6,7 @@ export OMP_NUM_THREADS=1
 MTJ="comet22 qwen3_8b mistral_7b inv_comet22 chrf"
 ARJ="qwen3_8b mistral_7b longer inv_qwen3_8b"
 case "$1" in
+  arena_v09) ;;
   mt)
     for lp in ende zhen; do for p in 50 100; do
       python3 110_unit_audit.py mt $lp --judges $MTJ --pilot $p --procs 128
@@ -31,3 +32,11 @@ d=load_pool('$lp'); d=d[~d.system.str.endswith('_bestmbr')]; print(' '.join(d.gr
     for lp in ende zhen; do python3 110_unit_audit.py mt $lp --judges $MTJ --pilot 50 --boundary --procs 128; done
     for pid in 0 1 2 3 4 5; do python3 110_unit_audit.py arena $pid --judges $ARJ --pilot 50 --boundary --procs 128; done ;;
 esac
+# lock v0.9: close Arena pairs (pair ids 10-15)
+if [ "$1" = "arena_v09" ]; then
+  for pid in 10 11 12 13 14 15; do for p in 50 25; do
+    python3 110_unit_audit.py arena $pid --judges $ARJ --pilot $p --eps 0.02 0.05 0.1 --procs 128
+    python3 111_summarize.py ../results/arena/arena_${pid}_m2_p${p} --boot 200 > ../results/arena/arena_${pid}_m2_p${p}_summary.txt
+  done; done
+  python3 110_unit_audit.py arena 10 --judges $ARJ --pilot 50 --boundary --procs 128 || true
+fi

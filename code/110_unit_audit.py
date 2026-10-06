@@ -72,7 +72,9 @@ def load_mt(lp, menu_k=4, menu=None, judges=("chrf",), judge_dir="/root/naacl_da
 
 
 def load_arena(pair_id, judges=("qwen3_8b",), root="/root/naacl_data/arena"):
-    p = pd.read_parquet(os.path.join(root, "pool.parquet"))
+    v09 = int(pair_id) >= 10                      # lock v0.9 pairs live in their own pool / judge files
+    sfx = "_v09" if v09 else ""
+    p = pd.read_parquet(os.path.join(root, f"pool{sfx}.parquet"))
     p = p[p.pair_id == int(pair_id)].sort_values("battle_id")
     y = p.human.to_numpy(float)
     Y = np.stack([y, 1 - y], 1)
@@ -83,7 +85,7 @@ def load_arena(pair_id, judges=("qwen3_8b",), root="/root/naacl_data/arena"):
             s = (p.len_x.to_numpy(float) > p.len_y.to_numpy(float)) + 0.5 * (p.len_x.to_numpy() == p.len_y.to_numpy())
         else:
             base, inv = (f[4:], True) if f.startswith("inv_") else (f, False)
-            jd = pd.read_parquet(os.path.join(root, f"judge_{base}.parquet")).set_index("battle_id").loc[p.battle_id]
+            jd = pd.read_parquet(os.path.join(root, f"judge_{base}{sfx}.parquet")).set_index("battle_id").loc[p.battle_id]
             s = jd.p_x.to_numpy(float)
             s = np.where(np.isnan(s), 0.5, s)
             s = 1 - s if inv else s
