@@ -29,7 +29,7 @@ m_j = pilot mean of R_j^2 / g over units with g > 0, s_j = eps - pilot mean of D
 import argparse, json, os, sys
 from multiprocessing import Pool
 import numpy as np, pandas as pd
-from scipy.stats import norm
+from scipy.stats import norm, t as tdist
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -247,7 +247,8 @@ def run_draw(args):
             w = 1.0 / pi[samp]
             est = (known + base_rest + (R[samp] * w[:, None]).sum(0)) / N
             var = ((1 - pi[samp])[:, None] * R[samp] ** 2 * w[:, None] ** 2).sum(0) / N ** 2
-            ucb = est + z * np.sqrt(var)
+            zq = z if cfg.get("bound", "normal") == "normal" else tdist.ppf(1 - ALPHA / len(comp), max(int(samp.sum()) - 1, 1))
+            ucb = est + zq * np.sqrt(var)
             for eps in eps_list:
                 act = bool((ucb <= eps).all())
                 rows.append(dict(draw=i, design=name, budget=n, eps=eps, cost=float(cost), act=int(act),
@@ -270,6 +271,7 @@ def main():
     ap.add_argument("--draws", type=int, default=300)
     ap.add_argument("--seed", type=int, default=20261007)
     ap.add_argument("--boundary", action="store_true")
+    ap.add_argument("--bound", choices=["normal", "t"], default="normal", help="robustness: Student-t quantile with (sampled units - 1) df")
     ap.add_argument("--oracle", action="store_true", help="exploratory: add population-lambda arms *_cvo")
     ap.add_argument("--tag", default="")
     ap.add_argument("--out", default=os.path.join(HERE, "..", "results"))
@@ -278,7 +280,7 @@ def main():
     data = load_mt(a.unit, a.menu_k, a.menu, a.judges) if a.domain == "mt" else load_arena(a.unit, a.judges)
     N = data["Y"].shape[0]
     budgets = a.budgets or sorted({int(x) for x in np.geomspace(10, N - a.pilot, 14)})
-    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, oracle=a.oracle)
+    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, oracle=a.oracle, bound=a.bound)
     with Pool(a.procs) as pool:
         res = pool.map(run_draw, [(data, cfg, i) for i in range(a.draws)])
     rows = pd.DataFrame([r for x in res for r in x[0]]); pred = pd.DataFrame([r for x in res for r in x[1]])

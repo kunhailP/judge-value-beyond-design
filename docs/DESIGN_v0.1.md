@@ -35,7 +35,7 @@ For decision d (a menu of systems and a tolerance ε), design s and judge f:
 
 ## 3. Inference
 
-Pilot-fixed λ everywhere (already so in the document-level IR code, `81_sampling_baselines.py: lam_pair`): λ ∈ [0, 1]
+Pilot-fixed λ everywhere (already so in the document-level IR code, `81_sampling_baselines.py: lam_pair`): λ ∈ [0, 1] in the IR code; **in the MT/Arena code (`110_unit_audit.py`) λ = max(0, Cov/Var) without an upper clip, because judge scores are on their own scale (correction added after v0.1)**
 estimated on the fully labelled pilot, frozen, control variate `λ·ĵ` on the post-pilot sample. Estimand: mean over the
 finite population of the domain (pilot part known exactly, rest a without-replacement sample). Candidate chosen on the
 pilot; certificate = one-sided t bounds for every competitor, Bonferroni over the menu; α = 0.10. Validity reported as

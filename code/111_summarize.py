@@ -4,7 +4,7 @@
 usage: 111_summarize.py <results/<domain>/<stem>> [--boot B]
 Writes <stem>_summary.csv (one row per eps x design: J50, J80, AUC with paired-bootstrap intervals over draws) and prints
   * savings of human designs over uniform, HES of every judge over uniform and over the best human design, inflation;
-  * selection: always-f, accuracy / rho / pilot-cost selectors (per draw), oracle; regret relative to the best human design;
+  * selection: always-f, accuracy / rho / pilot-cost selectors (per draw), best fixed arm; excess cost over the best fixed arm (by aggregate J50), relative to the best human design (can be negative for adaptive selectors);
   * pilot prediction: corr(log predicted, log realised) post-pilot cost ratio of every design to the reference.
 """
 import argparse, os
@@ -92,8 +92,8 @@ def main():
         cand = [best_h] + [f"{cvl_base}:{f}" for f in judges]
         for k in cand + ["sel_accuracy", "sel_rho", "sel_pilotcost"]:
             v, lo, hi = ci(lambda r: (r[k]["J50"] - min(r[q]["J50"] for q in cand)) / r[best_h]["J50"])
-            sel.append(dict(eps=eps, selector=k, regret=v, lo=lo, hi=hi,
-                            oracle=min(cand, key=lambda q: point[q]["J50"] if np.isfinite(point[q]["J50"]) else np.inf),
+            sel.append(dict(eps=eps, selector=k, excess_vs_best_fixed=v, lo=lo, hi=hi,
+                            best_fixed=min(cand, key=lambda q: point[q]["J50"] if np.isfinite(point[q]["J50"]) else np.inf),
                             picks=dict(choices[k].value_counts(normalize=True).round(2)) if k.startswith("sel") else ""))
         # pilot prediction of relative post-pilot cost (median over draws) vs realised (J50 - pilot)
         P0 = pilot_cost.median(); ref = best_h

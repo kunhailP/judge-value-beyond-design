@@ -9,8 +9,11 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
   uniform sampling; open judges add 3–20% (retrieval) and ≈ 0 (MT, chat) on top.
 * **Judge quality depends on the level at which it is measured.** COMET-22 and Qwen3-8B reach system-level correlations of
   0.97–0.99 with MQM but a decision-level correlation of the paired differences of only 0.17–0.29.
-* **A cost law predicts the saving.** HES ≈ [ρ² − (1−ρ²)/P_eff](1 − P/J): over 126 semi-synthetic cells (ρ = 0.1–0.9)
-  prediction and realisation correlate 0.975; about ρ ≈ 0.5 is needed to save 10%, ρ ≈ 0.8 to save 30%.
+* **A finite-pilot cost law describes how the saving depends on decision-level ρ.** HES ≈ [ρ² − (1−ρ²)/P_eff](1 − P/J).
+  Under *controlled* variation of ρ (semi-synthetic judges, ρ = 0.1–0.9, 126 cells) prediction and realisation correlate
+  0.975; about ρ ≈ 0.5 is needed to save 10%, ρ ≈ 0.8 to save 30%. For the real judges, which all lie at ρ ≈ 0.07–0.29,
+  realised savings are within ±2% and dominated by Monte-Carlo noise (per-cell correlation 0.08 in MT, 0.34 in Arena);
+  the law's ceiling ρ²(1 − P/J) is exceeded by more than 0.03 in only 2–4% of those cells.
 * **Weak judges cost labels** because fitting the control-variate coefficient on a small pilot has a price (estimation
   tax 4–9 points on en→de); break-even ρ ≈ 1/√(P_eff+1).
 * **Position bias** of pairwise judges lowers ρ; averaging both presentation orders recovers part of it.
