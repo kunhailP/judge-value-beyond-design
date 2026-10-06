@@ -144,7 +144,7 @@ def run_draw(args):
     D = np.stack([Y[:, j] - Y[:, c] for j in comp], 1)                     # [N, M-1]
     same = np.stack([S[:, j] == S[:, c] for j in comp], 1)                 # D == 0 known
     # costs
-    pilot_cost = int(sum(len(np.unique(S[s])) for s in pil))
+    pilot_cost = int(sum(len(np.unique(S[s])) for s in pil)) if data["structural"] else P   # Arena: one vote per battle
     c_naive = np.full(N, M, float)
     c_dedup = np.zeros(N)
     for s in range(N):
