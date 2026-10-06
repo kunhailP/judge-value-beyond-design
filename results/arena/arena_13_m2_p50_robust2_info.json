@@ -1,0 +1,44 @@
+{
+ "menu": [
+  "claude-instant-1",
+  "gpt-3.5-turbo-1106"
+ ],
+ "N": 395,
+ "mu": [
+  0.5354430379746835,
+  0.46455696202531643
+ ],
+ "cfg": {
+  "pilot": 50,
+  "eps": [
+   0.05,
+   0.1
+  ],
+  "budgets": [
+   10,
+   13,
+   17,
+   22,
+   29,
+   39,
+   51,
+   67,
+   88,
+   116,
+   152,
+   200,
+   262,
+   345
+  ],
+  "seed": 20261007,
+  "boundary": false,
+  "oracle": true,
+  "bound": "normal",
+  "extra": true
+ },
+ "judges": [
+  "qwen3_8b",
+  "mistral_7b",
+  "longer"
+ ]
+}

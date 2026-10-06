@@ -2,7 +2,7 @@
 """Exploratory (post-lock) robustness of the estimation-tax and design-credit results.
 
 For each evaluator, language pair and epsilon (MT, pilot 50; 8 strongest WMT22 metric variants by rho_bar + COMET-22,
-Qwen3-8B, Mistral-7B) and for each Arena v0.9 pair, HES of the evaluator over its own judge-free base design under four
+Qwen3-8B, Mistral-7B) and for each Arena v0.9 pair (robust2 runs), HES of the evaluator over its own judge-free base design under four
 ways of setting the control-variate coefficient:
   pilot  (*_cvl)  fitted on the pilot and frozen (the paper's estimator)
   refit  (*_cvq)  refitted by unweighted least squares on the pilot plus every post-pilot label (same labels used for
@@ -17,7 +17,7 @@ import glob, os
 import numpy as np, pandas as pd
 R = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "results")
 rows = []
-for f in sorted(glob.glob(f"{R}/mt/mt_*_m4_p50_robust2_summary.csv")) + sorted(glob.glob(f"{R}/arena/arena_1[0-5]_m2_p50_robust_summary.csv")):
+for f in sorted(glob.glob(f"{R}/mt/mt_*_m4_p50_robust2_summary.csv")) + sorted(glob.glob(f"{R}/arena/arena_1[0-5]_m2_p50_robust2_summary.csv")):
     s = pd.read_csv(f); dom = "mt" if "/mt/" in f else "arena"; cell = os.path.basename(f).split("_m")[0]
     judges = sorted({d.split(":")[1] for d in s.design if ":" in d and not d.startswith("sel")})
     bases = ["weighted", "dedup"] if dom == "mt" else ["uniform"]
