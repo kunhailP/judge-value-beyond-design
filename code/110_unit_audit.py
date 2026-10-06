@@ -33,6 +33,7 @@ from scipy.stats import norm
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+from paths import DATA
 ALPHA = 0.10
 MBR = ("bleu_bestmbr", "bleurt_bestmbr", "comet_bestmbr", "chrf_bestmbr")
 
@@ -47,8 +48,9 @@ def _synthetic(Y, rho, seed):
     vD = np.mean([np.var(Y[:, a] - Y[:, b]) for a in range(M) for b in range(a + 1, M)])
     sig = np.sqrt(vD * (1 / rho ** 2 - 1) / 2) if rho < 1 else 0.0
     return Y + sig * rng.standard_normal(Y.shape)
-def load_mt(lp, menu_k=4, menu=None, judges=("chrf",), judge_dir="/root/naacl_data/mt"):
+def load_mt(lp, menu_k=4, menu=None, judges=("chrf",), judge_dir=None):
     from mt_common import load_pool, dissimilarity
+    judge_dir = judge_dir or f"{DATA}/mt"
     d = load_pool(lp)
     d = d[~d.system.isin(MBR)].copy()
     # identical output strings of a segment share one label (mean of their ratings)
@@ -82,7 +84,8 @@ def load_mt(lp, menu_k=4, menu=None, judges=("chrf",), judge_dir="/root/naacl_da
     return dict(name=f"mt_{lp}", menu=menu, Y=Y, S=S, X=X, J=J, structural=True)
 
 
-def load_arena(pair_id, judges=("qwen3_8b",), root="/root/naacl_data/arena"):
+def load_arena(pair_id, judges=("qwen3_8b",), root=None):
+    root = root or f"{DATA}/arena"
     v09 = int(pair_id) >= 10                      # lock v0.9 pairs live in their own pool / judge files
     sfx = "_v09" if v09 else ""
     p = pd.read_parquet(os.path.join(root, f"pool{sfx}.parquet"))

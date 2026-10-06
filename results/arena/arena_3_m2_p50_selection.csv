@@ -1,0 +1,17 @@
+eps,selector,regret,lo,hi,oracle,picks
+0.02,uniform,0.0,0.0,0.0,uniform,
+0.02,uniform_cvl:inv_qwen3_8b,0.0,0.0,0.0,uniform,
+0.02,uniform_cvl:longer,0.0,0.0,0.0,uniform,
+0.02,uniform_cvl:mistral_7b,0.0,0.0,0.0,uniform,
+0.02,uniform_cvl:qwen3_8b,0.0,0.0,0.0,uniform,
+0.02,sel_accuracy,0.0,0.0,0.0,uniform,"{'uniform_cvl:longer': np.float64(0.54), 'uniform_cvl:qwen3_8b': np.float64(0.36), 'uniform_cvl:mistral_7b': np.float64(0.1)}"
+0.02,sel_rho,0.0,0.0,0.0,uniform,"{'uniform_cvl:longer': np.float64(0.34), 'uniform_cvl:qwen3_8b': np.float64(0.29), 'uniform_cvl:mistral_7b': np.float64(0.26), 'uniform_cvl:inv_qwen3_8b': np.float64(0.11)}"
+0.02,sel_pilotcost,0.0,0.0,0.0,uniform,{'uniform': np.float64(1.0)}
+0.05,uniform,0.0,0.0,0.0,uniform,
+0.05,uniform_cvl:inv_qwen3_8b,0.0,0.0,0.0,uniform,
+0.05,uniform_cvl:longer,0.0,0.0,0.0,uniform,
+0.05,uniform_cvl:mistral_7b,0.0,0.0,0.0,uniform,
+0.05,uniform_cvl:qwen3_8b,0.0,0.0,0.0,uniform,
+0.05,sel_accuracy,0.0,0.0,0.0,uniform,"{'uniform_cvl:longer': np.float64(0.54), 'uniform_cvl:qwen3_8b': np.float64(0.36), 'uniform_cvl:mistral_7b': np.float64(0.1)}"
+0.05,sel_rho,0.0,0.0,0.0,uniform,"{'uniform_cvl:longer': np.float64(0.34), 'uniform_cvl:qwen3_8b': np.float64(0.29), 'uniform_cvl:mistral_7b': np.float64(0.26), 'uniform_cvl:inv_qwen3_8b': np.float64(0.11)}"
+0.05,sel_pilotcost,0.0,0.0,0.0,uniform,{'uniform': np.float64(1.0)}

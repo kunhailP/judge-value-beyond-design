@@ -3,12 +3,15 @@
 
 MT  : score = expected value over the first-token top-20 alternatives that parse as an integer 0..100 (renormalised),
       when logprobs exist and those alternatives carry >= 0.5 probability; otherwise the first number in the text
-      (clipped to 0..100); NaN if none.        -> /root/naacl_data/mt/<lp>/judge_<name>.parquet (seg_id, system, score)
+      (clipped to 0..100); NaN if none.        -> $JV_DATA/mt/<lp>/judge_<name>.parquet (seg_id, system, score)
 Arena: P(A) = renormalised probability of first tokens "A" vs "B" (stripped) when logprobs exist and carry >= 0.5;
       otherwise 1/0 from the first A/B letter in the text, 0.5 if none. p_x = mean(P(A | x first), 1 - P(A | y first)).
-                                               -> /root/naacl_data/arena/judge_<name>_v09.parquet (battle_id, p_x, ...)
+                                               -> $JV_DATA/arena/judge_<name>_v09.parquet (battle_id, p_x, ...)
 usage: frontier_to_parquet.py <judge_name>
 """
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import DATA
 import json, math, os, re, sys
 import numpy as np, pandas as pd
 HERE = os.path.dirname(os.path.abspath(__file__)); OUTD = os.path.join(HERE, "..", "frontier", "outputs")
@@ -50,7 +53,7 @@ for lp in ("ende", "zhen"):
     except FileNotFoundError:
         continue
     rows = [dict(seg_id=int(k.split("|")[0]) if k.split("|")[0].isdigit() else k.split("|")[0], system=k.split("|")[1], score=mt_score(r)) for k, r in R.items()]
-    d = pd.DataFrame(rows); d.to_parquet(f"/root/naacl_data/mt/{lp}/judge_{name}.parquet", index=False)
+    d = pd.DataFrame(rows); d.to_parquet(f"{DATA}/mt/{lp}/judge_{name}.parquet", index=False)
     print(lp, len(d), "rows, NaN", d.score.isna().mean().round(4), "quantiles", d.score.quantile([0, .05, .5, .95, 1]).round(1).tolist())
 try:
     R = load("arena_v09")
@@ -59,7 +62,7 @@ try:
         bid, order = k.rsplit("|", 1); b.setdefault(bid, {})[order] = p_a(r)
     d = pd.DataFrame([dict(battle_id=k, p_x_order1=v.get("1", np.nan), p_x_order2=1 - v.get("2", np.nan)) for k, v in b.items()])
     d["p_x"] = d[["p_x_order1", "p_x_order2"]].mean(axis=1)
-    d.to_parquet(f"/root/naacl_data/arena/judge_{name}_v09.parquet", index=False)
+    d.to_parquet(f"{DATA}/arena/judge_{name}_v09.parquet", index=False)
     print("arena_v09", len(d), "battles, NaN", d.p_x.isna().mean().round(4))
 except FileNotFoundError:
     pass

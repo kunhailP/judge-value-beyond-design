@@ -12,8 +12,11 @@ Scoring (exact definition):
   Decimals ("85.5") are treated as stop (-> 85). Digits outside the top-20 count as probability 0.
   Fallback: if D1 < 0.01, greedy decode (max 8 tokens) and parse the first integer (clipped 0-100); flagged in the diag file.
 """
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import DATA
 import sys, time, json, math, re
-sys.path.insert(0, "/root/judge-audit-certification/06_naacl/code")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np, pandas as pd
 from mt_prompt import build_user_message
 from vllm import LLM, SamplingParams
@@ -49,7 +52,7 @@ def bases(lp, d):
     msgs = [build_user_message(lp, s, h) for s, h in zip(d.source, d.hyp)]
     return [list(tok.apply_chat_template([{"role": "user", "content": m}], tokenize=True, add_generation_prompt=True, **tmpl_kw)) + PREFIX for m in msgs]
 
-pools = {lp: pd.read_parquet(f"/root/naacl_data/mt/{lp}/pool.parquet", columns=["seg_id", "system", "source", "hyp"]) for lp in ("ende", "zhen")}
+pools = {lp: pd.read_parquet(f"{DATA}/mt/{lp}/pool.parquet", columns=["seg_id", "system", "source", "hyp"]) for lp in ("ende", "zhen")}
 if limit: pools = {k: v.head(limit) for k, v in pools.items()}
 
 meta_all = dict(judge=name, repo=repo, revision=rev, load_s=round(load_s, 1), assistant_prefix="Score: ")
@@ -87,9 +90,9 @@ for lp, d in pools.items():
     sc = np.array(scores, dtype=float)
     res = pd.DataFrame(dict(seg_id=d.seg_id.values, system=d.system.values, score=sc))
     sfx = "" if not limit else "_test"
-    res.to_parquet(f"/root/naacl_data/mt/{lp}/judge_{name}{sfx}.parquet", index=False)
+    res.to_parquet(f"{DATA}/mt/{lp}/judge_{name}{sfx}.parquet", index=False)
     pd.DataFrame(dict(seg_id=d.seg_id.values, system=d.system.values, digit_mass_step1=mass, method=method)).to_parquet(
-        f"/root/naacl_data/mt/{lp}/judge_{name}_diag{sfx}.parquet", index=False)
+        f"{DATA}/mt/{lp}/judge_{name}_diag{sfx}.parquet", index=False)
     m = dict(n=len(res), seconds=round(dt, 1), n_step2=len(req2), n_step3=len(req3), nan=float(np.isnan(sc).mean()),
              n_greedy=len(gi), digit_mass_q=np.quantile(mass, [0, .01, .5]).round(4).tolist(),
              n_distinct_scores=int(pd.Series(sc).round(3).nunique()),
@@ -99,4 +102,4 @@ for lp, d in pools.items():
 import vllm; meta_all["vllm"] = vllm.__version__
 print(json.dumps(meta_all, indent=1))
 if not limit:
-    json.dump(meta_all, open(f"/root/naacl_data/mt/judge_{name}_meta.json", "w"), indent=1)
+    json.dump(meta_all, open(f"{DATA}/mt/judge_{name}_meta.json", "w"), indent=1)

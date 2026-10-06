@@ -1,0 +1,27 @@
+eps,selector,regret,lo,hi,oracle,picks
+0.01,weighted,0.46083036123325394,0.3372249862370178,0.49381823328814534,weighted_cvl:syn0.9,
+0.01,weighted_cvl:syn0.1,0.4668927185298836,0.3436203340952125,0.5068033621250957,weighted_cvl:syn0.9,
+0.01,weighted_cvl:syn0.2,0.41889442158579543,0.35385151959047706,0.49213868616506606,weighted_cvl:syn0.9,
+0.01,weighted_cvl:syn0.3,0.44510968508395987,0.33320311641691874,0.49726391838819195,weighted_cvl:syn0.9,
+0.01,weighted_cvl:syn0.4,0.40657900933803165,0.34115187779202155,0.47695874253469134,weighted_cvl:syn0.9,
+0.01,weighted_cvl:syn0.5,0.3224899042054497,0.26588455413534773,0.3796515105510596,weighted_cvl:syn0.9,
+0.01,weighted_cvl:syn0.6,0.316113944061247,0.2520939519178383,0.38212119916110404,weighted_cvl:syn0.9,
+0.01,weighted_cvl:syn0.7,0.2286976578218821,0.19425946957704593,0.2821369458953704,weighted_cvl:syn0.9,
+0.01,weighted_cvl:syn0.8,0.1118981764935071,0.07907609299072277,0.14105982133280226,weighted_cvl:syn0.9,
+0.01,weighted_cvl:syn0.9,0.0,0.0,0.0,weighted_cvl:syn0.9,
+0.01,sel_accuracy,0.04563329449153258,0.007439914724070243,0.07829244842533956,weighted_cvl:syn0.9,"{'weighted_cvl:syn0.9': np.float64(0.66), 'weighted_cvl:syn0.8': np.float64(0.24), 'weighted_cvl:syn0.7': np.float64(0.08), 'weighted_cvl:syn0.6': np.float64(0.01), 'weighted_cvl:syn0.5': np.float64(0.0), 'weighted_cvl:syn0.4': np.float64(0.0)}"
+0.01,sel_rho,-0.0010658431584870786,-0.004522402985519545,0.0,weighted_cvl:syn0.9,"{'weighted_cvl:syn0.9': np.float64(0.99), 'weighted_cvl:syn0.8': np.float64(0.01)}"
+0.01,sel_pilotcost,0.003457340908798981,0.0,0.010842339430510701,weighted_cvl:syn0.9,"{'weighted_cvl:syn0.9': np.float64(0.97), 'weighted_cvl:syn0.8': np.float64(0.03)}"
+0.02,weighted,0.175156535448835,0.05089025519012879,0.19967142019045814,weighted_cvl:syn0.8,
+0.02,weighted_cvl:syn0.1,0.19773382002266604,0.12401994421307405,0.23531631738273534,weighted_cvl:syn0.8,
+0.02,weighted_cvl:syn0.2,0.20264192536480333,0.07243135459346868,0.24088644540212925,weighted_cvl:syn0.8,
+0.02,weighted_cvl:syn0.3,0.19297488258798598,0.06287903421268155,0.21970631727194684,weighted_cvl:syn0.8,
+0.02,weighted_cvl:syn0.4,0.20696045025098098,0.1765047140112784,0.23991774489732404,weighted_cvl:syn0.8,
+0.02,weighted_cvl:syn0.5,0.15851937891511206,0.12415470888131207,0.20158544315172286,weighted_cvl:syn0.8,
+0.02,weighted_cvl:syn0.6,0.11264045646787955,0.050958905038653884,0.16728726934838928,weighted_cvl:syn0.8,
+0.02,weighted_cvl:syn0.7,0.059420906429089794,0.038780003500585455,0.10143000437246093,weighted_cvl:syn0.8,
+0.02,weighted_cvl:syn0.8,0.0,0.0,0.023406684268058676,weighted_cvl:syn0.8,
+0.02,weighted_cvl:syn0.9,0.0,0.0,0.0,weighted_cvl:syn0.8,
+0.02,sel_accuracy,0.0,0.0,0.0,weighted_cvl:syn0.8,"{'weighted_cvl:syn0.9': np.float64(0.66), 'weighted_cvl:syn0.8': np.float64(0.24), 'weighted_cvl:syn0.7': np.float64(0.08), 'weighted_cvl:syn0.6': np.float64(0.01), 'weighted_cvl:syn0.5': np.float64(0.0), 'weighted_cvl:syn0.4': np.float64(0.0)}"
+0.02,sel_rho,0.0,0.0,0.0,weighted_cvl:syn0.8,"{'weighted_cvl:syn0.9': np.float64(0.99), 'weighted_cvl:syn0.8': np.float64(0.01)}"
+0.02,sel_pilotcost,0.0,0.0,0.0,weighted_cvl:syn0.8,"{'weighted_cvl:syn0.9': np.float64(0.98), 'weighted_cvl:syn0.8': np.float64(0.02), 'weighted': np.float64(0.0)}"

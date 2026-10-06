@@ -10,6 +10,9 @@
                    outputs differ (identical outputs contribute D = Dhat = 0).
 Output: results/mt/ANATOMY_<lp>.csv and a printed table.
 """
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import DATA
 import os, sys, itertools
 import numpy as np, pandas as pd
 from scipy.stats import kendalltau, pearsonr
@@ -25,7 +28,7 @@ for lp in ("ende", "zhen"):
     d["u"] = d.groupby(["seg_id", "hyp"]).u.transform("mean")
     for f in JUDGES:
         if f != "chrf":
-            j = pd.read_parquet(f"/root/naacl_data/mt/{lp}/judge_{f}.parquet").rename(columns={"score": f})
+            j = pd.read_parquet(f"{DATA}/mt/{lp}/judge_{f}.parquet").rename(columns={"score": f})
             d = d.merge(j, on=["seg_id", "system"], how="left")
     sysmean = d.groupby("system")[["u"] + JUDGES].mean()
     top6 = sysmean.u.sort_values(ascending=False).index[:6].tolist()

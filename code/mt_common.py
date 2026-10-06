@@ -1,14 +1,17 @@
 """Shared helpers for the MT (WMT22 MQM) block.
 
 Data provenance: github.com/google/wmt-mqm-human-evaluation @ 29acd6999aaea3586378c9dcb58d8cc4820cede3
-(cloned to /root/naacl_data/mt/dl/wmt-mqm-human-evaluation).
+(cloned to $JV_DATA/mt/dl/wmt-mqm-human-evaluation).
 """
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import DATA
 import re
 
 import numpy as np
 from sacrebleu.metrics import CHRF
 
-MT_ROOT = "/root/naacl_data/mt"
+MT_ROOT = f"{DATA}/mt"
 LPS = ("ende", "zhen")
 CAP = 25.0
 

@@ -1,0 +1,123 @@
+collection                                     antique                                          cast19                                  dbpedia-entity                                        dl212223                                     neuclir_eng                                                                                      trec-covid                                                                                webis-touche2020                                                                        
+variant                                            p20                                             p20                                             p20                                             p20                                              nc                                            nc10                                      ho10_covid                                        ho_covid                                     ho10_touche                                       ho_touche                        
+eps                                               0.01                    0.02                    0.01                    0.02                    0.01                    0.02                    0.01                    0.02                    0.01                    0.02                    0.01                    0.02                    0.01                    0.02                    0.01                    0.02                    0.01                    0.02                    0.01                    0.02
+metric              arm                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+HES_weighted_J50    cvl_inv     -0.023 [-0.059,+0.013]  +0.016 [-0.015,+0.042]  +0.051 [-0.000,+0.111]  +0.048 [-0.002,+0.087]                     NaN                     NaN                     NaN                     NaN  +0.027 [+0.002,+0.061]  -0.005 [-0.035,+0.020]  +0.005 [-0.060,+0.050]  +0.010 [-0.051,+0.053]                     NaN                     NaN                     NaN                     NaN                     NaN                     NaN                     NaN                     NaN
+                    cvl_llm     +0.058 [+0.022,+0.083]  +0.078 [+0.053,+0.104]  +0.211 [+0.160,+0.283]  +0.191 [+0.137,+0.236]  +0.096 [+0.047,+0.330]  +0.195 [+0.133,+0.265]  +0.038 [+0.017,+0.067]  +0.034 [+0.011,+0.066]  +0.053 [+0.022,+0.090]  +0.021 [+0.002,+0.048]  +0.038 [-0.016,+0.114]  +0.060 [+0.018,+0.115]  +0.157 [+0.136,+0.181]  +0.148 [+0.115,+0.170]  +0.067 [+0.056,+0.079]  +0.064 [+0.055,+0.072]  +0.088 [+0.063,+0.106]  +0.074 [+0.057,+0.092]  +0.035 [+0.029,+0.044]  +0.027 [+0.020,+0.031]
+                    cvl_rr      +0.056 [+0.015,+0.083]  +0.076 [+0.049,+0.102]  +0.128 [+0.084,+0.165]  +0.136 [+0.096,+0.185]  +0.065 [+0.010,+0.174]  +0.194 [+0.138,+0.265]                     NaN                     NaN  +0.018 [-0.004,+0.051]  -0.008 [-0.039,+0.019]  +0.028 [-0.028,+0.089]  +0.011 [-0.051,+0.059]  +0.063 [+0.033,+0.092]  +0.055 [+0.016,+0.084]  +0.026 [+0.015,+0.039]  +0.028 [+0.016,+0.040]  +0.017 [-0.001,+0.032]  +0.003 [-0.017,+0.025]  +0.011 [+0.004,+0.022]  +0.010 [+0.003,+0.016]
+                    sel_pilot   +0.057 [+0.020,+0.081]  +0.085 [+0.056,+0.114]  +0.205 [+0.151,+0.280]  +0.191 [+0.135,+0.235]  +0.089 [+0.036,+0.205]  +0.196 [+0.137,+0.255]  +0.031 [+0.010,+0.057]  +0.042 [+0.025,+0.066]  +0.047 [+0.022,+0.082]  +0.020 [+0.001,+0.045]  +0.062 [+0.009,+0.130]  +0.078 [+0.032,+0.119]  +0.158 [+0.135,+0.182]  +0.151 [+0.120,+0.173]  +0.067 [+0.056,+0.079]  +0.063 [+0.054,+0.072]  +0.088 [+0.063,+0.106]  +0.074 [+0.057,+0.092]  +0.035 [+0.029,+0.044]  +0.027 [+0.020,+0.031]
+HES_weighted_J80    cvl_inv     -0.016 [-0.066,+0.047]  -0.018 [-0.051,+0.005]  -0.015 [-0.072,+0.015]  -0.040 [-0.083,-0.000]                     NaN                     NaN                     NaN                     NaN  -0.002 [-0.075,+0.036]  +0.079 [-0.010,+0.244]                     n/a                     n/a                     NaN                     NaN                     NaN                     NaN                     NaN                     NaN                     NaN                     NaN
+                    cvl_llm     +0.110 [+0.072,+0.161]  +0.089 [+0.058,+0.122]  +0.080 [+0.013,+0.139]  +0.125 [+0.075,+0.193]                     n/a  +0.237 [+0.061,+0.355]  +0.056 [+0.022,+0.104]  +0.074 [+0.019,+0.138]  +0.018 [-0.019,+0.072]  +0.157 [+0.014,+0.263]                     n/a                     n/a  +0.163 [+0.129,+0.185]  +0.158 [+0.129,+0.185]  +0.077 [+0.069,+0.086]  +0.090 [+0.075,+0.101]  +0.145 [+0.081,+0.197]  +0.098 [+0.063,+0.121]  +0.062 [+0.053,+0.070]  +0.055 [+0.042,+0.062]
+                    cvl_rr      +0.106 [+0.067,+0.155]  +0.087 [+0.056,+0.114]  +0.030 [-0.004,+0.119]  +0.056 [+0.023,+0.103]                     n/a  +0.185 [+0.056,+0.305]                     NaN                     NaN  +0.012 [-0.063,+0.062]  +0.070 [-0.034,+0.233]                     n/a                     n/a  +0.076 [+0.033,+0.100]  +0.105 [+0.072,+0.134]  +0.016 [+0.008,+0.025]  +0.029 [+0.016,+0.046]  +0.039 [-0.005,+0.067]  +0.008 [-0.033,+0.039]  +0.011 [+0.003,+0.021]  +0.027 [+0.015,+0.035]
+                    sel_pilot   +0.116 [+0.080,+0.160]  +0.090 [+0.061,+0.117]  +0.080 [+0.013,+0.136]  +0.119 [+0.067,+0.183]                     n/a  +0.227 [+0.078,+0.348]  +0.032 [+0.006,+0.080]  +0.058 [+0.013,+0.113]  +0.017 [-0.012,+0.048]  +0.131 [+0.006,+0.256]                     n/a                     n/a  +0.173 [+0.142,+0.192]  +0.171 [+0.143,+0.198]  +0.077 [+0.069,+0.085]  +0.094 [+0.080,+0.103]  +0.145 [+0.081,+0.197]  +0.098 [+0.063,+0.121]  +0.062 [+0.053,+0.070]  +0.055 [+0.042,+0.062]
+save_vs_uniform_J50 uniform_nz  +0.226 [+0.160,+0.261]  +0.212 [+0.169,+0.261]                     n/a  +0.409 [+0.363,+0.450]                     n/a  +0.394 [+0.205,+0.441]  +0.304 [+0.253,+0.343]  +0.361 [+0.299,+0.395]                     n/a  +0.380 [+0.344,+0.408]                     n/a                     n/a  +0.281 [+0.254,+0.314]  +0.272 [+0.239,+0.302]  +0.156 [+0.137,+0.169]  +0.146 [+0.130,+0.162]  +0.137 [+0.076,+0.178]  +0.152 [+0.090,+0.179]  +0.061 [+0.039,+0.081]  +0.034 [+0.015,+0.051]
+                    weighted    +0.460 [+0.443,+0.486]  +0.405 [+0.368,+0.434]                     n/a  +0.555 [+0.522,+0.586]                     n/a  +0.543 [+0.408,+0.584]  +0.572 [+0.551,+0.592]  +0.564 [+0.536,+0.582]                     n/a  +0.500 [+0.472,+0.522]                     n/a                     n/a  +0.460 [+0.440,+0.481]  +0.463 [+0.439,+0.492]  +0.252 [+0.239,+0.263]  +0.238 [+0.222,+0.251]  +0.236 [+0.181,+0.274]  +0.206 [+0.159,+0.236]  +0.090 [+0.069,+0.107]  +0.057 [+0.039,+0.073]
+save_vs_uniform_J80 uniform_nz  +0.211 [+0.159,+0.250]  +0.232 [+0.181,+0.276]                     n/a                     n/a                     n/a                     n/a                     n/a                     n/a                     n/a                     n/a                     n/a                     n/a  +0.296 [+0.274,+0.324]  +0.347 [+0.331,+0.360]  +0.196 [+0.181,+0.208]  +0.189 [+0.171,+0.204]  +0.202 [+0.105,+0.303]  +0.192 [+0.147,+0.241]  +0.067 [+0.052,+0.085]  +0.077 [+0.057,+0.095]
+                    weighted    +0.539 [+0.503,+0.564]  +0.521 [+0.479,+0.542]                     n/a                     n/a                     n/a                     n/a                     n/a                     n/a                     n/a                     n/a                     n/a                     n/a  +0.480 [+0.468,+0.496]  +0.488 [+0.473,+0.506]  +0.307 [+0.296,+0.317]  +0.291 [+0.275,+0.304]  +0.315 [+0.272,+0.381]  +0.291 [+0.260,+0.338]  +0.131 [+0.119,+0.143]  +0.114 [+0.102,+0.132]
+      collection     variant  eps   selector  regret     lo     hi  oracle                                                           pick_share
+         antique         p20 0.01   weighted   0.058  0.023  0.085 cvl_llm                                                                     
+         antique         p20 0.01    cvl_inv   0.081  0.063  0.101 cvl_llm                                                                     
+         antique         p20 0.01    cvl_llm   0.000  0.000  0.013 cvl_llm                                                                     
+         antique         p20 0.01     cvl_rr   0.003  0.000  0.021 cvl_llm                                                                     
+         antique         p20 0.01  sel_pilot   0.001 -0.005  0.013 cvl_llm                   {'cvl_llm': 0.57, 'cvl_rr': 0.43, 'weighted': 0.0}
+         antique         p20 0.01 sel_argmin   0.001 -0.005  0.013 cvl_llm                    {'cvl_llm': 0.57, 'cvl_rr': 0.43, 'cvl_inv': 0.0}
+         antique         p20 0.02   weighted   0.078  0.054  0.105 cvl_llm                                                                     
+         antique         p20 0.02    cvl_inv   0.063  0.048  0.086 cvl_llm                                                                     
+         antique         p20 0.02    cvl_llm   0.000  0.000  0.011 cvl_llm                                                                     
+         antique         p20 0.02     cvl_rr   0.002  0.000  0.015 cvl_llm                                                                     
+         antique         p20 0.02  sel_pilot  -0.006 -0.016  0.004 cvl_llm                   {'cvl_llm': 0.54, 'cvl_rr': 0.46, 'weighted': 0.0}
+         antique         p20 0.02 sel_argmin  -0.006 -0.016  0.004 cvl_llm                    {'cvl_llm': 0.54, 'cvl_rr': 0.46, 'cvl_inv': 0.0}
+          cast19         p20 0.01   weighted   0.211  0.160  0.283 cvl_llm                                                                     
+          cast19         p20 0.01    cvl_inv   0.160  0.089  0.231 cvl_llm                                                                     
+          cast19         p20 0.01    cvl_llm   0.000  0.000  0.000 cvl_llm                                                                     
+          cast19         p20 0.01     cvl_rr   0.083  0.044  0.155 cvl_llm                                                                     
+          cast19         p20 0.01  sel_pilot   0.007 -0.008  0.049 cvl_llm                   {'cvl_llm': 0.85, 'cvl_rr': 0.15, 'weighted': 0.0}
+          cast19         p20 0.01 sel_argmin   0.007 -0.008  0.049 cvl_llm                                    {'cvl_llm': 0.85, 'cvl_rr': 0.15}
+          cast19         p20 0.02   weighted   0.191  0.137  0.236 cvl_llm                                                                     
+          cast19         p20 0.02    cvl_inv   0.143  0.099  0.196 cvl_llm                                                                     
+          cast19         p20 0.02    cvl_llm   0.000  0.000  0.000 cvl_llm                                                                     
+          cast19         p20 0.02     cvl_rr   0.056  0.016  0.089 cvl_llm                                                                     
+          cast19         p20 0.02  sel_pilot   0.000 -0.010  0.013 cvl_llm                  {'cvl_llm': 0.85, 'cvl_rr': 0.15, 'weighted': 0.01}
+          cast19         p20 0.02 sel_argmin   0.000 -0.010  0.013 cvl_llm                    {'cvl_llm': 0.85, 'cvl_rr': 0.15, 'cvl_inv': 0.0}
+  dbpedia-entity         p20 0.01   weighted   0.096  0.047  0.330 cvl_llm                                                                     
+  dbpedia-entity         p20 0.01    cvl_llm   0.000  0.000  0.005 cvl_llm                                                                     
+  dbpedia-entity         p20 0.01     cvl_rr   0.031  0.000  0.278 cvl_llm                                                                     
+  dbpedia-entity         p20 0.01  sel_pilot   0.007 -0.015  0.041 cvl_llm                   {'cvl_llm': 0.61, 'cvl_rr': 0.39, 'weighted': 0.0}
+  dbpedia-entity         p20 0.01 sel_argmin   0.007 -0.015  0.041 cvl_llm                                    {'cvl_llm': 0.61, 'cvl_rr': 0.39}
+  dbpedia-entity         p20 0.02   weighted   0.195  0.138  0.268 cvl_llm                                                                     
+  dbpedia-entity         p20 0.02    cvl_llm   0.000  0.000  0.029 cvl_llm                                                                     
+  dbpedia-entity         p20 0.02     cvl_rr   0.001  0.000  0.025 cvl_llm                                                                     
+  dbpedia-entity         p20 0.02  sel_pilot  -0.001 -0.010  0.023 cvl_llm                   {'cvl_llm': 0.61, 'cvl_rr': 0.38, 'weighted': 0.0}
+  dbpedia-entity         p20 0.02 sel_argmin  -0.003 -0.013  0.020 cvl_llm                                    {'cvl_llm': 0.62, 'cvl_rr': 0.38}
+        dl212223         p20 0.01   weighted   0.038  0.017  0.067 cvl_llm                                                                     
+        dl212223         p20 0.01    cvl_llm   0.000  0.000  0.000 cvl_llm                                                                     
+        dl212223         p20 0.01  sel_pilot   0.008 -0.000  0.019 cvl_llm                                  {'cvl_llm': 0.76, 'weighted': 0.24}
+        dl212223         p20 0.01 sel_argmin   0.000  0.000  0.000 cvl_llm                                                     {'cvl_llm': 1.0}
+        dl212223         p20 0.02   weighted   0.034  0.011  0.066 cvl_llm                                                                     
+        dl212223         p20 0.02    cvl_llm   0.000  0.000  0.000 cvl_llm                                                                     
+        dl212223         p20 0.02  sel_pilot  -0.007 -0.019  0.002 cvl_llm                                  {'cvl_llm': 0.75, 'weighted': 0.25}
+        dl212223         p20 0.02 sel_argmin   0.000  0.000  0.000 cvl_llm                                                     {'cvl_llm': 1.0}
+     neuclir_eng          nc 0.01   weighted   0.053  0.022  0.090 cvl_llm                                                                     
+     neuclir_eng          nc 0.01    cvl_inv   0.025  0.000  0.050 cvl_llm                                                                     
+     neuclir_eng          nc 0.01    cvl_llm   0.000  0.000  0.003 cvl_llm                                                                     
+     neuclir_eng          nc 0.01     cvl_rr   0.035  0.014  0.061 cvl_llm                                                                     
+     neuclir_eng          nc 0.01  sel_pilot   0.006 -0.009  0.021 cvl_llm {'cvl_llm': 0.71, 'weighted': 0.15, 'cvl_rr': 0.08, 'cvl_inv': 0.05}
+     neuclir_eng          nc 0.01 sel_argmin   0.004 -0.008  0.018 cvl_llm                   {'cvl_llm': 0.74, 'cvl_rr': 0.14, 'cvl_inv': 0.11}
+     neuclir_eng          nc 0.02   weighted   0.021  0.002  0.048 cvl_llm                                                                     
+     neuclir_eng          nc 0.02    cvl_inv   0.026  0.008  0.059 cvl_llm                                                                     
+     neuclir_eng          nc 0.02    cvl_llm   0.000  0.000  0.000 cvl_llm                                                                     
+     neuclir_eng          nc 0.02     cvl_rr   0.030  0.010  0.065 cvl_llm                                                                     
+     neuclir_eng          nc 0.02  sel_pilot   0.002 -0.010  0.015 cvl_llm {'cvl_llm': 0.72, 'weighted': 0.14, 'cvl_rr': 0.09, 'cvl_inv': 0.05}
+     neuclir_eng          nc 0.02 sel_argmin  -0.001 -0.013  0.012 cvl_llm                   {'cvl_llm': 0.75, 'cvl_rr': 0.14, 'cvl_inv': 0.11}
+     neuclir_eng        nc10 0.01   weighted   0.038  0.000  0.114 cvl_llm                                                                     
+     neuclir_eng        nc10 0.01    cvl_inv   0.033  0.000  0.107 cvl_llm                                                                     
+     neuclir_eng        nc10 0.01    cvl_llm   0.000  0.000  0.042 cvl_llm                                                                     
+     neuclir_eng        nc10 0.01     cvl_rr   0.010  0.000  0.061 cvl_llm                                                                     
+     neuclir_eng        nc10 0.01  sel_pilot  -0.024 -0.058  0.021 cvl_llm {'cvl_llm': 0.65, 'weighted': 0.21, 'cvl_rr': 0.07, 'cvl_inv': 0.06}
+     neuclir_eng        nc10 0.01 sel_argmin  -0.026 -0.053  0.020 cvl_llm                   {'cvl_llm': 0.69, 'cvl_inv': 0.17, 'cvl_rr': 0.14}
+     neuclir_eng        nc10 0.02   weighted   0.060  0.018  0.115 cvl_llm                                                                     
+     neuclir_eng        nc10 0.02    cvl_inv   0.051  0.007  0.115 cvl_llm                                                                     
+     neuclir_eng        nc10 0.02    cvl_llm   0.000  0.000  0.004 cvl_llm                                                                     
+     neuclir_eng        nc10 0.02     cvl_rr   0.049  0.002  0.108 cvl_llm                                                                     
+     neuclir_eng        nc10 0.02  sel_pilot  -0.017 -0.047  0.016 cvl_llm {'cvl_llm': 0.65, 'weighted': 0.22, 'cvl_rr': 0.07, 'cvl_inv': 0.06}
+     neuclir_eng        nc10 0.02 sel_argmin  -0.018 -0.035  0.006 cvl_llm                   {'cvl_llm': 0.69, 'cvl_inv': 0.17, 'cvl_rr': 0.15}
+      trec-covid  ho10_covid 0.01   weighted   0.157  0.136  0.181 cvl_llm                                                                     
+      trec-covid  ho10_covid 0.01    cvl_llm   0.000  0.000  0.000 cvl_llm                                                                     
+      trec-covid  ho10_covid 0.01     cvl_rr   0.095  0.074  0.116 cvl_llm                                                                     
+      trec-covid  ho10_covid 0.01  sel_pilot  -0.001 -0.006  0.004 cvl_llm                   {'cvl_llm': 0.79, 'cvl_rr': 0.2, 'weighted': 0.01}
+      trec-covid  ho10_covid 0.01 sel_argmin  -0.002 -0.006  0.002 cvl_llm                                    {'cvl_llm': 0.79, 'cvl_rr': 0.21}
+      trec-covid  ho10_covid 0.02   weighted   0.148  0.115  0.170 cvl_llm                                                                     
+      trec-covid  ho10_covid 0.02    cvl_llm   0.000  0.000  0.000 cvl_llm                                                                     
+      trec-covid  ho10_covid 0.02     cvl_rr   0.094  0.071  0.115 cvl_llm                                                                     
+      trec-covid  ho10_covid 0.02  sel_pilot  -0.003 -0.006 -0.001 cvl_llm                   {'cvl_llm': 0.79, 'cvl_rr': 0.2, 'weighted': 0.01}
+      trec-covid  ho10_covid 0.02 sel_argmin  -0.003 -0.006 -0.001 cvl_llm                                      {'cvl_llm': 0.8, 'cvl_rr': 0.2}
+      trec-covid    ho_covid 0.01   weighted   0.067  0.056  0.079 cvl_llm                                                                     
+      trec-covid    ho_covid 0.01    cvl_llm   0.000  0.000  0.000 cvl_llm                                                                     
+      trec-covid    ho_covid 0.01     cvl_rr   0.041  0.031  0.051 cvl_llm                                                                     
+      trec-covid    ho_covid 0.01  sel_pilot   0.000 -0.001  0.001 cvl_llm                   {'cvl_llm': 0.94, 'cvl_rr': 0.06, 'weighted': 0.0}
+      trec-covid    ho_covid 0.01 sel_argmin   0.000 -0.001  0.001 cvl_llm                                    {'cvl_llm': 0.94, 'cvl_rr': 0.06}
+      trec-covid    ho_covid 0.02   weighted   0.064  0.055  0.072 cvl_llm                                                                     
+      trec-covid    ho_covid 0.02    cvl_llm   0.000  0.000  0.000 cvl_llm                                                                     
+      trec-covid    ho_covid 0.02     cvl_rr   0.036  0.026  0.046 cvl_llm                                                                     
+      trec-covid    ho_covid 0.02  sel_pilot   0.000 -0.001  0.001 cvl_llm                   {'cvl_llm': 0.93, 'cvl_rr': 0.07, 'weighted': 0.0}
+      trec-covid    ho_covid 0.02 sel_argmin   0.000 -0.001  0.001 cvl_llm                                    {'cvl_llm': 0.93, 'cvl_rr': 0.07}
+webis-touche2020 ho10_touche 0.01   weighted   0.088  0.063  0.106 cvl_llm                                                                     
+webis-touche2020 ho10_touche 0.01    cvl_llm   0.000  0.000  0.000 cvl_llm                                                                     
+webis-touche2020 ho10_touche 0.01     cvl_rr   0.071  0.052  0.086 cvl_llm                                                                     
+webis-touche2020 ho10_touche 0.01  sel_pilot   0.000  0.000  0.000 cvl_llm                                                     {'cvl_llm': 1.0}
+webis-touche2020 ho10_touche 0.01 sel_argmin   0.000  0.000  0.000 cvl_llm                                                     {'cvl_llm': 1.0}
+webis-touche2020 ho10_touche 0.02   weighted   0.074  0.057  0.092 cvl_llm                                                                     
+webis-touche2020 ho10_touche 0.02    cvl_llm   0.000  0.000  0.000 cvl_llm                                                                     
+webis-touche2020 ho10_touche 0.02     cvl_rr   0.071  0.054  0.089 cvl_llm                                                                     
+webis-touche2020 ho10_touche 0.02  sel_pilot   0.000  0.000  0.000 cvl_llm                                                     {'cvl_llm': 1.0}
+webis-touche2020 ho10_touche 0.02 sel_argmin   0.000  0.000  0.000 cvl_llm                                                     {'cvl_llm': 1.0}
+webis-touche2020   ho_touche 0.01   weighted   0.035  0.029  0.044 cvl_llm                                                                     
+webis-touche2020   ho_touche 0.01    cvl_llm   0.000  0.000  0.000 cvl_llm                                                                     
+webis-touche2020   ho_touche 0.01     cvl_rr   0.023  0.018  0.028 cvl_llm                                                                     
+webis-touche2020   ho_touche 0.01  sel_pilot   0.000  0.000  0.000 cvl_llm                                                     {'cvl_llm': 1.0}
+webis-touche2020   ho_touche 0.01 sel_argmin   0.000  0.000  0.000 cvl_llm                                                     {'cvl_llm': 1.0}
+webis-touche2020   ho_touche 0.02   weighted   0.027  0.020  0.031 cvl_llm                                                                     
+webis-touche2020   ho_touche 0.02    cvl_llm   0.000  0.000  0.000 cvl_llm                                                                     
+webis-touche2020   ho_touche 0.02     cvl_rr   0.016  0.013  0.021 cvl_llm                                                                     
+webis-touche2020   ho_touche 0.02  sel_pilot   0.000  0.000  0.000 cvl_llm                                                     {'cvl_llm': 1.0}
+webis-touche2020   ho_touche 0.02 sel_argmin   0.000  0.000  0.000 cvl_llm                                                     {'cvl_llm': 1.0}

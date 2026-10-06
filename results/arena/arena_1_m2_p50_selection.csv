@@ -1,0 +1,17 @@
+eps,selector,regret,lo,hi,oracle,picks
+0.02,uniform,0.03324248531578004,0.0,0.10669693332298272,uniform_cvl:longer,
+0.02,uniform_cvl:inv_qwen3_8b,0.037828276291379144,0.002652995549528668,0.10863980968714278,uniform_cvl:longer,
+0.02,uniform_cvl:longer,0.0,0.0,0.015077422022254096,uniform_cvl:longer,
+0.02,uniform_cvl:mistral_7b,0.029073584428871577,0.0,0.0967874624743739,uniform_cvl:longer,
+0.02,uniform_cvl:qwen3_8b,0.021778007876781972,0.0,0.10278409085035867,uniform_cvl:longer,
+0.02,sel_accuracy,0.007693791641242743,-0.010074690898355762,0.07996548553344514,uniform_cvl:longer,"{'uniform_cvl:longer': np.float64(0.68), 'uniform_cvl:qwen3_8b': np.float64(0.21), 'uniform_cvl:mistral_7b': np.float64(0.09), 'uniform_cvl:inv_qwen3_8b': np.float64(0.01)}"
+0.02,sel_rho,0.014482431324692261,-0.006045723769769947,0.0966231276337493,uniform_cvl:longer,"{'uniform_cvl:longer': np.float64(0.48), 'uniform_cvl:qwen3_8b': np.float64(0.39), 'uniform_cvl:mistral_7b': np.float64(0.1), 'uniform_cvl:inv_qwen3_8b': np.float64(0.03)}"
+0.02,sel_pilotcost,0.0319918150497075,-0.0002641210158823517,0.10182757834997115,uniform_cvl:longer,"{'uniform': np.float64(0.92), 'uniform_cvl:qwen3_8b': np.float64(0.04), 'uniform_cvl:longer': np.float64(0.02), 'uniform_cvl:mistral_7b': np.float64(0.01)}"
+0.05,uniform,0.028461350625390045,0.0,0.0655032430611006,uniform_cvl:longer,
+0.05,uniform_cvl:inv_qwen3_8b,0.03252725785758861,0.0,0.06783590400202173,uniform_cvl:longer,
+0.05,uniform_cvl:longer,0.0,0.0,0.020751194526423614,uniform_cvl:longer,
+0.05,uniform_cvl:mistral_7b,0.019799200435053888,0.0,0.047939723258907024,uniform_cvl:longer,
+0.05,uniform_cvl:qwen3_8b,0.0028461350625389814,0.0,0.01841400170000656,uniform_cvl:longer,
+0.05,sel_accuracy,0.010673006484521267,0.0,0.04649471528377355,uniform_cvl:longer,"{'uniform_cvl:longer': np.float64(0.68), 'uniform_cvl:qwen3_8b': np.float64(0.21), 'uniform_cvl:mistral_7b': np.float64(0.09), 'uniform_cvl:inv_qwen3_8b': np.float64(0.01)}"
+0.05,sel_rho,0.011983726579111585,0.0,0.05737189111132736,uniform_cvl:longer,"{'uniform_cvl:longer': np.float64(0.48), 'uniform_cvl:qwen3_8b': np.float64(0.39), 'uniform_cvl:mistral_7b': np.float64(0.1), 'uniform_cvl:inv_qwen3_8b': np.float64(0.03)}"
+0.05,sel_pilotcost,0.03013554772100132,0.0,0.07290448622659484,uniform_cvl:longer,"{'uniform': np.float64(0.96), 'uniform_cvl:qwen3_8b': np.float64(0.02), 'uniform_cvl:longer': np.float64(0.01), 'uniform_cvl:mistral_7b': np.float64(0.0)}"

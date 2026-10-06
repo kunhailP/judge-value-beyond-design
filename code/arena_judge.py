@@ -1,7 +1,10 @@
 """Run a pairwise vLLM judge on the arena pool, both orders. Usage: arena_judge.py {qwen3_8b|mistral_7b} [n_limit]
 Env ARENA_TAG=v09 -> reads pool_v09.parquet, writes judge_{name}_v09.parquet / _v09_meta.json (logic unchanged)."""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import DATA
 import sys, os, time, math, json
-sys.path.insert(0, "/root/judge-audit-certification/06_naacl/code")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np, pandas as pd
 from arena_prompt import build_user_message
 from vllm import LLM, SamplingParams
@@ -13,7 +16,7 @@ MODELS = {
 name = sys.argv[1]; limit = int(sys.argv[2]) if len(sys.argv) > 2 else None
 repo, rev, tmpl_kw = MODELS[name]
 TAG = os.environ.get("ARENA_TAG", ""); SFX = f"_{TAG}" if TAG else ""
-pool = pd.read_parquet(f"/root/naacl_data/arena/pool{SFX}.parquet")
+pool = pd.read_parquet(f"{DATA}/arena/pool{SFX}.parquet")
 if limit: pool = pool.head(limit)
 
 t0 = time.time()
@@ -54,7 +57,7 @@ p2 = np.array([1 - res[2 * i + 1][0] for i in range(len(pool))])  # P(B | y firs
 mass = np.array([r[2] for r in res])
 tops = pd.Series([r[1] for r in res]).value_counts().head(8).to_dict()
 out = pd.DataFrame(dict(battle_id=pool.battle_id.values, p_x_order1=p1, p_x_order2=p2, p_x=(p1 + p2) / 2))
-out.to_parquet(f"/root/naacl_data/arena/judge_{name}{SFX}.parquet" if not limit else f"/root/naacl_data/arena/judge_{name}{SFX}_test.parquet", index=False)
+out.to_parquet(f"{DATA}/arena/judge_{name}{SFX}.parquet" if not limit else f"{DATA}/arena/judge_{name}{SFX}_test.parquet", index=False)
 
 import vllm
 meta = dict(judge=name, repo=repo, revision=rev, vllm=vllm.__version__, n_battles=len(pool), n_prompts=len(prompts),
@@ -68,4 +71,4 @@ meta = dict(judge=name, repo=repo, revision=rev, vllm=vllm.__version__, n_battle
             spearman_order1_order2=float(pd.Series(p1).corr(pd.Series(p2), method="spearman")))
 print(json.dumps(meta, indent=1))
 if not limit:
-    json.dump(meta, open(f"/root/naacl_data/arena/judge_{name}{SFX}_meta.json", "w"), indent=1)
+    json.dump(meta, open(f"{DATA}/arena/judge_{name}{SFX}_meta.json", "w"), indent=1)

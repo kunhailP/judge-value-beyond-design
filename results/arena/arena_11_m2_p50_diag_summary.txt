@@ -1,0 +1,117 @@
+eps                                                                0.02                       0.05                       0.10
+metric             design                                                                                                    
+HES_uniform_J50    longer                         -0.028 [-0.058,0.000]      -0.003 [-0.016,0.022]      -0.005 [-0.029,0.008]
+                   mistral_7b                     -0.011 [-0.053,0.004]      -0.003 [-0.009,0.000]      -0.007 [-0.023,0.007]
+                   mistral_7b@o1                 -0.062 [-0.101,-0.012]       0.001 [-0.017,0.022]      -0.014 [-0.065,0.000]
+                   mistral_7b@o2                  -0.004 [-0.030,0.016]      -0.005 [-0.017,0.006]      -0.005 [-0.019,0.003]
+                   qwen3_8b                        0.007 [-0.019,0.041]       0.009 [-0.007,0.036]      -0.003 [-0.026,0.024]
+                   qwen3_8b@o1                    -0.028 [-0.067,0.012]       0.009 [-0.017,0.051]      -0.007 [-0.038,0.009]
+                   qwen3_8b@o2                     0.000 [-0.038,0.032]        0.025 [0.007,0.069]       0.007 [-0.008,0.033]
+HES_uniform_J80    longer                                                    -0.010 [-0.022,0.000]      -0.011 [-0.030,0.003]
+                   mistral_7b                                                -0.014 [-0.028,0.004]      -0.010 [-0.026,0.004]
+                   mistral_7b@o1                                            -0.022 [-0.047,-0.004]      -0.024 [-0.046,0.002]
+                   mistral_7b@o2                                            -0.018 [-0.032,-0.004]     -0.022 [-0.049,-0.002]
+                   qwen3_8b                                                  -0.009 [-0.030,0.009]      -0.021 [-0.066,0.014]
+                   qwen3_8b@o1                                               -0.009 [-0.026,0.014]       0.002 [-0.029,0.029]
+                   qwen3_8b@o2                                               -0.009 [-0.031,0.009]     -0.029 [-0.070,-0.000]
+J50                active_cvl:longer          304.874 [285.729,339.326]  202.922 [186.829,213.219]  109.435 [105.508,116.731]
+                   active_cvl:mistral_7b      306.929 [286.969,337.551]  202.489 [189.360,212.658]  110.723 [105.507,117.709]
+                   active_cvl:mistral_7b@o1   327.451 [304.492,349.972]  207.728 [191.026,217.897]  109.050 [105.287,113.701]
+                   active_cvl:mistral_7b@o2   323.810 [298.904,346.023]  201.616 [183.501,215.583]  109.335 [104.100,114.931]
+                   active_cvl:qwen3_8b        313.159 [289.374,348.321]  199.953 [184.087,211.924]  109.368 [104.068,116.267]
+                   active_cvl:qwen3_8b@o1     308.768 [289.474,337.945]  198.718 [186.275,213.056]  109.527 [105.566,115.395]
+                   active_cvl:qwen3_8b@o2     316.463 [291.051,342.338]  203.714 [190.698,215.149]  106.917 [101.592,111.765]
+                   sel_accuracy               302.467 [283.883,337.504]  205.017 [190.723,216.276]  110.631 [106.592,119.718]
+                   sel_pilotcost              296.461 [282.840,332.151]  202.199 [186.792,212.147]  109.580 [105.591,116.864]
+                   sel_rho                    304.871 [285.161,339.708]  202.105 [185.637,213.106]  109.650 [105.941,115.833]
+                   uniform                    296.588 [284.389,333.842]  202.309 [187.523,211.429]  108.914 [103.876,115.947]
+                   uniform_cvl:longer         304.871 [285.726,339.323]  202.919 [186.825,213.217]  109.435 [105.508,116.731]
+                   uniform_cvl:mistral_7b     299.897 [285.741,335.770]  202.919 [188.037,212.992]  109.650 [104.684,117.854]
+                   uniform_cvl:mistral_7b@o1  314.889 [290.600,346.087]  202.105 [187.558,212.134]  110.386 [106.460,119.879]
+                   uniform_cvl:mistral_7b@o2  297.770 [285.371,335.149]  203.312 [188.794,212.208]  109.435 [104.883,117.251]
+                   uniform_cvl:qwen3_8b       294.483 [280.969,328.889]  200.569 [185.948,211.087]  109.282 [102.753,115.742]
+                   uniform_cvl:qwen3_8b@o1    304.871 [286.118,337.558]  200.478 [186.127,212.285]  109.650 [105.003,118.054]
+                   uniform_cvl:qwen3_8b@o2    296.588 [283.697,333.719]  197.351 [182.111,208.085]  108.178 [104.319,113.575]
+                   uniform_cvo:longer         299.897 [282.613,338.619]  201.397 [185.436,212.928]  108.809 [101.659,116.263]
+                   uniform_cvo:mistral_7b     296.588 [284.389,333.842]  202.309 [187.523,211.429]  108.914 [103.876,115.947]
+                   uniform_cvo:mistral_7b@o1  296.588 [284.389,333.842]  202.309 [187.523,211.429]  108.914 [103.876,115.947]
+                   uniform_cvo:mistral_7b@o2  296.588 [284.389,333.842]  202.309 [187.523,211.429]  108.914 [103.876,115.947]
+                   uniform_cvo:qwen3_8b       297.606 [283.721,334.312]  198.911 [184.400,209.709]  107.999 [101.828,113.347]
+                   uniform_cvo:qwen3_8b@o1    297.561 [282.794,333.888]  199.665 [182.720,209.670]  109.376 [104.642,115.961]
+                   uniform_cvo:qwen3_8b@o2    296.588 [283.533,332.911]  199.176 [183.152,210.703]  107.844 [103.267,113.665]
+J80                active_cvl:longer                                     293.823 [282.482,307.835]  182.622 [173.921,194.986]
+                   active_cvl:mistral_7b                                 305.628 [291.242,317.490]  185.695 [174.707,200.380]
+                   active_cvl:mistral_7b@o1                              311.097 [298.539,322.616]  191.986 [181.620,204.593]
+                   active_cvl:mistral_7b@o2                              315.373 [304.858,323.866]  187.383 [177.793,200.276]
+                   active_cvl:qwen3_8b                                   296.306 [283.132,312.494]  187.504 [175.867,200.354]
+                   active_cvl:qwen3_8b@o1                                307.469 [292.031,322.156]  192.106 [180.619,204.614]
+                   active_cvl:qwen3_8b@o2                                303.441 [289.518,315.354]  186.293 [176.673,195.920]
+                   sel_accuracy                                          298.602 [285.571,312.709]  185.770 [175.653,197.674]
+                   sel_pilotcost                                         291.776 [277.494,307.605]  181.402 [172.997,193.300]
+                   sel_rho                                               297.250 [282.985,311.773]  188.834 [179.117,201.176]
+                   uniform                                               290.834 [278.892,305.704]  181.038 [173.946,191.777]
+                   uniform_cvl:longer                                    293.820 [282.481,307.832]  182.979 [174.949,195.011]
+                   uniform_cvl:mistral_7b                                294.934 [283.311,307.825]  182.891 [174.476,194.990]
+                   uniform_cvl:mistral_7b@o1                             297.250 [284.279,312.035]  185.370 [177.710,196.430]
+                   uniform_cvl:mistral_7b@o2                             295.926 [283.158,309.074]  185.009 [176.977,198.822]
+                   uniform_cvl:qwen3_8b                                  293.561 [279.018,307.911]  184.753 [174.531,198.648]
+                   uniform_cvl:qwen3_8b@o1                               293.423 [279.246,308.878]  180.622 [172.367,192.164]
+                   uniform_cvl:qwen3_8b@o2                               293.423 [280.841,307.028]  186.348 [178.174,199.102]
+                   uniform_cvo:longer                                    293.693 [281.608,307.832]  180.068 [170.585,189.785]
+                   uniform_cvo:mistral_7b                                290.834 [278.892,305.704]  181.038 [173.946,191.777]
+                   uniform_cvo:mistral_7b@o1                             290.834 [278.892,305.704]  181.038 [173.946,191.777]
+                   uniform_cvo:mistral_7b@o2                             290.834 [278.892,305.704]  181.038 [173.946,191.777]
+                   uniform_cvo:qwen3_8b                                  292.129 [279.239,307.561]  180.774 [171.720,191.688]
+                   uniform_cvo:qwen3_8b@o1                               289.971 [276.994,305.879]  182.237 [173.629,192.738]
+                   uniform_cvo:qwen3_8b@o2                               291.723 [281.570,305.757]  181.832 [173.754,195.767]
+best_human         uniform                                                                                                   
+inflation_J50      longer                           0.000 [0.000,0.000]        0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   mistral_7b                       0.000 [0.000,0.000]        0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   mistral_7b@o1                    0.000 [0.000,0.000]        0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   mistral_7b@o2                    0.000 [0.000,0.000]        0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   qwen3_8b                         0.000 [0.000,0.000]        0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   qwen3_8b@o1                      0.000 [0.000,0.000]        0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   qwen3_8b@o2                      0.000 [0.000,0.000]        0.000 [0.000,0.000]        0.000 [0.000,0.000]
+inflation_J80      longer                                                      0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   mistral_7b                                                  0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   mistral_7b@o1                                               0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   mistral_7b@o2                                               0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   qwen3_8b                                                    0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   qwen3_8b@o1                                                 0.000 [0.000,0.000]        0.000 [0.000,0.000]
+                   qwen3_8b@o2                                                 0.000 [0.000,0.000]        0.000 [0.000,0.000]
+max_wrong          ALL                                            0.067                      0.000                      0.000
+pred_corr_logratio ALL                                           -0.027                      0.415                      0.062
+ eps                  selector  regret     lo    hi                  oracle                                                                                                                                                                                                                              picks
+0.02                   uniform   0.007  0.000 0.044    uniform_cvl:qwen3_8b                                                                                                                                                                                                                                   
+0.02        uniform_cvl:longer   0.035  0.007 0.071    uniform_cvl:qwen3_8b                                                                                                                                                                                                                                   
+0.02    uniform_cvl:mistral_7b   0.018  0.004 0.065    uniform_cvl:qwen3_8b                                                                                                                                                                                                                                   
+0.02 uniform_cvl:mistral_7b@o1   0.069  0.020 0.107    uniform_cvl:qwen3_8b                                                                                                                                                                                                                                   
+0.02 uniform_cvl:mistral_7b@o2   0.011  0.000 0.057    uniform_cvl:qwen3_8b                                                                                                                                                                                                                                   
+0.02      uniform_cvl:qwen3_8b   0.000  0.000 0.028    uniform_cvl:qwen3_8b                                                                                                                                                                                                                                   
+0.02   uniform_cvl:qwen3_8b@o1   0.035  0.002 0.073    uniform_cvl:qwen3_8b                                                                                                                                                                                                                                   
+0.02   uniform_cvl:qwen3_8b@o2   0.007  0.000 0.050    uniform_cvl:qwen3_8b                                                                                                                                                                                                                                   
+0.02              sel_accuracy   0.027 -0.001 0.075    uniform_cvl:qwen3_8b {'uniform_cvl:qwen3_8b': 0.32, 'uniform_cvl:qwen3_8b@o1': 0.21, 'uniform_cvl:longer': 0.15, 'uniform_cvl:qwen3_8b@o2': 0.12, 'uniform_cvl:mistral_7b': 0.09, 'uniform_cvl:mistral_7b@o1': 0.07, 'uniform_cvl:mistral_7b@o2': 0.05}
+0.02                   sel_rho   0.035  0.002 0.079    uniform_cvl:qwen3_8b {'uniform_cvl:qwen3_8b@o1': 0.36, 'uniform_cvl:qwen3_8b': 0.25, 'uniform_cvl:qwen3_8b@o2': 0.16, 'uniform_cvl:longer': 0.13, 'uniform_cvl:mistral_7b@o1': 0.08, 'uniform_cvl:mistral_7b@o2': 0.02, 'uniform_cvl:mistral_7b': 0.01}
+0.02             sel_pilotcost   0.007 -0.009 0.041    uniform_cvl:qwen3_8b                    {'uniform': 0.68, 'uniform_cvl:qwen3_8b': 0.17, 'uniform_cvl:qwen3_8b@o1': 0.08, 'uniform_cvl:longer': 0.04, 'uniform_cvl:qwen3_8b@o2': 0.02, 'uniform_cvl:mistral_7b': 0.01, 'uniform_cvl:mistral_7b@o2': 0.0}
+0.05                   uniform   0.025  0.010 0.069 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.05        uniform_cvl:longer   0.028  0.007 0.071 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.05    uniform_cvl:mistral_7b   0.028  0.011 0.071 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.05 uniform_cvl:mistral_7b@o1   0.023  0.001 0.076 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.05 uniform_cvl:mistral_7b@o2   0.029  0.013 0.078 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.05      uniform_cvl:qwen3_8b   0.016  0.000 0.046 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.05   uniform_cvl:qwen3_8b@o1   0.015  0.000 0.067 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.05   uniform_cvl:qwen3_8b@o2   0.000  0.000 0.022 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.05              sel_accuracy   0.038  0.017 0.081 uniform_cvl:qwen3_8b@o2 {'uniform_cvl:qwen3_8b': 0.32, 'uniform_cvl:qwen3_8b@o1': 0.21, 'uniform_cvl:longer': 0.15, 'uniform_cvl:qwen3_8b@o2': 0.12, 'uniform_cvl:mistral_7b': 0.09, 'uniform_cvl:mistral_7b@o1': 0.07, 'uniform_cvl:mistral_7b@o2': 0.05}
+0.05                   sel_rho   0.023 -0.002 0.064 uniform_cvl:qwen3_8b@o2 {'uniform_cvl:qwen3_8b@o1': 0.36, 'uniform_cvl:qwen3_8b': 0.25, 'uniform_cvl:qwen3_8b@o2': 0.16, 'uniform_cvl:longer': 0.13, 'uniform_cvl:mistral_7b@o1': 0.08, 'uniform_cvl:mistral_7b@o2': 0.02, 'uniform_cvl:mistral_7b': 0.01}
+0.05             sel_pilotcost   0.024  0.003 0.063 uniform_cvl:qwen3_8b@o2                                                                                      {'uniform': 0.77, 'uniform_cvl:qwen3_8b': 0.14, 'uniform_cvl:qwen3_8b@o1': 0.05, 'uniform_cvl:longer': 0.02, 'uniform_cvl:qwen3_8b@o2': 0.02}
+0.10                   uniform   0.007  0.000 0.036 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.10        uniform_cvl:longer   0.012  0.000 0.062 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.10    uniform_cvl:mistral_7b   0.014  0.002 0.044 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.10 uniform_cvl:mistral_7b@o1   0.020  0.004 0.085 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.10 uniform_cvl:mistral_7b@o2   0.012  0.004 0.045 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.10      uniform_cvl:qwen3_8b   0.010  0.000 0.036 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.10   uniform_cvl:qwen3_8b@o1   0.014  0.000 0.055 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.10   uniform_cvl:qwen3_8b@o2   0.000  0.000 0.017 uniform_cvl:qwen3_8b@o2                                                                                                                                                                                                                                   
+0.10              sel_accuracy   0.023  0.007 0.073 uniform_cvl:qwen3_8b@o2 {'uniform_cvl:qwen3_8b': 0.32, 'uniform_cvl:qwen3_8b@o1': 0.21, 'uniform_cvl:longer': 0.15, 'uniform_cvl:qwen3_8b@o2': 0.12, 'uniform_cvl:mistral_7b': 0.09, 'uniform_cvl:mistral_7b@o1': 0.07, 'uniform_cvl:mistral_7b@o2': 0.05}
+0.10                   sel_rho   0.014 -0.001 0.049 uniform_cvl:qwen3_8b@o2 {'uniform_cvl:qwen3_8b@o1': 0.36, 'uniform_cvl:qwen3_8b': 0.25, 'uniform_cvl:qwen3_8b@o2': 0.16, 'uniform_cvl:longer': 0.13, 'uniform_cvl:mistral_7b@o1': 0.08, 'uniform_cvl:mistral_7b@o2': 0.02, 'uniform_cvl:mistral_7b': 0.01}
+0.10             sel_pilotcost   0.013  0.004 0.050 uniform_cvl:qwen3_8b@o2                                                                                      {'uniform': 0.92, 'uniform_cvl:qwen3_8b': 0.06, 'uniform_cvl:qwen3_8b@o2': 0.01, 'uniform_cvl:qwen3_8b@o1': 0.01, 'uniform_cvl:longer': 0.01}

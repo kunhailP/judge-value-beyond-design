@@ -1,6 +1,6 @@
 """Describe MT pools: system ranking and pairwise stats for top-4 / top-6 menus.
 
-Run: python3 -I /root/judge-audit-certification/06_naacl/code/mt_describe.py
+Run: python3 -I code/mt_describe.py
 """
 import itertools
 import sys
@@ -8,7 +8,7 @@ import sys
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, "/root/judge-audit-certification/06_naacl/code")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from mt_common import LPS, load_pool, dissimilarity  # noqa: E402
 
 pd.set_option("display.width", 200)

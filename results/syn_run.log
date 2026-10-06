@@ -1,0 +1,205 @@
+mt_ende_m4_p50_syn menu ['Online-W', 'Online-B', 'JDExploreAcademy', 'Online-A'] mu [-0.0315 -0.0413 -0.0422 -0.048 ] N 1315
+                    max_act      max_wrong     
+eps                    0.01 0.02      0.01 0.02
+design                                         
+active_cvl:syn0.1     0.883  1.0     0.010  0.0
+active_cvl:syn0.2     0.827  1.0     0.010  0.0
+active_cvl:syn0.3     0.823  1.0     0.010  0.0
+active_cvl:syn0.4     0.883  1.0     0.013  0.0
+active_cvl:syn0.5     0.863  1.0     0.013  0.0
+active_cvl:syn0.6     0.883  1.0     0.007  0.0
+active_cvl:syn0.7     0.883  1.0     0.010  0.0
+active_cvl:syn0.8     0.883  1.0     0.007  0.0
+active_cvl:syn0.9     0.767  1.0     0.007  0.0
+dedup                 0.883  1.0     0.017  0.0
+uniform               0.883  1.0     0.017  0.0
+uniform_cvl:syn0.1    0.883  1.0     0.013  0.0
+uniform_cvl:syn0.2    0.883  1.0     0.017  0.0
+uniform_cvl:syn0.3    0.883  1.0     0.017  0.0
+uniform_cvl:syn0.4    0.883  1.0     0.010  0.0
+uniform_cvl:syn0.5    0.883  1.0     0.007  0.0
+uniform_cvl:syn0.6    0.883  1.0     0.010  0.0
+uniform_cvl:syn0.7    0.883  1.0     0.013  0.0
+uniform_cvl:syn0.8    0.883  1.0     0.010  0.0
+uniform_cvl:syn0.9    0.883  1.0     0.007  0.0
+weighted              0.883  1.0     0.013  0.0
+weighted_cvl:syn0.1   0.883  1.0     0.013  0.0
+weighted_cvl:syn0.2   0.827  1.0     0.010  0.0
+weighted_cvl:syn0.3   0.823  1.0     0.010  0.0
+weighted_cvl:syn0.4   0.883  1.0     0.010  0.0
+weighted_cvl:syn0.5   0.863  1.0     0.010  0.0
+weighted_cvl:syn0.6   0.883  1.0     0.010  0.0
+weighted_cvl:syn0.7   0.883  1.0     0.010  0.0
+weighted_cvl:syn0.8   0.883  1.0     0.010  0.0
+weighted_cvl:syn0.9   0.760  1.0     0.003  0.0
+mt_ende_m4_p100_syn menu ['Online-W', 'Online-B', 'JDExploreAcademy', 'Online-A'] mu [-0.0315 -0.0413 -0.0422 -0.048 ] N 1315
+                    max_act      max_wrong     
+eps                    0.01 0.02      0.01 0.02
+design                                         
+active_cvl:syn0.1     0.950  1.0     0.003  0.0
+active_cvl:syn0.2     0.933  1.0     0.003  0.0
+active_cvl:syn0.3     0.913  1.0     0.003  0.0
+active_cvl:syn0.4     0.950  1.0     0.007  0.0
+active_cvl:syn0.5     0.947  1.0     0.007  0.0
+active_cvl:syn0.6     0.950  1.0     0.003  0.0
+active_cvl:syn0.7     0.950  1.0     0.003  0.0
+active_cvl:syn0.8     0.950  1.0     0.003  0.0
+active_cvl:syn0.9     0.883  1.0     0.003  0.0
+dedup                 0.950  1.0     0.003  0.0
+uniform               0.950  1.0     0.007  0.0
+uniform_cvl:syn0.1    0.950  1.0     0.007  0.0
+uniform_cvl:syn0.2    0.950  1.0     0.003  0.0
+uniform_cvl:syn0.3    0.950  1.0     0.003  0.0
+uniform_cvl:syn0.4    0.950  1.0     0.003  0.0
+uniform_cvl:syn0.5    0.950  1.0     0.003  0.0
+uniform_cvl:syn0.6    0.950  1.0     0.003  0.0
+uniform_cvl:syn0.7    0.950  1.0     0.003  0.0
+uniform_cvl:syn0.8    0.950  1.0     0.003  0.0
+uniform_cvl:syn0.9    0.950  1.0     0.007  0.0
+weighted              0.950  1.0     0.003  0.0
+weighted_cvl:syn0.1   0.950  1.0     0.003  0.0
+weighted_cvl:syn0.2   0.933  1.0     0.003  0.0
+weighted_cvl:syn0.3   0.913  1.0     0.003  0.0
+weighted_cvl:syn0.4   0.950  1.0     0.003  0.0
+weighted_cvl:syn0.5   0.947  1.0     0.003  0.0
+weighted_cvl:syn0.6   0.950  1.0     0.003  0.0
+weighted_cvl:syn0.7   0.950  1.0     0.003  0.0
+weighted_cvl:syn0.8   0.950  1.0     0.003  0.0
+weighted_cvl:syn0.9   0.883  1.0     0.003  0.0
+mt_zhen_m4_p50_syn menu ['Lan-Bridge', 'Online-B', 'LanguageX', 'JDExploreAcademy'] mu [-0.0974 -0.1064 -0.1081 -0.1117] N 1875
+                    max_act      max_wrong     
+eps                    0.01 0.02      0.01 0.02
+design                                         
+active_cvl:syn0.1      0.72  1.0     0.010  0.0
+active_cvl:syn0.2      0.72  1.0     0.007  0.0
+active_cvl:syn0.3      0.72  1.0     0.003  0.0
+active_cvl:syn0.4      0.72  1.0     0.003  0.0
+active_cvl:syn0.5      0.72  1.0     0.003  0.0
+active_cvl:syn0.6      0.72  1.0     0.007  0.0
+active_cvl:syn0.7      0.72  1.0     0.007  0.0
+active_cvl:syn0.8      0.72  1.0     0.007  0.0
+active_cvl:syn0.9      0.72  1.0     0.007  0.0
+dedup                  0.72  1.0     0.007  0.0
+uniform                0.72  1.0     0.007  0.0
+uniform_cvl:syn0.1     0.72  1.0     0.007  0.0
+uniform_cvl:syn0.2     0.72  1.0     0.007  0.0
+uniform_cvl:syn0.3     0.72  1.0     0.007  0.0
+uniform_cvl:syn0.4     0.72  1.0     0.003  0.0
+uniform_cvl:syn0.5     0.72  1.0     0.007  0.0
+uniform_cvl:syn0.6     0.72  1.0     0.007  0.0
+uniform_cvl:syn0.7     0.72  1.0     0.007  0.0
+uniform_cvl:syn0.8     0.72  1.0     0.007  0.0
+uniform_cvl:syn0.9     0.72  1.0     0.010  0.0
+weighted               0.72  1.0     0.007  0.0
+weighted_cvl:syn0.1    0.72  1.0     0.007  0.0
+weighted_cvl:syn0.2    0.72  1.0     0.010  0.0
+weighted_cvl:syn0.3    0.72  1.0     0.007  0.0
+weighted_cvl:syn0.4    0.72  1.0     0.010  0.0
+weighted_cvl:syn0.5    0.72  1.0     0.010  0.0
+weighted_cvl:syn0.6    0.72  1.0     0.007  0.0
+weighted_cvl:syn0.7    0.72  1.0     0.007  0.0
+weighted_cvl:syn0.8    0.72  1.0     0.007  0.0
+weighted_cvl:syn0.9    0.72  1.0     0.010  0.0
+mt_zhen_m4_p100_syn menu ['Lan-Bridge', 'Online-B', 'LanguageX', 'JDExploreAcademy'] mu [-0.0974 -0.1064 -0.1081 -0.1117] N 1875
+                    max_act      max_wrong     
+eps                    0.01 0.02      0.01 0.02
+design                                         
+active_cvl:syn0.1     0.763  1.0     0.007  0.0
+active_cvl:syn0.2     0.763  1.0     0.007  0.0
+active_cvl:syn0.3     0.763  1.0     0.007  0.0
+active_cvl:syn0.4     0.763  1.0     0.007  0.0
+active_cvl:syn0.5     0.763  1.0     0.010  0.0
+active_cvl:syn0.6     0.763  1.0     0.007  0.0
+active_cvl:syn0.7     0.763  1.0     0.007  0.0
+active_cvl:syn0.8     0.763  1.0     0.007  0.0
+active_cvl:syn0.9     0.763  1.0     0.007  0.0
+dedup                 0.763  1.0     0.007  0.0
+uniform               0.763  1.0     0.007  0.0
+uniform_cvl:syn0.1    0.763  1.0     0.007  0.0
+uniform_cvl:syn0.2    0.763  1.0     0.003  0.0
+uniform_cvl:syn0.3    0.763  1.0     0.007  0.0
+uniform_cvl:syn0.4    0.763  1.0     0.007  0.0
+uniform_cvl:syn0.5    0.763  1.0     0.007  0.0
+uniform_cvl:syn0.6    0.763  1.0     0.010  0.0
+uniform_cvl:syn0.7    0.763  1.0     0.007  0.0
+uniform_cvl:syn0.8    0.763  1.0     0.007  0.0
+uniform_cvl:syn0.9    0.763  1.0     0.010  0.0
+weighted              0.763  1.0     0.007  0.0
+weighted_cvl:syn0.1   0.763  1.0     0.007  0.0
+weighted_cvl:syn0.2   0.763  1.0     0.003  0.0
+weighted_cvl:syn0.3   0.763  1.0     0.007  0.0
+weighted_cvl:syn0.4   0.763  1.0     0.007  0.0
+weighted_cvl:syn0.5   0.763  1.0     0.007  0.0
+weighted_cvl:syn0.6   0.763  1.0     0.007  0.0
+weighted_cvl:syn0.7   0.763  1.0     0.007  0.0
+weighted_cvl:syn0.8   0.763  1.0     0.007  0.0
+weighted_cvl:syn0.9   0.763  1.0     0.010  0.0
+arena_10_m2_p50_syn menu ['gpt-4-0314', 'gpt-4-0613'] mu [0.5053 0.4947] N 472
+                   max_act      max_wrong     
+eps                   0.05 0.10      0.05 0.10
+design                                        
+active_cvl:syn0.1      1.0  1.0       0.0  0.0
+active_cvl:syn0.2      1.0  1.0       0.0  0.0
+active_cvl:syn0.3      1.0  1.0       0.0  0.0
+active_cvl:syn0.4      1.0  1.0       0.0  0.0
+active_cvl:syn0.5      1.0  1.0       0.0  0.0
+active_cvl:syn0.6      1.0  1.0       0.0  0.0
+active_cvl:syn0.7      1.0  1.0       0.0  0.0
+active_cvl:syn0.8      1.0  1.0       0.0  0.0
+active_cvl:syn0.9      1.0  1.0       0.0  0.0
+uniform                1.0  1.0       0.0  0.0
+uniform_cvl:syn0.1     1.0  1.0       0.0  0.0
+uniform_cvl:syn0.2     1.0  1.0       0.0  0.0
+uniform_cvl:syn0.3     1.0  1.0       0.0  0.0
+uniform_cvl:syn0.4     1.0  1.0       0.0  0.0
+uniform_cvl:syn0.5     1.0  1.0       0.0  0.0
+uniform_cvl:syn0.6     1.0  1.0       0.0  0.0
+uniform_cvl:syn0.7     1.0  1.0       0.0  0.0
+uniform_cvl:syn0.8     1.0  1.0       0.0  0.0
+uniform_cvl:syn0.9     1.0  1.0       0.0  0.0
+arena_13_m2_p50_syn menu ['claude-instant-1', 'gpt-3.5-turbo-1106'] mu [0.5354 0.4646] N 395
+                   max_act      max_wrong     
+eps                   0.05 0.10      0.05 0.10
+design                                        
+active_cvl:syn0.1    0.727  1.0     0.047  0.0
+active_cvl:syn0.2    0.730  1.0     0.040  0.0
+active_cvl:syn0.3    0.727  1.0     0.037  0.0
+active_cvl:syn0.4    0.727  1.0     0.040  0.0
+active_cvl:syn0.5    0.737  1.0     0.037  0.0
+active_cvl:syn0.6    0.723  1.0     0.040  0.0
+active_cvl:syn0.7    0.720  1.0     0.027  0.0
+active_cvl:syn0.8    0.720  1.0     0.027  0.0
+active_cvl:syn0.9    0.727  1.0     0.027  0.0
+uniform              0.727  1.0     0.047  0.0
+uniform_cvl:syn0.1   0.723  1.0     0.047  0.0
+uniform_cvl:syn0.2   0.723  1.0     0.043  0.0
+uniform_cvl:syn0.3   0.723  1.0     0.040  0.0
+uniform_cvl:syn0.4   0.717  1.0     0.040  0.0
+uniform_cvl:syn0.5   0.723  1.0     0.040  0.0
+uniform_cvl:syn0.6   0.723  1.0     0.037  0.0
+uniform_cvl:syn0.7   0.717  1.0     0.027  0.0
+uniform_cvl:syn0.8   0.720  1.0     0.033  0.0
+uniform_cvl:syn0.9   0.723  1.0     0.030  0.0
+arena_15_m2_p50_syn menu ['gpt-3.5-turbo-0613', 'gpt-4-0613'] mu [0.4582 0.5418] N 311
+                   max_act      max_wrong     
+eps                   0.05 0.10      0.05 0.10
+design                                        
+active_cvl:syn0.1    0.750  1.0     0.043  0.0
+active_cvl:syn0.2    0.750  1.0     0.040  0.0
+active_cvl:syn0.3    0.750  1.0     0.030  0.0
+active_cvl:syn0.4    0.750  1.0     0.037  0.0
+active_cvl:syn0.5    0.747  1.0     0.037  0.0
+active_cvl:syn0.6    0.747  1.0     0.027  0.0
+active_cvl:syn0.7    0.750  1.0     0.027  0.0
+active_cvl:syn0.8    0.747  1.0     0.020  0.0
+active_cvl:syn0.9    0.750  1.0     0.010  0.0
+uniform              0.753  1.0     0.033  0.0
+uniform_cvl:syn0.1   0.750  1.0     0.033  0.0
+uniform_cvl:syn0.2   0.750  1.0     0.033  0.0
+uniform_cvl:syn0.3   0.750  1.0     0.033  0.0
+uniform_cvl:syn0.4   0.750  1.0     0.027  0.0
+uniform_cvl:syn0.5   0.747  1.0     0.037  0.0
+uniform_cvl:syn0.6   0.747  1.0     0.023  0.0
+uniform_cvl:syn0.7   0.750  1.0     0.030  0.0
+uniform_cvl:syn0.8   0.750  1.0     0.017  0.0
+uniform_cvl:syn0.9   0.747  1.0     0.013  0.0

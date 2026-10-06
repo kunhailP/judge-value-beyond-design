@@ -1,0 +1,12 @@
+__pycache__/
+data
+data/
+frontier/inputs/
+frontier/outputs/
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.log
+paper/*.out
+paper/*.pdf
+*_smoke*

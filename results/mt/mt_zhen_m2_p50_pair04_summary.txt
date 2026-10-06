@@ -1,0 +1,100 @@
+eps                                                                0.01                        0.02
+metric              design                                                                         
+HES_best_J50        chrf                          -0.054 [-0.186,0.014]       -0.249 [-0.340,0.279]
+                    comet22                       -0.012 [-0.133,0.078]       -0.231 [-0.360,0.229]
+                    inv_comet22                   -0.023 [-0.120,0.054]       -0.245 [-0.379,0.210]
+                    mistral_7b                    -0.060 [-0.175,0.036]       -0.253 [-0.440,0.133]
+                    qwen3_8b                      -0.026 [-0.097,0.040]       -0.237 [-0.359,0.200]
+HES_best_J80        chrf                            nan [-1.461,-0.000]       -0.067 [-2.818,0.237]
+                    comet22                         nan [-1.461,-0.000]       -0.067 [-2.806,0.138]
+                    inv_comet22                     nan [-1.461,-0.028]        0.003 [-1.844,0.635]
+                    mistral_7b                       nan [-1.461,0.013]        0.017 [-1.473,0.634]
+                    qwen3_8b                         nan [-1.461,0.012]        0.007 [-1.104,0.636]
+HES_uniform_J50     chrf                          -0.013 [-0.072,0.025]        0.006 [-0.256,0.043]
+                    comet22                       -0.004 [-0.051,0.039]        0.180 [-0.055,0.223]
+                    inv_comet22                   -0.003 [-0.011,0.000]        0.000 [-0.136,0.000]
+                    mistral_7b                    -0.032 [-0.089,0.019]        0.002 [-0.298,0.079]
+                    qwen3_8b                      -0.014 [-0.068,0.020]       -0.009 [-0.355,0.126]
+HES_uniform_J80     chrf                              nan [0.000,0.163]       -0.039 [-3.496,0.012]
+                    comet22                          nan [-0.008,0.166]       -0.041 [-2.699,0.069]
+                    inv_comet22                      nan [-0.008,0.000]         0.000 [0.000,0.000]
+                    mistral_7b                       nan [-0.015,0.003]       -0.001 [-0.085,0.315]
+                    qwen3_8b                         nan [-0.172,0.140]        0.012 [-0.066,0.621]
+J50                 active_cvl:chrf           299.090 [243.837,353.275]   201.504 [139.267,221.678]
+                    active_cvl:comet22        293.547 [271.694,337.608]   181.728 [155.245,205.630]
+                    active_cvl:inv_comet22    296.425 [272.035,337.833]   191.158 [156.799,216.125]
+                    active_cvl:mistral_7b     296.111 [274.202,339.522]   190.222 [137.588,212.265]
+                    active_cvl:qwen3_8b       279.647 [240.647,332.475]   185.913 [155.599,210.096]
+                    dedup                     271.322 [242.972,301.725]   162.965 [140.108,210.576]
+                    sel_accuracy              280.904 [240.184,329.937]   201.022 [135.626,217.564]
+                    sel_pilotcost             267.593 [233.382,336.266]   161.880 [141.628,202.304]
+                    sel_rho                   292.251 [241.226,334.781]   199.252 [138.322,214.626]
+                    uniform                   276.501 [247.793,298.578]   197.985 [153.315,217.291]
+                    uniform_cvl:chrf          280.100 [252.063,311.968]   196.783 [153.274,219.226]
+                    uniform_cvl:comet22       277.715 [256.721,297.798]   162.300 [149.419,213.391]
+                    uniform_cvl:inv_comet22   277.285 [247.793,301.190]   197.985 [153.685,217.291]
+                    uniform_cvl:mistral_7b    285.383 [249.735,320.924]   197.651 [153.890,213.735]
+                    uniform_cvl:qwen3_8b      280.264 [260.648,302.429]   199.830 [154.248,221.107]
+                    weighted                  273.591 [237.564,303.120]   202.951 [125.062,217.037]
+                    weighted_cvl:chrf         285.932 [248.604,326.404]   203.617 [136.587,217.293]
+                    weighted_cvl:comet22      274.450 [233.908,317.904]   200.640 [137.548,217.147]
+                    weighted_cvl:inv_comet22  277.458 [239.466,307.367]   202.951 [135.304,217.037]
+                    weighted_cvl:mistral_7b   287.736 [240.279,330.576]   204.190 [136.868,218.836]
+                    weighted_cvl:qwen3_8b     278.253 [246.634,303.891]   201.548 [139.036,216.179]
+J80                 active_cvl:chrf             nan [1029.070,1492.373]  574.101 [473.721,2700.672]
+                    active_cvl:comet22           nan [824.973,1590.697]  557.360 [396.713,2739.493]
+                    active_cvl:inv_comet22      nan [1086.269,3588.351]  582.003 [467.034,2686.381]
+                    active_cvl:mistral_7b        nan [827.606,3588.351]  564.197 [434.956,2665.308]
+                    active_cvl:qwen3_8b          nan [873.002,2542.457]  554.538 [423.853,2728.323]
+                    dedup                        nan [710.020,1196.146]  552.950 [412.325,2679.562]
+                    sel_accuracy                 nan [800.472,2660.000]  589.733 [396.929,2714.206]
+                    sel_pilotcost                nan [742.357,2660.090]  569.903 [406.153,2674.371]
+                    sel_rho                      nan [785.652,2660.000]  566.570 [412.005,2721.236]
+                    uniform                      nan [748.891,1195.439]  544.284 [418.016,2707.949]
+                    uniform_cvl:chrf             nan [739.527,1195.439]  565.376 [411.344,2735.436]
+                    uniform_cvl:comet22          nan [743.481,1195.439]  566.535 [435.575,2714.204]
+                    uniform_cvl:inv_comet22      nan [751.729,1195.439]  544.284 [418.016,2707.949]
+                    uniform_cvl:mistral_7b       nan [757.646,1195.439]  544.956 [435.441,2678.265]
+                    uniform_cvl:qwen3_8b         nan [728.858,1195.439]  537.563 [445.726,2167.065]
+                    weighted                     nan [815.643,2660.000]  551.127 [409.914,2731.507]
+                    weighted_cvl:chrf            nan [782.694,2660.000]  589.733 [391.232,2701.143]
+                    weighted_cvl:comet22         nan [801.720,2660.000]  589.733 [396.983,2714.206]
+                    weighted_cvl:inv_comet22     nan [815.643,2660.000]  551.127 [411.024,2731.507]
+                    weighted_cvl:mistral_7b      nan [799.890,2660.000]  543.406 [411.095,2739.706]
+                    weighted_cvl:qwen3_8b        nan [791.315,2660.000]  549.197 [414.511,2731.836]
+best_human          dedup                                                                          
+inflation_J50       chrf                           0.041 [-0.038,0.164]        0.256 [-0.332,0.295]
+                    comet22                        0.007 [-0.079,0.136]        0.411 [-0.227,0.398]
+                    inv_comet22                    0.020 [-0.061,0.120]        0.245 [-0.218,0.371]
+                    mistral_7b                     0.028 [-0.068,0.139]        0.255 [-0.200,0.375]
+                    qwen3_8b                       0.012 [-0.050,0.094]        0.227 [-0.289,0.322]
+inflation_J80       chrf                              nan [0.016,1.528]        0.028 [-1.899,1.558]
+                    comet22                           nan [0.024,1.528]        0.026 [-1.635,1.966]
+                    inv_comet22                       nan [0.025,1.461]       -0.003 [-0.635,1.844]
+                    mistral_7b                       nan [-0.013,1.461]       -0.018 [-0.705,1.475]
+                    qwen3_8b                         nan [-0.039,1.528]        0.006 [-0.612,1.276]
+max_wrong           ALL                                           0.047                       0.000
+pred_corr_logratio  ALL                                          -0.595                      -0.129
+save_vs_uniform_J50 dedup                          0.019 [-0.024,0.065]        0.177 [-0.019,0.256]
+                    weighted                       0.011 [-0.096,0.092]       -0.025 [-0.316,0.326]
+save_vs_uniform_J80 dedup                            nan [-0.002,0.189]       -0.016 [-2.597,0.347]
+                    weighted                        nan [-1.327,-0.001]       -0.013 [-3.466,0.371]
+ eps                 selector  regret     lo    hi oracle                                                                                                                                                                      picks
+0.01                    dedup   0.000  0.000 0.083  dedup                                                                                                                                                                           
+0.01        weighted_cvl:chrf   0.054  0.012 0.186  dedup                                                                                                                                                                           
+0.01     weighted_cvl:comet22   0.012  0.000 0.133  dedup                                                                                                                                                                           
+0.01 weighted_cvl:inv_comet22   0.023  0.000 0.143  dedup                                                                                                                                                                           
+0.01  weighted_cvl:mistral_7b   0.060  0.002 0.175  dedup                                                                                                                                                                           
+0.01    weighted_cvl:qwen3_8b   0.026  0.000 0.102  dedup                                                                                                                                                                           
+0.01             sel_accuracy   0.035 -0.005 0.174  dedup                {'weighted_cvl:comet22': 0.41, 'weighted_cvl:chrf': 0.29, 'weighted_cvl:qwen3_8b': 0.14, 'weighted_cvl:mistral_7b': 0.13, 'weighted_cvl:inv_comet22': 0.04}
+0.01                  sel_rho   0.077  0.024 0.210  dedup                {'weighted_cvl:comet22': 0.35, 'weighted_cvl:qwen3_8b': 0.31, 'weighted_cvl:chrf': 0.16, 'weighted_cvl:mistral_7b': 0.15, 'weighted_cvl:inv_comet22': 0.03}
+0.01            sel_pilotcost  -0.014 -0.067 0.155  dedup {'dedup': 0.44, 'weighted_cvl:comet22': 0.23, 'weighted_cvl:qwen3_8b': 0.18, 'weighted_cvl:mistral_7b': 0.07, 'weighted_cvl:chrf': 0.06, 'weighted_cvl:inv_comet22': 0.02}
+0.02                    dedup   0.000  0.000 0.322  dedup                                                                                                                                                                           
+0.02        weighted_cvl:chrf   0.249  0.000 0.359  dedup                                                                                                                                                                           
+0.02     weighted_cvl:comet22   0.231  0.000 0.385  dedup                                                                                                                                                                           
+0.02 weighted_cvl:inv_comet22   0.245  0.000 0.384  dedup                                                                                                                                                                           
+0.02  weighted_cvl:mistral_7b   0.253  0.005 0.498  dedup                                                                                                                                                                           
+0.02    weighted_cvl:qwen3_8b   0.237  0.000 0.439  dedup                                                                                                                                                                           
+0.02             sel_accuracy   0.234 -0.029 0.363  dedup                {'weighted_cvl:comet22': 0.41, 'weighted_cvl:chrf': 0.29, 'weighted_cvl:qwen3_8b': 0.14, 'weighted_cvl:mistral_7b': 0.13, 'weighted_cvl:inv_comet22': 0.04}
+0.02                  sel_rho   0.223 -0.012 0.388  dedup                {'weighted_cvl:comet22': 0.35, 'weighted_cvl:qwen3_8b': 0.31, 'weighted_cvl:chrf': 0.16, 'weighted_cvl:mistral_7b': 0.15, 'weighted_cvl:inv_comet22': 0.03}
+0.02            sel_pilotcost  -0.007 -0.161 0.279  dedup {'dedup': 0.57, 'weighted_cvl:comet22': 0.19, 'weighted_cvl:qwen3_8b': 0.13, 'weighted_cvl:mistral_7b': 0.05, 'weighted_cvl:chrf': 0.04, 'weighted_cvl:inv_comet22': 0.02}

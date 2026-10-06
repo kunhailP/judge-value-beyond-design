@@ -1,0 +1,10 @@
+# analysis (CPU) — versions used for every reported number
+numpy==2.1.2
+pandas==3.0.6
+scipy==1.18.1
+pyarrow==25.0.1
+sacrebleu==2.6.0
+# judges (GPU; separate environments)
+# vllm==0.10.2 (torch 2.8.0), transformers==4.57.1   -> code/arena_judge.py, code/mt_gemba.py, code/frontier_export.py
+# unbabel-comet==2.2.7                                -> code/mt_comet.py
+# openai, anthropic                                    -> code/run_frontier.py

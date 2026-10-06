@@ -17,7 +17,7 @@ ua = __import__("importlib.util").util.module_from_spec(spec); spec.loader.exec_
 R = os.path.join(HERE, "..", "results")
 rows = []
 runs = [(f, "mt") for f in sorted(glob.glob(f"{R}/mt/mt_*_m2_p50_pair*_info.json"))] + \
-       [(f, "arena") for f in sorted(glob.glob(f"{R}/arena/arena_*_m2_p*_info.json")) if "diag" not in f and "boundary" not in f]
+       [(f, "arena") for f in sorted(glob.glob(f"{R}/arena/arena_*_m2_p*_info.json")) if not any(t in f for t in ("diag", "boundary", "_syn", "_dev", "_smoke"))]
 cache = {}
 for info_f, dom in runs:
     stem = info_f[:-len("_info.json")]
@@ -25,7 +25,7 @@ for info_f, dom in runs:
     if not os.path.exists(stem + "_summary.csv"):
         continue
     S = pd.read_csv(stem + "_summary.csv"); pred = pd.read_parquet(stem + "_pred.parquet")
-    key = (dom, tuple(info["menu"]), info.get("N"))
+    key = (dom, tuple(info["menu"]), info.get("N"), tuple(info["judges"]))
     if key not in cache:
         if dom == "mt":
             lp = os.path.basename(stem).split("_")[1]

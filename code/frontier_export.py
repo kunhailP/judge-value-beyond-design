@@ -7,6 +7,9 @@ MT: the 6 best WMT submissions per language pair (MBR systems excluded) = the me
 Arena: lock v0.9 battles, both orders (id = <battle_id>|1 shows x as A, <battle_id>|2 shows y as A).
 Run with the vLLM venv (needs transformers): /root/venv_vllm/bin/python -I frontier_export.py
 """
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import DATA
 import json, os, sys
 import pandas as pd
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
@@ -16,7 +19,7 @@ import arena_prompt, mt_prompt
 OUT = os.path.join(HERE, "..", "frontier", "inputs"); os.makedirs(OUT, exist_ok=True)
 MBR = ("bleu_bestmbr", "bleurt_bestmbr", "comet_bestmbr", "chrf_bestmbr")
 for lp in ("ende", "zhen"):
-    d = pd.read_parquet(f"/root/naacl_data/mt/{lp}/pool.parquet")
+    d = pd.read_parquet(f"{DATA}/mt/{lp}/pool.parquet")
     d = d[~d.system.isin(MBR)]
     top6 = d.groupby("system").u.mean().sort_values(ascending=False).index[:6]
     d = d[d.system.isin(top6)].drop_duplicates(["seg_id", "system"])
@@ -26,7 +29,7 @@ for lp in ("ende", "zhen"):
                                     assistant_prefix="Score: "), ensure_ascii=False) + "\n")
     print(lp, len(d), "requests; systems", list(top6))
 tok = AutoTokenizer.from_pretrained("Qwen/Qwen3-8B", revision="b968826d9c46dd6066d109eabc6255188de91218")
-p = pd.read_parquet("/root/naacl_data/arena/pool_v09.parquet")
+p = pd.read_parquet(f"{DATA}/arena/pool_v09.parquet")
 n = 0
 with open(os.path.join(OUT, "arena_v09.jsonl"), "w") as f:
     for r in p.itertuples():

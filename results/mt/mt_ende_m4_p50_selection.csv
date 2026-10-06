@@ -1,0 +1,28 @@
+eps,selector,regret,lo,hi,oracle,picks
+0.005,weighted,0.01791805193272578,0.0,0.06516673606484279,weighted_cvl:comet22,
+0.005,weighted_cvl:chrf,0.014053374064883025,0.0,0.059643788424006534,weighted_cvl:comet22,
+0.005,weighted_cvl:comet22,0.0,0.0,0.025463264293389735,weighted_cvl:comet22,
+0.005,weighted_cvl:inv_comet22,0.01791805193272578,0.0,0.06516673606484279,weighted_cvl:comet22,
+0.005,weighted_cvl:mistral_7b,0.07034494462477577,0.04007407451042405,0.13907587704313085,weighted_cvl:comet22,
+0.005,weighted_cvl:qwen3_8b,0.06105410288188079,0.02865383264140488,0.12645440326010227,weighted_cvl:comet22,
+0.005,sel_accuracy,0.0013783116871326027,-0.021149581191737557,0.025565304413284806,weighted_cvl:comet22,"{'weighted_cvl:comet22': np.float64(0.68), 'weighted_cvl:chrf': np.float64(0.17), 'weighted_cvl:qwen3_8b': np.float64(0.13), 'weighted_cvl:inv_comet22': np.float64(0.01), 'weighted_cvl:mistral_7b': np.float64(0.01)}"
+0.005,sel_rho,0.032786222685413424,0.011765304652511313,0.07819783892497548,weighted_cvl:comet22,"{'weighted_cvl:comet22': np.float64(0.68), 'weighted_cvl:qwen3_8b': np.float64(0.16), 'weighted_cvl:chrf': np.float64(0.09), 'weighted_cvl:mistral_7b': np.float64(0.07)}"
+0.005,sel_pilotcost,0.02239756491590732,0.003736124068990077,0.06858068903432142,weighted_cvl:comet22,"{'weighted_cvl:comet22': np.float64(0.43), 'weighted': np.float64(0.4), 'weighted_cvl:qwen3_8b': np.float64(0.1), 'weighted_cvl:mistral_7b': np.float64(0.04), 'weighted_cvl:chrf': np.float64(0.03), 'weighted_cvl:inv_comet22': np.float64(0.0)}"
+0.01,weighted,0.04447721519064782,0.0,0.10032747324972006,weighted_cvl:comet22,
+0.01,weighted_cvl:chrf,0.02033020434551508,0.0,0.07782529427119593,weighted_cvl:comet22,
+0.01,weighted_cvl:comet22,0.0,0.0,0.0873661612996487,weighted_cvl:comet22,
+0.01,weighted_cvl:inv_comet22,0.04447721519064782,0.0,0.10032747324972006,weighted_cvl:comet22,
+0.01,weighted_cvl:mistral_7b,0.11542002535249206,0.04833806402618761,0.2683844552360096,weighted_cvl:comet22,
+0.01,weighted_cvl:qwen3_8b,0.054809098510208785,0.0005857925172082998,0.18285383809817854,weighted_cvl:comet22,
+0.01,sel_accuracy,-0.00635318885797337,-0.05632106599115916,0.06190633157637934,weighted_cvl:comet22,"{'weighted_cvl:comet22': np.float64(0.68), 'weighted_cvl:chrf': np.float64(0.17), 'weighted_cvl:qwen3_8b': np.float64(0.13), 'weighted_cvl:inv_comet22': np.float64(0.01), 'weighted_cvl:mistral_7b': np.float64(0.01)}"
+0.01,sel_rho,0.01835365670081235,-0.0009422234178562513,0.11613707126105571,weighted_cvl:comet22,"{'weighted_cvl:comet22': np.float64(0.68), 'weighted_cvl:qwen3_8b': np.float64(0.16), 'weighted_cvl:chrf': np.float64(0.09), 'weighted_cvl:mistral_7b': np.float64(0.07)}"
+0.01,sel_pilotcost,0.05337853005057728,0.010310258390445028,0.19490855549356612,weighted_cvl:comet22,"{'weighted': np.float64(0.54), 'weighted_cvl:comet22': np.float64(0.32), 'weighted_cvl:qwen3_8b': np.float64(0.07), 'weighted_cvl:mistral_7b': np.float64(0.04), 'weighted_cvl:chrf': np.float64(0.02), 'weighted_cvl:inv_comet22': np.float64(0.0)}"
+0.02,weighted,0.0,0.0,0.04062996843626176,weighted,
+0.02,weighted_cvl:chrf,0.021327331102615508,0.0,0.12559607352644034,weighted,
+0.02,weighted_cvl:comet22,0.02073841071713902,0.0,0.1572282184304727,weighted,
+0.02,weighted_cvl:inv_comet22,0.0,0.0,0.04062996843626176,weighted,
+0.02,weighted_cvl:mistral_7b,0.030988429807219216,0.008519353728735388,0.1629322748719524,weighted,
+0.02,weighted_cvl:qwen3_8b,0.014917685976963658,0.0,0.13437313795812716,weighted,
+0.02,sel_accuracy,0.023241322355414384,-0.000948626322265507,0.15414550328690604,weighted,"{'weighted_cvl:comet22': np.float64(0.68), 'weighted_cvl:chrf': np.float64(0.17), 'weighted_cvl:qwen3_8b': np.float64(0.13), 'weighted_cvl:inv_comet22': np.float64(0.01), 'weighted_cvl:mistral_7b': np.float64(0.01)}"
+0.02,sel_rho,0.027412841752540027,0.00248285201796792,0.1704914936356973,weighted,"{'weighted_cvl:comet22': np.float64(0.68), 'weighted_cvl:qwen3_8b': np.float64(0.16), 'weighted_cvl:chrf': np.float64(0.09), 'weighted_cvl:mistral_7b': np.float64(0.07)}"
+0.02,sel_pilotcost,0.013479966966140339,0.0013621167535087394,0.13103147934079035,weighted,"{'weighted': np.float64(0.76), 'weighted_cvl:comet22': np.float64(0.16), 'weighted_cvl:qwen3_8b': np.float64(0.05), 'weighted_cvl:mistral_7b': np.float64(0.02), 'weighted_cvl:chrf': np.float64(0.01)}"

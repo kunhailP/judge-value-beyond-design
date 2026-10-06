@@ -1,11 +1,14 @@
-"""Build /root/naacl_data/mt/{lp}/pool.parquet from Google's WMT22 MQM data.
+"""Build $JV_DATA/mt/{lp}/pool.parquet from Google's WMT22 MQM data.
 
-Run:  python3 -I /root/judge-audit-certification/06_naacl/code/mt_build_pool.py
-Inputs (untrusted, read-only): /root/naacl_data/mt/dl/wmt-mqm-human-evaluation/generalMT2022/{lp}/
+Run:  python3 -I code/mt_build_pool.py
+Inputs (untrusted, read-only): $JV_DATA/mt/dl/wmt-mqm-human-evaluation/generalMT2022/{lp}/
   mqm_generalMT2022_{lp}.tsv               error-level MQM annotations (scored here)
   mqm_generalMT2022_{lp}.avg_seg_scores.tsv clean hyp / source / reference(refA) text, global seg ids
   (ende only) mqm_generalMT2022_ende.3ratingsPerSegment.tsv  3-rater re-annotation -> mqm_3r, u_3r
 """
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from paths import DATA
 import csv
 import sys
 from collections import defaultdict
@@ -14,7 +17,7 @@ from concurrent.futures import ProcessPoolExecutor
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, "/root/judge-audit-certification/06_naacl/code")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from mt_common import MT_ROOT, LPS, mqm_weight, utility, strip_marks, chrf  # noqa: E402
 
 def norm(x):
