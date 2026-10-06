@@ -1,0 +1,50 @@
+eps                                                           0.005                         0.010                         0.020
+metric              design                                                                                                     
+HES_best_J50        chrf                      -0.053 [-0.074,0.070]          0.042 [-0.073,0.110]         -0.028 [-0.067,0.043]
+HES_best_J80        chrf                                                                                   0.016 [-0.103,0.154]
+HES_uniform_J50     chrf                       0.000 [-0.009,0.001]         -0.003 [-0.042,0.048]          0.019 [-0.012,0.070]
+HES_uniform_J80     chrf                                                                                   0.022 [-0.010,0.057]
+J50                 active_cvl:chrf    3586.847 [3009.957,4596.986]  2332.335 [2114.067,4868.134]  1261.113 [1173.519,1407.964]
+                    dedup              3300.890 [2946.249,4390.045]  2608.428 [2216.939,3681.226]  1249.049 [1106.267,1434.175]
+                    sel_accuracy       3476.977 [2935.577,4481.267]  2338.925 [2128.740,4366.266]  1283.496 [1145.396,1412.674]
+                    sel_pilotcost      3333.933 [2943.947,4376.639]  2442.008 [2172.107,4607.955]  1242.070 [1093.221,1399.998]
+                    sel_rho            3476.977 [2935.577,4481.267]  2338.925 [2128.740,4366.266]  1283.496 [1145.396,1412.674]
+                    uniform            3567.170 [3190.022,4681.233]  2632.924 [2287.694,3838.392]  1434.622 [1335.633,1592.582]
+                    uniform_cvl:chrf   3567.170 [3209.624,4681.233]  2639.794 [2292.569,3904.181]  1407.034 [1256.866,1550.848]
+                    weighted           3745.473 [2941.700,4540.747]  2442.008 [2172.107,4607.955]  1268.147 [1119.242,1419.538]
+                    weighted_cvl:chrf  3476.977 [2935.577,4481.267]  2338.925 [2128.740,4366.266]  1283.496 [1145.396,1412.674]
+J80                 active_cvl:chrf                                                                2921.110 [2427.061,3279.571]
+                    dedup                                                                          3092.285 [2818.307,3331.211]
+                    sel_accuracy                                                                   3043.322 [2470.993,3482.643]
+                    sel_pilotcost                                                                  3165.444 [2855.139,3450.948]
+                    sel_rho                                                                        3043.322 [2470.993,3482.643]
+                    uniform                                                                        3370.103 [3006.471,3707.627]
+                    uniform_cvl:chrf                                                               3296.906 [2994.873,3609.916]
+                    weighted                                                                       3111.487 [2468.174,3548.225]
+                    weighted_cvl:chrf                                                              3043.322 [2470.993,3482.643]
+best_human          dedup                                                                     NaN                              
+                    weighted                                    NaN                                                         NaN
+inflation_J50       chrf                       0.053 [-0.070,0.074]         -0.045 [-0.114,0.056]          0.047 [-0.022,0.117]
+inflation_J80       chrf                                                                                   0.006 [-0.132,0.125]
+max_wrong           ALL                                       0.003                         0.007                         0.000
+pred_corr_logratio  ALL                                      -0.063                         0.914                         0.878
+save_vs_uniform_J50 dedup                       0.075 [0.045,0.113]          0.009 [-0.011,0.075]           0.129 [0.082,0.175]
+                    weighted                  -0.050 [-0.056,0.073]          0.073 [-0.144,0.142]           0.116 [0.080,0.175]
+save_vs_uniform_J80 dedup                                                                                   0.082 [0.028,0.122]
+                    weighted                                                                                0.077 [0.007,0.180]
+  eps          selector  regret     lo    hi            oracle                                         picks
+0.005             dedup   0.000  0.000 0.070             dedup                                              
+0.005 weighted_cvl:chrf   0.053  0.000 0.074             dedup                                              
+0.005      sel_accuracy   0.053  0.000 0.074             dedup                    {'weighted_cvl:chrf': 1.0}
+0.005           sel_rho   0.053  0.000 0.074             dedup                    {'weighted_cvl:chrf': 1.0}
+0.005     sel_pilotcost   0.010 -0.014 0.094             dedup    {'dedup': 0.63, 'weighted_cvl:chrf': 0.37}
+0.010          weighted   0.042  0.000 0.110 weighted_cvl:chrf                                              
+0.010 weighted_cvl:chrf   0.000  0.000 0.073 weighted_cvl:chrf                                              
+0.010      sel_accuracy   0.000  0.000 0.073 weighted_cvl:chrf                    {'weighted_cvl:chrf': 1.0}
+0.010           sel_rho   0.000  0.000 0.073 weighted_cvl:chrf                    {'weighted_cvl:chrf': 1.0}
+0.010     sel_pilotcost   0.042  0.000 0.110 weighted_cvl:chrf {'weighted': 0.98, 'weighted_cvl:chrf': 0.02}
+0.020             dedup   0.000  0.000 0.043             dedup                                              
+0.020 weighted_cvl:chrf   0.028  0.000 0.067             dedup                                              
+0.020      sel_accuracy   0.028  0.000 0.067             dedup                    {'weighted_cvl:chrf': 1.0}
+0.020           sel_rho   0.028  0.000 0.067             dedup                    {'weighted_cvl:chrf': 1.0}
+0.020     sel_pilotcost  -0.006 -0.029 0.043             dedup    {'dedup': 0.82, 'weighted_cvl:chrf': 0.18}

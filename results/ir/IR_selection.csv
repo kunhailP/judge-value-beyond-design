@@ -1,0 +1,107 @@
+collection,variant,eps,selector,regret,lo,hi,oracle,pick_share
+antique,p20,0.01,weighted,0.0580136503242044,0.026860844294897213,0.08428849187057547,cvl_llm,
+antique,p20,0.01,cvl_inv,0.08136115692395167,0.06417659008844812,0.0950438729150644,cvl_llm,
+antique,p20,0.01,cvl_llm,0.0,0.0,0.011859032718673506,cvl_llm,
+antique,p20,0.01,cvl_rr,0.0025120743166301505,0.0,0.017593144595658864,cvl_llm,
+antique,p20,0.01,sel_pilot,0.0009434935132548481,-0.0043371681083658594,0.008028261811398072,cvl_llm,"{'cvl_llm': np.float64(0.57), 'cvl_rr': np.float64(0.43), 'weighted': np.float64(0.0)}"
+antique,p20,0.01,sel_argmin,0.0009379560472848353,-0.004343088432618066,0.008025658651626062,cvl_llm,"{'cvl_llm': np.float64(0.57), 'cvl_rr': np.float64(0.43), 'cvl_inv': np.float64(0.0)}"
+antique,p20,0.02,weighted,0.07838402068391105,0.05616556962051452,0.09962662430711297,cvl_llm,
+antique,p20,0.02,cvl_inv,0.06259865288090166,0.05091221068883612,0.07961496199073236,cvl_llm,
+antique,p20,0.02,cvl_llm,0.0,0.0,0.009041434523154684,cvl_llm,
+antique,p20,0.02,cvl_rr,0.001967158823942348,0.0,0.008090681380616744,cvl_llm,
+antique,p20,0.02,sel_pilot,-0.006238194523445334,-0.013507025291894001,0.005852113925316902,cvl_llm,"{'cvl_llm': np.float64(0.54), 'cvl_rr': np.float64(0.46), 'weighted': np.float64(0.0)}"
+antique,p20,0.02,sel_argmin,-0.006205576907782236,-0.013507025291894001,0.005892922193481736,cvl_llm,"{'cvl_llm': np.float64(0.54), 'cvl_rr': np.float64(0.46), 'cvl_inv': np.float64(0.0)}"
+cast19,p20,0.01,weighted,0.2110777871860183,0.17423397697572762,0.26785081377487,cvl_llm,
+cast19,p20,0.01,cvl_inv,0.15975506546312815,0.09688333919296858,0.22897324221632448,cvl_llm,
+cast19,p20,0.01,cvl_llm,0.0,0.0,0.0,cvl_llm,
+cast19,p20,0.01,cvl_rr,0.08326336259412917,0.038838045488173906,0.15274612275503746,cvl_llm,
+cast19,p20,0.01,sel_pilot,0.006543552152545739,-0.0033523877975742806,0.037430745542673914,cvl_llm,"{'cvl_llm': np.float64(0.85), 'cvl_rr': np.float64(0.15), 'weighted': np.float64(0.0)}"
+cast19,p20,0.01,sel_argmin,0.006543552152545739,-0.0033523877975742806,0.037430745542673914,cvl_llm,"{'cvl_llm': np.float64(0.85), 'cvl_rr': np.float64(0.15)}"
+cast19,p20,0.02,weighted,0.19133354192404708,0.14139853465337154,0.22980446069610358,cvl_llm,
+cast19,p20,0.02,cvl_inv,0.14286771746883561,0.10814706371582597,0.20543864946062562,cvl_llm,
+cast19,p20,0.02,cvl_llm,0.0,0.0,0.0,cvl_llm,
+cast19,p20,0.02,cvl_rr,0.055520179867656984,0.011966495117867992,0.08937557712170452,cvl_llm,
+cast19,p20,0.02,sel_pilot,0.0,-0.011125582884490684,0.004246018214987875,cvl_llm,"{'cvl_llm': np.float64(0.85), 'cvl_rr': np.float64(0.15), 'weighted': np.float64(0.01)}"
+cast19,p20,0.02,sel_argmin,0.0,-0.01112417089882527,0.00418112130373919,cvl_llm,"{'cvl_llm': np.float64(0.85), 'cvl_rr': np.float64(0.15), 'cvl_inv': np.float64(0.0)}"
+dbpedia-entity,p20,0.01,weighted,0.0958756294029925,0.05746703400953816,0.37216801156240836,cvl_llm,
+dbpedia-entity,p20,0.01,cvl_llm,0.0,0.0,0.0,cvl_llm,
+dbpedia-entity,p20,0.01,cvl_rr,0.030555492835967053,0.008996862949388458,0.29303946385199814,cvl_llm,
+dbpedia-entity,p20,0.01,sel_pilot,0.006539279522481422,-0.009707953754709288,0.26658550483732,cvl_llm,"{'cvl_llm': np.float64(0.61), 'cvl_rr': np.float64(0.39), 'weighted': np.float64(0.0)}"
+dbpedia-entity,p20,0.01,sel_argmin,0.006552904452277738,-0.009687661273751627,0.26659659590010787,cvl_llm,"{'cvl_llm': np.float64(0.61), 'cvl_rr': np.float64(0.39)}"
+dbpedia-entity,p20,0.02,weighted,0.19533568045466332,0.137352277036239,0.27228769305985223,cvl_llm,
+dbpedia-entity,p20,0.02,cvl_llm,0.0,0.0,0.009673242642148878,cvl_llm,
+dbpedia-entity,p20,0.02,cvl_rr,0.0010357451169000426,0.0,0.018749673056193072,cvl_llm,
+dbpedia-entity,p20,0.02,sel_pilot,-0.0009099246190757795,-0.008489091582555962,0.013454308992643582,cvl_llm,"{'cvl_llm': np.float64(0.61), 'cvl_rr': np.float64(0.38), 'weighted': np.float64(0.0)}"
+dbpedia-entity,p20,0.02,sel_argmin,-0.002892943257548589,-0.009317007814844909,0.009589139348133605,cvl_llm,"{'cvl_llm': np.float64(0.62), 'cvl_rr': np.float64(0.38)}"
+dl212223,p20,0.01,weighted,0.038399250810048954,0.02078242584028611,0.06361520383274788,cvl_llm,
+dl212223,p20,0.01,cvl_llm,0.0,0.0,0.0,cvl_llm,
+dl212223,p20,0.01,sel_pilot,0.007879059955735226,0.0018022865803994756,0.01818358091571734,cvl_llm,"{'cvl_llm': np.float64(0.76), 'weighted': np.float64(0.24)}"
+dl212223,p20,0.01,sel_argmin,0.0,0.0,0.0,cvl_llm,{'cvl_llm': np.float64(1.0)}
+dl212223,p20,0.02,weighted,0.03441299978424644,0.017789333907195913,0.06779690236902432,cvl_llm,
+dl212223,p20,0.02,cvl_llm,0.0,0.0,0.0,cvl_llm,
+dl212223,p20,0.02,sel_pilot,-0.00733942408294301,-0.017829744150887603,0.002154979587153698,cvl_llm,"{'cvl_llm': np.float64(0.75), 'weighted': np.float64(0.25)}"
+dl212223,p20,0.02,sel_argmin,0.0,0.0,0.0,cvl_llm,{'cvl_llm': np.float64(1.0)}
+neuclir_eng,nc,0.01,weighted,0.05255824156223786,0.028211094429331653,0.08265138004748523,cvl_llm,
+neuclir_eng,nc,0.01,cvl_inv,0.02523298823125844,0.0014918612379053856,0.04428649105110981,cvl_llm,
+neuclir_eng,nc,0.01,cvl_llm,0.0,0.0,0.00021380260378640504,cvl_llm,
+neuclir_eng,nc,0.01,cvl_rr,0.03458210545177196,0.020626302204283718,0.05763062474060277,cvl_llm,
+neuclir_eng,nc,0.01,sel_pilot,0.005832474447250375,-0.008898488680672842,0.014383161855029703,cvl_llm,"{'cvl_llm': np.float64(0.71), 'weighted': np.float64(0.15), 'cvl_rr': np.float64(0.08), 'cvl_inv': np.float64(0.05)}"
+neuclir_eng,nc,0.01,sel_argmin,0.004423662804954364,-0.005774176376039079,0.014078570229169588,cvl_llm,"{'cvl_llm': np.float64(0.74), 'cvl_rr': np.float64(0.14), 'cvl_inv': np.float64(0.11)}"
+neuclir_eng,nc,0.02,weighted,0.021352743476697536,0.005902647414632887,0.05025903465503864,cvl_llm,
+neuclir_eng,nc,0.02,cvl_inv,0.026432730496866678,0.010356967187515734,0.05482180622451656,cvl_llm,
+neuclir_eng,nc,0.02,cvl_llm,0.0,0.0,0.0,cvl_llm,
+neuclir_eng,nc,0.02,cvl_rr,0.029541501028841146,0.003566846478553757,0.0538208680603004,cvl_llm,
+neuclir_eng,nc,0.02,sel_pilot,0.0015341740089166484,-0.016213002049160735,0.012922131978873774,cvl_llm,"{'cvl_llm': np.float64(0.72), 'weighted': np.float64(0.14), 'cvl_rr': np.float64(0.09), 'cvl_inv': np.float64(0.05)}"
+neuclir_eng,nc,0.02,sel_argmin,-0.0005644872808058882,-0.012059649415837566,0.009711252203736826,cvl_llm,"{'cvl_llm': np.float64(0.75), 'cvl_rr': np.float64(0.14), 'cvl_inv': np.float64(0.11)}"
+neuclir_eng,nc10,0.01,weighted,0.038278390689915814,0.005050225802841847,0.1053882829474976,cvl_llm,
+neuclir_eng,nc10,0.01,cvl_inv,0.033158744368533624,0.012332429160471333,0.07361862627508624,cvl_llm,
+neuclir_eng,nc10,0.01,cvl_llm,0.0,0.0,0.02543271879692874,cvl_llm,
+neuclir_eng,nc10,0.01,cvl_rr,0.010383922578567172,0.0,0.05142893075969417,cvl_llm,
+neuclir_eng,nc10,0.01,sel_pilot,-0.02415021200534153,-0.056964495782605214,0.015085027891022207,cvl_llm,"{'cvl_llm': np.float64(0.65), 'weighted': np.float64(0.21), 'cvl_rr': np.float64(0.07), 'cvl_inv': np.float64(0.06)}"
+neuclir_eng,nc10,0.01,sel_argmin,-0.02636166103537159,-0.04946947732905715,-0.003838181768615126,cvl_llm,"{'cvl_llm': np.float64(0.69), 'cvl_inv': np.float64(0.17), 'cvl_rr': np.float64(0.14)}"
+neuclir_eng,nc10,0.02,weighted,0.060499514349480435,0.02284362242602533,0.09818938433523722,cvl_llm,
+neuclir_eng,nc10,0.02,cvl_inv,0.05090979406384886,0.008277372399430875,0.11449002716942197,cvl_llm,
+neuclir_eng,nc10,0.02,cvl_llm,0.0,0.0,0.003312126732128933,cvl_llm,
+neuclir_eng,nc10,0.02,cvl_rr,0.0493188629993537,0.00481006761310485,0.1021334322719476,cvl_llm,
+neuclir_eng,nc10,0.02,sel_pilot,-0.017418449351903013,-0.030084999293826905,0.00970004992473612,cvl_llm,"{'cvl_llm': np.float64(0.65), 'weighted': np.float64(0.22), 'cvl_rr': np.float64(0.07), 'cvl_inv': np.float64(0.06)}"
+neuclir_eng,nc10,0.02,sel_argmin,-0.017934131999764853,-0.0477315970617791,0.007496566624905904,cvl_llm,"{'cvl_llm': np.float64(0.69), 'cvl_inv': np.float64(0.17), 'cvl_rr': np.float64(0.15)}"
+trec-covid,ho10_covid,0.01,weighted,0.15725709204281155,0.13465063579172298,0.1763548917019149,cvl_llm,
+trec-covid,ho10_covid,0.01,cvl_llm,0.0,0.0,0.0,cvl_llm,
+trec-covid,ho10_covid,0.01,cvl_rr,0.09452634407089217,0.0757700588190417,0.10927748156936139,cvl_llm,
+trec-covid,ho10_covid,0.01,sel_pilot,-0.0005415430120885963,-0.004723008311067531,0.0018053280702090989,cvl_llm,"{'cvl_llm': np.float64(0.79), 'cvl_rr': np.float64(0.2), 'weighted': np.float64(0.01)}"
+trec-covid,ho10_covid,0.01,sel_argmin,-0.0016374875671592644,-0.005317372473192691,0.0003548868432562026,cvl_llm,"{'cvl_llm': np.float64(0.79), 'cvl_rr': np.float64(0.21)}"
+trec-covid,ho10_covid,0.02,weighted,0.1484476293468324,0.12950797127436395,0.16542007739100906,cvl_llm,
+trec-covid,ho10_covid,0.02,cvl_llm,0.0,0.0,0.0,cvl_llm,
+trec-covid,ho10_covid,0.02,cvl_rr,0.09374451324480806,0.07513975479435787,0.11002571182294477,cvl_llm,
+trec-covid,ho10_covid,0.02,sel_pilot,-0.002839973179741477,-0.005193123237189877,-0.0013561789346698647,cvl_llm,"{'cvl_llm': np.float64(0.79), 'cvl_rr': np.float64(0.2), 'weighted': np.float64(0.01)}"
+trec-covid,ho10_covid,0.02,sel_argmin,-0.002874104743682975,-0.0052128993471963125,-0.001392401572654335,cvl_llm,"{'cvl_llm': np.float64(0.8), 'cvl_rr': np.float64(0.2)}"
+trec-covid,ho_covid,0.01,weighted,0.06686642044472997,0.05477584581945819,0.07517323735747046,cvl_llm,
+trec-covid,ho_covid,0.01,cvl_llm,0.0,0.0,0.0,cvl_llm,
+trec-covid,ho_covid,0.01,cvl_rr,0.040648112812811076,0.029119426070304565,0.0461337806975427,cvl_llm,
+trec-covid,ho_covid,0.01,sel_pilot,0.0,-0.0014193544975297941,0.0007671541024378411,cvl_llm,"{'cvl_llm': np.float64(0.94), 'cvl_rr': np.float64(0.06), 'weighted': np.float64(0.0)}"
+trec-covid,ho_covid,0.01,sel_argmin,0.0,-0.0014193544975297941,0.0007671541024378411,cvl_llm,"{'cvl_llm': np.float64(0.94), 'cvl_rr': np.float64(0.06)}"
+trec-covid,ho_covid,0.02,weighted,0.0636778910483544,0.057290390661496396,0.07271621655443387,cvl_llm,
+trec-covid,ho_covid,0.02,cvl_llm,0.0,0.0,0.0,cvl_llm,
+trec-covid,ho_covid,0.02,cvl_rr,0.036165444337347155,0.031731025283979225,0.043965173128553456,cvl_llm,
+trec-covid,ho_covid,0.02,sel_pilot,0.0002915776858912024,-0.0005474847578639206,0.0008589820085606325,cvl_llm,"{'cvl_llm': np.float64(0.93), 'cvl_rr': np.float64(0.07), 'weighted': np.float64(0.0)}"
+trec-covid,ho_covid,0.02,sel_argmin,0.0002317169747367709,-0.0005827050593185406,0.0008098091325703567,cvl_llm,"{'cvl_llm': np.float64(0.93), 'cvl_rr': np.float64(0.07)}"
+webis-touche2020,ho10_touche,0.01,weighted,0.08802407066633795,0.07432992975250217,0.10147108443417412,cvl_llm,
+webis-touche2020,ho10_touche,0.01,cvl_llm,0.0,0.0,0.0,cvl_llm,
+webis-touche2020,ho10_touche,0.01,cvl_rr,0.07065165036921903,0.05962902057096576,0.08192598118642176,cvl_llm,
+webis-touche2020,ho10_touche,0.01,sel_pilot,0.0,0.0,0.0,cvl_llm,{'cvl_llm': np.float64(1.0)}
+webis-touche2020,ho10_touche,0.01,sel_argmin,0.0,0.0,0.0,cvl_llm,{'cvl_llm': np.float64(1.0)}
+webis-touche2020,ho10_touche,0.02,weighted,0.07427949162249586,0.056247992906126226,0.08758720486964187,cvl_llm,
+webis-touche2020,ho10_touche,0.02,cvl_llm,0.0,0.0,0.0,cvl_llm,
+webis-touche2020,ho10_touche,0.02,cvl_rr,0.07137578954703269,0.04951312982793374,0.08439779739219752,cvl_llm,
+webis-touche2020,ho10_touche,0.02,sel_pilot,0.0,0.0,0.0,cvl_llm,{'cvl_llm': np.float64(1.0)}
+webis-touche2020,ho10_touche,0.02,sel_argmin,0.0,0.0,0.0,cvl_llm,{'cvl_llm': np.float64(1.0)}
+webis-touche2020,ho_touche,0.01,weighted,0.03450082774668368,0.030048266644115272,0.04031901790713793,cvl_llm,
+webis-touche2020,ho_touche,0.01,cvl_llm,0.0,0.0,0.0,cvl_llm,
+webis-touche2020,ho_touche,0.01,cvl_rr,0.023018214473682408,0.01903093839696391,0.02544308935027784,cvl_llm,
+webis-touche2020,ho_touche,0.01,sel_pilot,0.0,0.0,0.0,cvl_llm,{'cvl_llm': np.float64(1.0)}
+webis-touche2020,ho_touche,0.01,sel_argmin,0.0,0.0,0.0,cvl_llm,{'cvl_llm': np.float64(1.0)}
+webis-touche2020,ho_touche,0.02,weighted,0.02666477450283314,0.023493082844546695,0.03150344920775836,cvl_llm,
+webis-touche2020,ho_touche,0.02,cvl_llm,0.0,0.0,0.0,cvl_llm,
+webis-touche2020,ho_touche,0.02,cvl_rr,0.016381906175157883,0.012925644391969126,0.02122295639652561,cvl_llm,
+webis-touche2020,ho_touche,0.02,sel_pilot,0.0,0.0,0.0,cvl_llm,{'cvl_llm': np.float64(1.0)}
+webis-touche2020,ho_touche,0.02,sel_argmin,0.0,0.0,0.0,cvl_llm,{'cvl_llm': np.float64(1.0)}
