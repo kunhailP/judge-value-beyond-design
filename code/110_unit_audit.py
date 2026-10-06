@@ -236,6 +236,8 @@ def run_draw(args):
             for bname, bg, bc in bases:
                 designs[f"{bname}_cvr:{f}"] = dict(g=bg, cost=bc, lam=f, mode="refit")    # lambda refit on pilot + all post-pilot labels (same labels)
                 designs[f"{bname}_cvx:{f}"] = dict(g=bg, cost=bc, lam=f, mode="xfit")     # lambda cross-fitted over two folds of the post-pilot sample
+                designs[f"{bname}_cvu:{f}"] = dict(g=bg, cost=bc, lam=f, mode="xfit", unweighted=True)    # cross-fitted, unweighted least squares
+                designs[f"{bname}_cvq:{f}"] = dict(g=bg, cost=bc, lam=f, mode="refit", unweighted=True)   # refit on all labels, unweighted
     z = norm.ppf(1 - ALPHA / len(comp))
     known = D[pil].sum(0)
     rows, pred = [], []
@@ -266,6 +268,8 @@ def run_draw(args):
                 var = ((1 - pi[samp])[:, None] * R[samp] ** 2 * w[:, None] ** 2).sum(0) / N ** 2
             elif mode == "refit":
                 idx = np.concatenate([pil, np.where(samp)[0]]); wv = np.concatenate([np.ones(len(pil)), w])
+                if dz.get("unweighted"):
+                    wv = np.ones_like(wv)
                 lr = wlam(D[idx], jd[idx], wv); Rr = D - lr * jd
                 est = (known + (lr * jd)[rest].sum(0) + (Rr[samp] * w[:, None]).sum(0)) / N
                 var = ((1 - pi[samp])[:, None] * Rr[samp] ** 2 * w[:, None] ** 2).sum(0) / N ** 2
@@ -275,6 +279,8 @@ def run_draw(args):
                 for fo in (True, False):
                     So = samp & (fold != fo)
                     idx = np.concatenate([pil, np.where(So)[0]]); wv = np.concatenate([np.ones(len(pil)), 1.0 / pi[So]])
+                    if dz.get("unweighted"):
+                        wv = np.ones_like(wv)
                     lam_f[fo] = wlam(D[idx], jd[idx], wv)
                 lu = np.where(fold[:, None], lam_f[True], lam_f[False])            # [N, K] unit-specific coefficient
                 Rx = D - lu * jd
