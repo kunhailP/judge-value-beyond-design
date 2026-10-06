@@ -48,13 +48,20 @@ def _synthetic(Y, rho, seed):
     vD = np.mean([np.var(Y[:, a] - Y[:, b]) for a in range(M) for b in range(a + 1, M)])
     sig = np.sqrt(vD * (1 / rho ** 2 - 1) / 2) if rho < 1 else 0.0
     return Y + sig * rng.standard_normal(Y.shape)
-def load_mt(lp, menu_k=4, menu=None, judges=("chrf",), judge_dir=None):
+def load_mt(lp, menu_k=4, menu=None, judges=("chrf",), judge_dir=None, ident="mean", ident_seed=0):
     from mt_common import load_pool, dissimilarity
     judge_dir = judge_dir or f"{DATA}/mt"
     d = load_pool(lp)
     d = d[~d.system.isin(MBR)].copy()
-    # identical output strings of a segment share one label (mean of their ratings)
-    d["u"] = d.groupby(["seg_id", "hyp"]).u.transform("mean")
+    # identical output strings of a segment share one label: the mean of their ratings (default) or, as a sensitivity
+    # check (ident="pick"), one of their ratings drawn at random, so that a shared label is a single human rating
+    if ident == "pick":
+        rng = np.random.default_rng(ident_seed)
+        d["_r"] = rng.random(len(d))
+        d["u"] = d.loc[d.groupby(["seg_id", "hyp"])._r.transform("idxmin"), "u"].to_numpy()
+        d = d.drop(columns="_r")
+    else:
+        d["u"] = d.groupby(["seg_id", "hyp"]).u.transform("mean")
     if menu is None:
         menu = d.groupby("system").u.mean().sort_values(ascending=False).index[:menu_k].tolist()
     d = d[d.system.isin(menu)]
@@ -316,11 +323,13 @@ def main():
     ap.add_argument("--bound", choices=["normal", "t"], default="normal", help="robustness: Student-t quantile with (sampled units - 1) df")
     ap.add_argument("--extra", action="store_true", help="exploratory: dedup+evaluator, refit-lambda (*_cvr) and cross-fitted-lambda (*_cvx) arms")
     ap.add_argument("--oracle", action="store_true", help="exploratory: add population-lambda arms *_cvo")
+    ap.add_argument("--ident", choices=["mean", "pick"], default="mean", help="mt sensitivity: identical strings share the mean rating or one random rating")
+    ap.add_argument("--ident_seed", type=int, default=0)
     ap.add_argument("--tag", default="")
     ap.add_argument("--out", default=os.path.join(HERE, "..", "results"))
     ap.add_argument("--procs", type=int, default=64)
     a = ap.parse_args()
-    data = load_mt(a.unit, a.menu_k, a.menu, a.judges) if a.domain == "mt" else load_arena(a.unit, a.judges)
+    data = load_mt(a.unit, a.menu_k, a.menu, a.judges, ident=a.ident, ident_seed=a.ident_seed) if a.domain == "mt" else load_arena(a.unit, a.judges)
     N = data["Y"].shape[0]
     budgets = a.budgets or sorted({int(x) for x in np.geomspace(10, N - a.pilot, 14)})
     cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, boundary_frac=a.boundary_frac, oracle=a.oracle, bound=a.bound, extra=a.extra)

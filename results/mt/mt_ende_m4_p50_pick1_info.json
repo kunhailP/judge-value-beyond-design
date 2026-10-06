@@ -1,0 +1,47 @@
+{
+ "menu": [
+  "Online-W",
+  "Online-B",
+  "JDExploreAcademy",
+  "Online-A"
+ ],
+ "N": 1315,
+ "mu": [
+  -0.03134904942965765,
+  -0.041399239543726034,
+  -0.042053231939163334,
+  -0.04779619771863098
+ ],
+ "cfg": {
+  "pilot": 50,
+  "eps": [
+   0.01,
+   0.02
+  ],
+  "budgets": [
+   10,
+   14,
+   21,
+   30,
+   44,
+   64,
+   93,
+   135,
+   196,
+   285,
+   413,
+   600,
+   871,
+   1265
+  ],
+  "seed": 20261007,
+  "boundary": false,
+  "boundary_frac": 0.9,
+  "oracle": false,
+  "bound": "normal",
+  "extra": false
+ },
+ "judges": [
+  "chrf"
+ ]
+}

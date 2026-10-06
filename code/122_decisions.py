@@ -16,6 +16,10 @@ import numpy as np, pandas as pd
 
 R = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "results")
 B = 200
+# DECISIONS_VARIANT=pick: the identical-string sensitivity runs (tag _pairmtmepick<ij>; RUN_PAIRS_MTME.sh with IDENT=pick),
+# MT only, written to results/DECISIONS_pick.*
+VAR = os.environ.get("DECISIONS_VARIANT", "")
+SFX = f"_{VAR}" if VAR else ""
 MODES = {"pilot": "cvl", "refit": "cvq", "xfit": "cvu", "oracle": "cvo"}
 
 
@@ -36,7 +40,9 @@ def j50(x, y, tau=0.5):
 def main():
     sysr = pd.read_csv(f"{R}/MTME_TABLE.csv").set_index(["lp", "metric"]).sys_pearson
     rows, cov, sel, covj = [], [], [], []
-    files = sorted(glob.glob(f"{R}/mt/mt_*_m2_p50_pairmtme*_draws.parquet")) + sorted(glob.glob(f"{R}/arena/arena_1[0-5]_m2_p50_robust2_draws.parquet"))
+    files = sorted(f for f in glob.glob(f"{R}/mt/mt_*_m2_p50_pairmtme{VAR}*_draws.parquet") if re.search(rf"pairmtme{VAR}\d\d_draws", f))
+    if not VAR:
+        files += sorted(glob.glob(f"{R}/arena/arena_1[0-5]_m2_p50_robust2_draws.parquet"))
     for f in files:
         stem = f[:-len("_draws.parquet")]
         if "/arena/" in f:
@@ -108,10 +114,10 @@ def main():
                     obs = V[0].max() - V[0].mean(); E = V[1:][ok[1:]] - V[0]
                     null = E.max(1) - E.mean(1)
                     sel.append(dict(lp=lp, pair=pair, eps=eps, mode=m, gap=obs, null_med=np.median(null), p=float((null >= obs).mean())))
-    T = pd.DataFrame(rows); T.to_csv(f"{R}/DECISIONS.csv", index=False)
-    C = pd.concat(cov); C.to_csv(f"{R}/DECISIONS_coverage.csv", index=False)
-    S = pd.DataFrame(sel); S.to_csv(f"{R}/DECISIONS_selection_noise.csv", index=False)
-    pd.DataFrame(covj).to_csv(f"{R}/DECISIONS_coverage_at_J50.csv", index=False)
+    T = pd.DataFrame(rows); T.to_csv(f"{R}/DECISIONS{SFX}.csv", index=False)
+    C = pd.concat(cov); C.to_csv(f"{R}/DECISIONS_coverage{SFX}.csv", index=False)
+    S = pd.DataFrame(sel); S.to_csv(f"{R}/DECISIONS_selection_noise{SFX}.csv", index=False)
+    pd.DataFrame(covj).to_csv(f"{R}/DECISIONS_coverage_at_J50{SFX}.csv", index=False)
     report(T, C, S)
 
 
@@ -161,7 +167,7 @@ def report(T, C, S):
     md += ["", "## Post-hoc best evaluator vs selection noise (informative decisions)", "",
            Si.groupby("mode").agg(cells=("p", "size"), gap_median=("gap", "median"), null_median=("null_med", "median"),
                                   share_p_below_05=("p", lambda x: (x < .05).mean())).round(3).to_markdown()]
-    CJ = pd.read_csv(f"{R}/DECISIONS_coverage_at_J50.csv").dropna(subset=["cover"])
+    CJ = pd.read_csv(f"{R}/DECISIONS_coverage_at_J50{SFX}.csv").dropna(subset=["cover"])
     CJ["mode"] = CJ["mode"].map(lab)
     md += ["", "## Coverage at the budget nearest each design's J50 (all decisions with a finite J50; nominal 0.90)", "",
            CJ.groupby("mode").cover.agg(["count", "mean", "median", lambda x: (x < 0.85).mean()]).rename(columns={"<lambda_0>": "share_below_0.85"}).round(3).to_markdown()]
@@ -170,7 +176,7 @@ def report(T, C, S):
     C["bq"] = pd.qcut(C.groupby(["lp", "pair"]).budget.rank(method="dense"), 3, labels=["small", "medium", "large"])
     tab = C.groupby(["mode", "bq"], observed=True).cover.agg(["mean", "min"]).unstack()
     md += [tab.round(3).to_markdown(), ""]
-    open(f"{R}/DECISIONS.md", "w").write("\n".join(md)); print("\n".join(md))
+    open(f"{R}/DECISIONS{SFX}.md", "w").write("\n".join(md)); print("\n".join(md))
 
 
 if __name__ == "__main__":

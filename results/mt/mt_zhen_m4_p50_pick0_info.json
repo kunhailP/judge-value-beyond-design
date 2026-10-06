@@ -1,0 +1,47 @@
+{
+ "menu": [
+  "Lan-Bridge",
+  "Online-B",
+  "LanguageX",
+  "JDExploreAcademy"
+ ],
+ "N": 1875,
+ "mu": [
+  -0.09770239999999993,
+  -0.10582826666666627,
+  -0.10694613333333293,
+  -0.1115455999999995
+ ],
+ "cfg": {
+  "pilot": 50,
+  "eps": [
+   0.01,
+   0.02
+  ],
+  "budgets": [
+   10,
+   14,
+   22,
+   33,
+   49,
+   74,
+   110,
+   165,
+   246,
+   367,
+   548,
+   819,
+   1222,
+   1825
+  ],
+  "seed": 20261007,
+  "boundary": false,
+  "boundary_frac": 0.9,
+  "oracle": false,
+  "bound": "normal",
+  "extra": false
+ },
+ "judges": [
+  "chrf"
+ ]
+}

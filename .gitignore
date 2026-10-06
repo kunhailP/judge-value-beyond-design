@@ -11,3 +11,5 @@ paper/*.out
 paper/*.pdf
 *_smoke*
 results/*.log
+# identical-string sensitivity: pilot-prediction records not used by 122_decisions.py (regenerable)
+results/mt/*_pairmtmepick*_pred.parquet

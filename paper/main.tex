@@ -37,7 +37,7 @@ by not re-rating identical outputs; 41--56\% in retrieval); the post-hoc best ev
 Realised savings follow $\rho^2(1-P/J)$, so they are a property of the regime as much as of the evaluator: with
 decision-level $\rho\le0.43$ and a pilot that takes up to two thirds of the cost, this ceiling is below 5\% in 94\% of
 cases, and even a negligible pilot would leave it at $\rho^2\le0.19$. Freezing the correction coefficient on a 50-item pilot
-costs a further 2.5--4.3 points, which refitting on all labels removes in our simulations with nominal coverage.
+costs a further 2.5--4.3 points, which refitting on all labels removes in our simulations, with average coverage near nominal.
 \end{abstract}
 
 \section{Introduction}
@@ -101,7 +101,8 @@ mean for any evaluator; its variance is estimated by $\sum_S(1-\pi_i)R_i^2/(\pi_
 strings included, as in WMT22's own MQM campaign, which rated each system's output separately (42\% of en$\to$de and
 18\% of zh$\to$en rated outputs share their string with another system's output, and 26\% of such groups received
 different scores). We treat those differences as rater noise around one quality per string, so the estimand averages
-the ratings of identical strings and their paired difference is zero by definition (Limitations). \emph{Dedup}: uniform over items where some
+the ratings of identical strings and their paired difference is zero by definition; sharing one randomly chosen rating
+instead leaves the design savings essentially unchanged (Limitations, App.~\ref{app:sens}). \emph{Dedup}: uniform over items where some
 competitor's output differs from the candidate's, identical strings rated once, and $D_j=0$ used exactly where outputs
 coincide. \emph{Weighted}: as dedup, with items sampled in proportion to a label-free proxy of $|D|$ (in retrieval the
 closed-form decision weight of each document; in MT $\sqrt{\sum_j\hat\sigma^2_j(b)}$, with $\hat\sigma^2_j(b)$ the pilot
@@ -152,7 +153,9 @@ first-ranked system's lead over each of the other three (2.3--3.5 standard error
 quantity that governs a control variate is the correlation $\rho$ of per-item paired differences, and it is low
 everywhere: 0.30--0.38 for the best metrics on en$\to$de (mean over the menu's pairs), 0.21--0.25 on zh$\to$en, and 0.17--0.29 for COMET-22 and the
 Qwen3-8B GEMBA judge (system-level 0.97--0.99; here medians over pairs of the top-6 systems), while the Mistral-7B GEMBA
-judge reaches only 0.04--0.09. Realised HES over the best judge-free baseline lies between $-10\%$ and $+7\%$ for
+judge reaches only 0.04--0.09. Part of this is label noise: in the en$\to$de three-rater re-annotation, two raters'
+paired differences on the same items correlate only 0.31--0.41, so even a perfect evaluator would reach $\rho\approx0.59$
+against the single ratings an audit collects; the best metrics attain one half to two thirds of that (App.~\ref{app:sens}). Realised HES over the best judge-free baseline lies between $-10\%$ and $+7\%$ for
 every metric and cell. Across metrics, HES is ranked slightly better by $\rho$ than by system-level Pearson (Spearman 0.39 vs.\
 0.36 on en$\to$de, 0.22 vs.\ 0.07 on zh$\to$en; H11), but neither predicts it well among real metrics, because all of
 them sit in the region where the saving is small (\S\ref{sec:law}).
@@ -179,10 +182,10 @@ the open judges, 4/4). Most of the MT design saving is deduplication: not re-rat
 \paragraph{Across 30 decisions.} Four cells are few, and their Monte-Carlo intervals are wide. We therefore repeated
 the comparison (exploratory, post-lock) on every two-system decision among the top six WMT22 systems of each language
 pair: 30 decisions, two $\eps$ each, all 31 metric variants, COMET-22 and both GEMBA judges (Figure~\ref{fig:decisions}).
-In 33 of the 60 cells, from 19 decisions, at least 30\% of the uniform-sampling cost falls after the pilot; in the others
+In 33 of the 60 cells, from 19 decisions (4 en$\to$de and 29 zh$\to$en cells), at least 30\% of the uniform-sampling cost falls after the pilot (any threshold from 0.22 to 0.47 selects the same cells; App.~\ref{app:sens}); in the others
 the pilot nearly settles the decision and nothing can save much. Over these 33 cells the judge-free design saves a
 median 5.5\% (interquartile range 3--10\%), and the mean evaluator a median $-0.1\%$ with the pilot coefficient, 1.6\%
-refitted and 0.4\% cross-fitted (means over cells $-0.9\%$, 1.4\% and $-0.1\%$); the design saves more than the mean evaluator in 94\%, 82\% and 91\% of the cells. The best evaluator
+refitted and 0.4\% cross-fitted (means over cells $-0.9\%$, 1.4\% and $-0.1\%$); the design saves more than the mean evaluator in 94\%, 82\% and 91\% of the cells (91\%, 76\% and 79\% for the ten evaluators with the highest system-level correlation). The best evaluator
 chosen post hoc beats the design in about half of them, but its lead over the mean evaluator (median 5.0, 4.6 and 4.3 points under the three rules) is what
 picking the largest of 34 equally good evaluators produces under the Monte-Carlo noise (4.8, 4.4 and 4.3 points, from
 the bootstrap deviations, which are correlated across evaluators); the lead is significant at 0.05 in at most 6\% of the
@@ -304,16 +307,12 @@ pilot becomes most of the cost.
 
 \section{Chat: close pairs and presentation order}\label{sec:arena}
 For the six close Arena pairs the pairwise judges reach (pilot-median) decision-level $\rho$ between $-0.01$ and 0.29, and the length heuristic 0.07--0.21. The best judge saves at least
-5\% with an interval above zero in two pairs (Figure~\ref{fig:arena}a; H6 required three). Position bias explains part of
+5\% with an interval above zero in two pairs (Figure~\ref{fig:arena}a in App.~\ref{app:arena}; H6 required three). Position bias explains part of
 the low $\rho$: one presentation order gives $\rho$ of 0.19 (Qwen3-8B) and 0.12 (Mistral-7B), both orders averaged 0.25 and
 0.16, turning Mistral's saving from $-1$ to $-2\%$ into $+0.5\%$ (diagnostic runs with $\eps=0.02$ added to the locked
 grid; averaging is also an ensemble). The bias itself is corrected by the human labels; the noise it adds lowers $\rho$.
 
-\begin{figure*}[t]\centering
-\includegraphics[width=\textwidth]{figures/F4_arena.pdf}
-\caption{(a) HES over uniform sampling of three evaluators on six close LMArena pairs ($\Delta$: human win-rate gap;
-pilot 50, $\eps=0.05$; 95\% intervals). (b) Decision-level $\rho$ with one presentation order and with both orders averaged.}\label{fig:arena}
-\end{figure*}
+
 
 \section{Pre-registered outcomes and validity}\label{sec:prereg}
 Table~\ref{tab:prereg} lists every pre-registered hypothesis. The design-dominance and estimation-tax hypotheses held;
@@ -390,10 +389,12 @@ the decision value we measure. HES depends on the pilot size, and larger pilots
 lower the estimation tax while raising the fixed cost (\S\ref{sec:law}). The results should not be read as showing
 that automatic evaluators are useless: they concern close decisions, small human pilots and evaluators with
 decision-level $\rho\le0.43$; by the cost law, an evaluator with $\rho\approx0.8$ would save about a third of the labels with our pilots, and more
-with a smaller pilot share. Uncertainty is Monte-Carlo over simulated audits of one fixed test set per language pair;
+with a smaller pilot share, but against single WMT22 ratings label noise caps $\rho$ near 0.6 (App.~\ref{app:sens}), so such
+savings also require more reliable human labels. Uncertainty is Monte-Carlo over simulated audits of one fixed test set per language pair;
 items and raters are not resampled. We report $\Jt$; at 80\% power savings differ and are often censored by the budget
-grid (Appendix~\ref{app:robust}). The estimand treats identical strings as one quality; under the as-rated estimand their
-rating noise would be variance that deduplication does not remove. The retrieval evidence rests on a companion study
+grid (Appendix~\ref{app:robust}). The estimand treats identical strings as one quality; sharing one random rating per string
+instead leaves the design savings essentially unchanged (App.~\ref{app:sens}), but under an as-rated estimand, in which identical
+strings may differ in quality, their rating noise would be variance that deduplication does not remove. The retrieval evidence rests on a companion study
 under review.
 
 \bibliography{refs}
@@ -438,6 +439,35 @@ above $\alpha$. Evaluator-driven allocation (sampling by the pilot-estimated res
 variance, as in active inference) reduced $\Jt$ relative to the weighted design with the same evaluator by $-1.6\%$ to
 $+1.7\%$ on average over the 31 metric variants (individual cells $-11\%$ to $+19\%$).
 
+\section{Sensitivity of the decision analysis and a human noise ceiling}\label{app:sens}
+All exploratory and post-lock (\texttt{code/123\_decision\_sensitivity.py}, \texttt{code/124\_human\_ceiling.py}).
+
+\paragraph{Informativeness threshold.} The post-pilot share $1-P/J$ of the 60 MT cells takes no value between 0.21 and
+0.47, so every threshold in that range selects the same 33 cells. With a threshold of 0.2 (34 cells), 0.5 (30) or 0.6
+(23; one en$\to$de cell) the design's median saving is 5.4, 5.8 and 5.2\%, the mean evaluator's refitted HES 1.5, 1.5 and
+1.7\%, and the design beats the mean evaluator in 94/82/91, 93/83/90 and 91/78/87\% of cells (pilot/refit/cross-fit).
+
+\paragraph{Evaluator set.} Restricting the mean to the ten evaluators per language pair with the highest system-level
+Pearson, chosen without reference to any decision, raises the mean evaluator's median HES on the 33 cells to 0.6, 2.8 and
+1.8\% (pilot, refit, cross-fit); the design still saves more in 91, 76 and 79\% of cells.
+
+\paragraph{One rating per identical string.} WMT22 rated identical strings separately, and our estimand averages their
+ratings. To check that the deduplication saving does not depend on this averaging, each group of identical strings
+instead shares one of its ratings, drawn at random (\texttt{--ident pick}). In the four locked cells the best fixed design
+then saves 17.0, 8.5, 9.2 and 12.2\% (means over three draws of the shared rating; ranges 15.5--18.4, 7.9--8.8, 7.9--10.0
+and 11.0--13.9) instead of 15.9, 9.0, 8.4 and 8.5\%. Over the 30 decisions (again 33 informative cells) the design's median saving is 5.2\% instead of 5.5\%, the mean
+evaluator's median HES $-0.6$, 1.4 and 0.1\% (pilot, refit, cross-fit) instead of $-0.1$, 1.6 and 0.4\%, and the design
+beats it in 91, 85 and 91\% of the cells instead of 94, 82 and 91\%. The deduplication saving therefore does not rest on
+the averaging.
+
+\paragraph{Human noise ceiling.} WMT22 re-annotated en$\to$de with three raters per item. For each of the 15 pairs of the
+top six systems, the paired differences of two distinct raters (drawn at random per item, 200 repetitions) correlate
+0.31--0.41 (median 0.35; the same without identical outputs). Since the audits' labels are single ratings, an evaluator
+that knew the true difference would reach at most $\rho\approx\sqrt{0.35}=0.59$ (0.55--0.64 per pair) against them, and
+$\rho^2\approx0.35$ caps its tax-free saving at about a third of the post-pilot labels. The best en$\to$de metrics
+($\rho$ 0.30--0.38) reach one half to two thirds of that ceiling, and their $\rho^2$ a quarter to two fifths of it, so
+both label noise and the evaluators limit the saving.
+
 \section{Pre-registration record}\label{app:prereg}
 Lock v0.8 (MT, chat; hypotheses H1--H5 and validity) was committed before any LLM or COMET judgment was joined with a
 human label; the human-only MT designs and chrF had been examined in development and are reported as such. Two
@@ -448,5 +478,13 @@ any of its savings were computed; H10 as locked uses $(\bar\rho)^2$ and is repor
 correlations as a post-lock robustness check, and H9's interval is a metric-level bootstrap. Lock v1.0 (frontier
 judges) is committed with its exported inputs and scoring rule and has not been run. Analyses not listed in a lock
 (three-level anatomy, oracle-$\lambda$ tax for open judges, presentation order, semi-synthetic $\rho$) are exploratory.
+
+\section{Chat audits}\label{app:arena}
+Figure~\ref{fig:arena} shows the six close LMArena pairs of lock v0.9 (\S\ref{sec:arena}).
+\begin{figure*}[h]\centering
+\includegraphics[width=\textwidth]{figures/F4_arena.pdf}
+\caption{(a) HES over uniform sampling of three evaluators on six close LMArena pairs ($\Delta$: human win-rate gap;
+pilot 50, $\eps=0.05$; 95\% intervals). (b) Decision-level $\rho$ with one presentation order and with both orders averaged.}\label{fig:arena}
+\end{figure*}
 
 \end{document}
