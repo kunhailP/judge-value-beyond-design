@@ -28,7 +28,8 @@
 ## C. Computational experiments — Yes
 * **C1 Parameters and compute.** Judges: Qwen3-8B (8B), Mistral-7B (7B), Qwen3-Reranker (0.6B), COMET-22 (~0.6B), run with
   vLLM 0.10.2 / unbabel-comet 2.2.7 on one RTX 3090 (24 GB): about 2 GPU-hours in total. Audits: CPU only, about 20
-  CPU-hours on a 256-core machine.
+  CPU-hours on a 256-core machine for the locked and exploratory runs, plus about 500 CPU-hours for the pre-submission
+  variants (2,000 audits per cell, pilots of 25 and 10, four bins; `code/RUN_PAIRS_EXTRA.sh`).
 * **C2 Experimental setup and hyperparameters.** Yes — §2–§3 and the locks: α = 0.10, ε grids, pilots, budget grids, seeds,
   prompts (repository `code/arena_prompt.py`, `code/mt_prompt.py`), temperature 0, the λ ≥ 0 rule.
 * **C3 Descriptive statistics.** Yes — paired-bootstrap 95% intervals over 300 audits per cell; Monte-Carlo checks of the
