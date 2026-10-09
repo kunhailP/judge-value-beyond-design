@@ -12,7 +12,8 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
   0.31–0.41 (3-rater re-annotation), so a perfect evaluator would reach ρ ≈ 0.59 against the single ratings the audits use
   (`code/124_human_ceiling.py`, `results/HUMAN_CEILING.md`).
 * **The design takes most of the saving.** Against the best fixed judge-free design (skip known-zero differences, label
-  shared outputs once, sample by a label-free proxy of |D|), the best of the 31 metrics, chosen post hoc, adds at most 7%;
+  shared outputs once, sample by a label-free proxy of |D|), the best of the 31 metrics, chosen post hoc, adds at most 7%
+  with the pilot-fixed coefficient (refitted on all labels: up to 15% in one cell, `results/LOCKED_VARIANTS.md`);
   the design itself saves 8–16% (MT) and 41–57% (retrieval) of uniform sampling's human labels (pre-registered H1, H8: 4/4).
 * **Committing to the coefficient early has a price, not the evaluator.** Fitting the correction coefficient on a 50-item
   pilot and freezing it costs 4.3 [3.5, 5.2] (en→de) and 2.5 [2.0, 3.1] (zh→en) points over the 31 metrics (H9).
