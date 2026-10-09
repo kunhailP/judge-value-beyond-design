@@ -13,3 +13,18 @@ paper/*.pdf
 results/*.log
 # identical-string sensitivity: pilot-prediction records not used by 122_decisions.py (regenerable)
 results/mt/*_pairmtmepick*_pred.parquet
+# pre-submission variants of the 30 decisions (pilot 25/10, four bins, 2,000 audits): per-draw and pilot-prediction
+# records are regenerable (code/RUN_PAIRS_EXTRA.sh); the summaries results/EXCLUSION_*.csv|md and VARIANTS.md are kept
+results/mt/*_pairmtmep25*_draws.parquet
+results/mt/*_pairmtmep25*_pred.parquet
+results/mt/*_pairmtmep10*_draws.parquet
+results/mt/*_pairmtmep10*_pred.parquet
+results/mt/*_pairmtmeb4*_draws.parquet
+results/mt/*_pairmtmeb4*_pred.parquet
+results/mt/*_pairmtmen2000*_draws.parquet
+results/mt/*_pairmtmen2000*_pred.parquet
+results/mt/*_mtmex_draws.parquet
+results/mt/*_mtmex_pred.parquet
+results/mt/*_mtmeb4_draws.parquet
+results/mt/*_mtmeb4_pred.parquet
+results/*.log

@@ -33,7 +33,8 @@ evaluator quality turns out to depend on the level at which it is measured: metr
 0.93--0.99 reach correlations of only 0.11--0.38 on the paired differences a close decision depends on. Correspondingly,
 over 33 informative cells from 19 two-system MT decisions, the mean of 34 evaluators saves a median 0--2\% of human
 labels on top of a judge-free design, which itself saves a median 5.5\% (8--16\% in the four pre-registered cells, mostly
-by not re-rating identical outputs; 41--56\% in retrieval); the post-hoc best evaluator's lead is within selection noise.
+by not re-rating identical outputs; 41--56\% in retrieval); the post-hoc best evaluator's lead is within selection noise,
+and with 2,000 simulated audits per cell a 10\% saving is ruled out for 94\% of decision--evaluator pairs.
 Realised savings follow $\rho^2(1-P/J)$, so they are a property of the regime as much as of the evaluator: with
 decision-level $\rho\le0.43$ and a pilot that takes up to two thirds of the cost, this ceiling is below 5\% in 94\% of
 cases, and even a negligible pilot would leave it at $\rho^2\le0.19$. Freezing the correction coefficient on a 50-item pilot
@@ -48,34 +49,47 @@ under such a correction is now measured directly \citep{boyeau2024autoeval,chen2
 propose to rank MT metrics by the annotation they save (PPSR), which is governed by the squared correlation between
 human and metric score \emph{differences}.
 
-We ask what that saving amounts to for the decision an evaluation is usually run for. A team has a short list of strong
-systems that are close in quality, and wants to certify from a human audit that the one it picks is within $\eps$ of the
-best. Three things separate this setting from the asymptotic picture. First, the decision is local: the systems that
-matter are the top few, not the whole field over which system-level correlation is computed. Second, a human audit need
-not sample uniformly: items whose paired difference is known to be zero (identical outputs, documents outside every
-system's cutoff) need no label, and others can be sampled in proportion to how much they can move the decision. Third,
-the coefficient that corrects the evaluator must itself be estimated from the few human labels the audit has.
+PPSR is already a realised quantity: \citet{gao2026ppsr} verify by resampling that, under uniform labelling with the
+coefficient fitted on the evaluation labels, the strongest WMT22 metrics save about 9--15\% of the labels a paired
+comparison needs. We do not revisit that number. We ask how much of it is left for the decision an evaluation is usually
+run for, and how much of it a competent annotation design obtains without any evaluator. A team has a short list of
+strong systems that are close in quality, and wants to certify from a human audit that the one it picks is within $\eps$
+of the best. Three things separate this setting from the asymptotic picture. First, the decision is local: the systems
+that matter are the top few, not the whole field over which system-level correlation is computed. Second, a human audit
+need not sample uniformly: items whose paired difference is known to be zero (identical outputs, documents outside every
+system's cutoff) need no label, and others can be sampled in proportion to how much they can move the decision; these labels are saved
+without any evaluator, which should be credited only with what it adds on top. Third, the
+coefficient that corrects the evaluator must itself be estimated from the few human labels the audit has, or be fitted on
+all of them at the price of a formal guarantee.
 
 \paragraph{Contributions.}
 \begin{enumerate}
-\item \textbf{A decision-level measure of evaluator value.} The human-evidence saving
+\item \textbf{A decision-level measure of evaluator value that credits the design first.} The human-evidence saving
 $\HES=1-\Jt(\text{design}+\text{evaluator})/\Jt(\text{best fixed judge-free design})$, with $\Jt$ the number of unique
 human labels, pilot included, at which the decision is certified with probability $1/2$ (\S\ref{sec:setup}).
-\item \textbf{Evaluator quality collapses across levels.} On WMT22 en$\to$de and zh$\to$en, metric variants with system-level
-Pearson 0.93--0.99 reach decision-level correlations of only 0.11--0.38 and realise HES between $-10\%$ and $+7\%$;
-10 of the 31 (system-level 0.83--0.96) rank the top-4 zh$\to$en systems in exactly reversed order (\S\ref{sec:levels}).
-\item \textbf{A judge-free design saves more than the typical evaluator.} In all four pre-registered MT cells the
-design saves more than the best of 31 metric variants adds on top of it with a pilot-fixed coefficient (8--16\% vs.\
-$\le 7\%$). Over 33 informative cells from 19 two-system MT decisions it saves more than the mean of 34 evaluators in
-82--94\% of cells under every coefficient rule; the best evaluator chosen post hoc beats it in about half, a lead
-consistent with selection noise. Retrieval: 41--56\% of uniform-sampling labels vs.\ 1--9 further points (\S\ref{sec:design}).
+\item \textbf{The design takes most of the saving; the evaluator adds little on top.} Over 33 informative cells from
+19 two-system WMT22 decisions, a judge-free design (skip known-zero differences, rate identical outputs once, sample by a
+label-free proxy) saves a median 5.5\% of uniform-sampling labels; the mean of 34 evaluators adds a median 0--2\% on the
+same design (0.6--2.8\% for the ten with the highest system-level correlation), the design saves more in 76--94\% of
+cells under every coefficient rule, and the post-hoc best evaluator's lead is selection noise. In the four
+pre-registered cells the best of 31 metric variants adds at most 7\% to a design saving of 8--16\% on the same design.
+Retrieval: 41--56\% vs.\ 1--9 further points (\S\ref{sec:design}).
+\item \textbf{What the decisions rule out.} With 2,000 simulated audits per cell, a one-sided 95\% bound on the
+evaluator's saving over the design is below 5\% in 64\% and below 10\% in 94\% of decision--evaluator pairs (refitted
+coefficient; 29\% and 88\% for the ten strongest evaluators), so the small savings are a finding, not a lack of
+precision (\S\ref{sec:design}).
+\item \textbf{Evaluator quality collapses across levels.} Metric variants with system-level
+Pearson 0.93--0.99 reach decision-level correlations of only 0.11--0.38; 10 of the 31 rank the top-4 zh$\to$en systems
+in exactly reversed order (\S\ref{sec:levels}).
 \item \textbf{Savings are capped by decision-level $\rho$ and the pilot.} With the coefficient refitted on all labels,
 realised HES follows the tax-free ceiling $\rho^2(1-P/J)$ (median deviation $-0.4$ points), which is below 5\% in 94\% of
 decision--evaluator pairs. Freezing the coefficient on a 50-item pilot costs a further 4.3 [3.5, 5.2] (en$\to$de) and
 2.5 [2.0, 3.1] (zh$\to$en) points over the 31 variants; refitting removes this tax with nominal coverage in our
-simulations, and cross-fitting only partly (\S\ref{sec:law}).
-\item \textbf{Pre-registered tests, with failures reported.} Three locks, committed within one day on public data, fixed
-hypotheses before the corresponding evaluator outputs were joined with human labels (with the limits stated in \S\ref{sec:data}); of the ten hypotheses tested, H2, H5 and H6 failed and H4 failed in chat; all are reported with their explanations (\S\ref{sec:prereg}).
+simulations, and cross-fitting only partly. Smaller pilots (25, 10 segments) do not change the picture: the mean
+evaluator then adds 0.3--0.7\% refitted and loses 3--8\% with a frozen coefficient (\S\ref{sec:law}).
+\item \textbf{Pre-registered tests, with failures reported.} Three locks fixed hypotheses before the corresponding
+evaluator outputs were joined with human labels (limits in \S\ref{sec:data}); of ten hypotheses, H2, H5 and H6 failed
+and H4 failed in chat (\S\ref{sec:prereg}).
 \end{enumerate}
 We propose no estimator: the corrected estimator is PPI++ with a pilot-fixed coefficient, and the allocation is
 active statistical inference \citep{zrnic2024active} for the decision's functional.
@@ -85,8 +99,8 @@ active statistical inference \citep{zrnic2024active} for the decision's function
 $u_m(i)$ and means $\mu_m$. An audit labels a pilot of $P$ items fully, picks the candidate $\hat m$ with the best pilot
 mean, and \emph{certifies} it if for every competitor $j$ a one-sided upper bound on $\mu_j-\mu_{\hat m}$ is at most
 $\eps$ (normal bound, Bonferroni over the $|\mathcal M|-1$ competitors, $\alpha=0.10$). A certificate is wrong if
-$\max_j\mu_j-\mu_{\hat m}>\eps$. Menus are deliberately hard: we use the full human labels only to construct them
-(the top-4 systems by human MQM, or the closest Arena pairs); menu construction is not part of the audit.
+$\max_j\mu_j-\mu_{\hat m}>\eps$. Menus are deliberately hard, built from the full human labels (the top-4 systems by MQM; the closest Arena pairs);
+their construction is not part of the audit.
 
 \paragraph{Estimator.} After the pilot, items are drawn by Poisson sampling with probabilities $\pi_i$. For
 $D_j=u_j-u_{\hat m}$ and an evaluator's predicted difference $\hat D_j$,
@@ -99,20 +113,20 @@ mean for any evaluator; its variance is estimated by $\sum_S(1-\pi_i)R_i^2/(\pi_
 
 \paragraph{Designs.} \emph{Uniform}: constant $\pi$; every menu output of a sampled item is labelled, identical
 strings included, as in WMT22's own MQM campaign, which rated each system's output separately (42\% of en$\to$de and
-18\% of zh$\to$en rated outputs share their string with another system's output, and 26\% of such groups received
-different scores). We treat those differences as rater noise around one quality per string, so the estimand averages
-the ratings of identical strings and their paired difference is zero by definition; sharing one randomly chosen rating
-instead leaves the design savings essentially unchanged (Limitations, App.~\ref{app:sens}). \emph{Dedup}: uniform over items where some
+18\% of zh$\to$en rated outputs share their string with another system's; 26\% of such groups received different
+scores). We treat those differences as rater noise around one quality per string: the estimand averages the ratings of
+identical strings, whose paired difference is then zero; sharing one random rating instead changes little (App.~\ref{app:sens}). \emph{Dedup}: uniform over items where some
 competitor's output differs from the candidate's, identical strings rated once, and $D_j=0$ used exactly where outputs
 coincide. \emph{Weighted}: as dedup, with items sampled in proportion to a label-free proxy of $|D|$ (in retrieval the
 closed-form decision weight of each document; in MT $\sqrt{\sum_j\hat\sigma^2_j(b)}$, with $\hat\sigma^2_j(b)$ the pilot
-mean of $D_j^2$ in one of four quartile bins $b$ of the chrF-based dissimilarity of the two outputs). The \emph{best fixed judge-free baseline} of a cell is the cheapest
+mean of $D_j^2$ in one of three bins $b$ of the chrF-based dissimilarity of the two outputs: below its median, its third
+and its fourth quartile; identical outputs form a fourth bin of weight zero. A four-quartile variant changes nothing of
+substance (App.~\ref{app:sens}). The \emph{best fixed judge-free baseline} of a cell is the cheapest
 of these human-only designs there; it is a benchmark, not a procedure an auditor selects. An evaluator enters as the
 control variate of (\ref{eq:est}) on top of a design.
 
 \paragraph{Cost.} $\Jt$ counts unique human labels, pilot included, at which a pre-committed budget certifies in half of
-300 simulated audits (linear interpolation over a geometric grid of 14 budgets from 10 items to the whole post-pilot
-set, ratio 1.3--1.5). The 50-segment MT pilot costs 162
+300 simulated audits (linear interpolation over a geometric grid of 14 budgets up to the whole post-pilot set). The 50-segment MT pilot costs 162
 (en$\to$de) and 182 (zh$\to$en) labels, 42--68\% of $\Jt$ on en$\to$de; an evaluator can act only on the rest, which the
 factor $1-P/J$ of \S\ref{sec:law} makes explicit. Intervals are paired bootstraps over the 300 simulated audits of a
 fixed test set: they reflect Monte-Carlo, not data-sampling, uncertainty.
@@ -126,30 +140,29 @@ plus our own COMET-22 run and Qwen3-8B \citep{yang2025qwen3} and Mistral-7B-Inst
 \textbf{Chat:} LMArena human-preference battles \citep{chiang2024arena}; the six English single-turn pairs with the
 smallest win-rate gaps among those with $\ge300$ battles (311--472 battles; gaps 0.011--0.084). Evaluators: Qwen3-8B and
 Mistral-7B as pairwise judges (both presentation orders averaged), ``the longer response wins''.
-\textbf{Retrieval:} a re-analysis of fixed-budget audits from an earlier study \citep{anonymous2026retrieval}, in which three cutoff policies over a
-shared ranked pool (an expected-F1 gate, a global score threshold and a learned truncation) are compared by precision
-at their cutoffs, $\eps$ in precision units, on four fully judged collections
+\textbf{Retrieval:} a re-analysis of fixed-budget audits from an earlier study \citep{anonymous2026retrieval}: three cutoff policies over a
+shared ranked pool (an expected-F1 gate, a score threshold, a learned truncation) compared by precision at their cutoffs,
+$\eps$ in precision units, on four fully judged collections
 (ANTIQUE, CAsT 2019, DBpedia-Entity, TREC DL 21--23; \citealp{hashemi2020antique,dalton2020cast,hasibi2017dbpedia,craswell2021dl21,craswell2022dl22,craswell2023dl23}) with Qwen3-8B (UMBRELA prompt; \citealp{upadhyay2024umbrela}) and Qwen3-Reranker-0.6B \citep{zhang2025qwen3embedding} as judges; pilot
 20 queries. MT and chat use a 50-item pilot (ablations: 100 for MT, 25 for chat), $\eps\in\{0.01,0.02\}$ (MT) and
 $\{0.05,0.1\}$ (chat).
 
 \paragraph{Pre-registration.} Lock v0.8 (MT, chat) was committed before any LLM or COMET judgment was joined with a human
-label; v0.9 replaced the uninformative v0.8 chat decision (gaps 0.10--0.56 were settled by the pilot alone) by close
-pairs before they were judged; v1.1 fixed the 31-metric test before any of its savings were computed. All locks were committed within about four hours on public data whose human labels
-exist (the WMT22 metric scores of v1.1 were public and on disk, not yet joined with any saving); before v0.8 the human-only MT designs had been run in development (they saved 8--19\% over
-uniform sampling and chrF saved about nothing, so H1 was not a blind test), and v1.1 was written after the exploratory
-estimation-tax and $\rho$-dial analyses of the open judges, so H9 tests on 31 new evaluators a phenomenon first seen
-on four. All locks, deviations and outcomes are in the supplementary material.
+label; v0.9 replaced the uninformative v0.8 chat decision (gaps 0.10--0.56, settled by the pilot alone) by close
+pairs before they were judged; v1.1 fixed the 31-metric test before any of its savings were computed. All locks were
+committed within about four hours on public data whose human labels exist; before v0.8 the human-only MT designs had
+been run in development (they saved 8--19\% over uniform sampling and chrF about nothing, so H1 was not a blind test),
+and v1.1 followed the exploratory estimation-tax analyses of the open judges, so H9 tests on 31 new evaluators a
+phenomenon first seen on four. All locks, deviations and outcomes are in the supplementary material.
 
 \section{Evaluator quality depends on the level of measurement}\label{sec:levels}
 Figure~\ref{fig:levels} places the 30 positively correlated WMT22 metric variants (REUSE omitted) on three levels against their realised HES. At the global level
 (Pearson over the 11 WMT submissions) nearly all strong metrics are above 0.9; this is the quantity metric shared tasks
 report. Among the four closest systems the ranking is fragile: MetricX-XL-DA and MetricX-XXL-DA reach system-level
-Pearson 0.994--0.995 on zh$\to$en and Kendall $\tau=0$ among the top four; BLEURT-20 reaches 0.980 and $\tau=-0.33$ (zh$\to$en). The second- and third-ranked systems differ by
+Pearson 0.994--0.995 on zh$\to$en and Kendall $\tau=0$ among the top four. The second- and third-ranked systems differ by
 only 0.0009 (en$\to$de) and 0.0017 (zh$\to$en) in utility (standard error 0.002--0.004), so $\tau=0$ can reflect fragility;
-but 10 of the 31 zh$\to$en variants (system-level Pearson 0.83--0.96, all lexical or older: BLEU, spBLEU, chrF, BERTScore,
-YiSi, SEScore, MEE) reach $\tau=-1$, which also reverses the
-first-ranked system's lead over each of the other three (2.3--3.5 standard errors). The
+but 10 of the 31 zh$\to$en variants (system-level Pearson 0.83--0.96; BLEU, spBLEU, chrF, BERTScore, YiSi, SEScore, MEE)
+reach $\tau=-1$, which also reverses the first-ranked system's lead over each of the other three (2.3--3.5 standard errors). The
 quantity that governs a control variate is the correlation $\rho$ of per-item paired differences, and it is low
 everywhere: 0.30--0.38 for the best metrics on en$\to$de (mean over the menu's pairs), 0.21--0.25 on zh$\to$en, and 0.17--0.29 for COMET-22 and the
 Qwen3-8B GEMBA judge (system-level 0.97--0.99; here medians over pairs of the top-6 systems), while the Mistral-7B GEMBA
@@ -157,8 +170,8 @@ judge reaches only 0.04--0.09. Part of this is label noise: in the en$\to$de thr
 paired differences on the same items correlate only 0.31--0.41, so even a perfect evaluator would reach $\rho\approx0.59$
 against the single ratings an audit collects; the best metrics attain one half to two thirds of that (App.~\ref{app:sens}). Realised HES over the best judge-free baseline lies between $-10\%$ and $+7\%$ for
 every metric and cell. Across metrics, HES is ranked slightly better by $\rho$ than by system-level Pearson (Spearman 0.39 vs.\
-0.36 on en$\to$de, 0.22 vs.\ 0.07 on zh$\to$en; H11), but neither predicts it well among real metrics, because all of
-them sit in the region where the saving is small (\S\ref{sec:law}).
+0.36 on en$\to$de, 0.22 vs.\ 0.07 on zh$\to$en; H11), but neither predicts it well: all real metrics sit where the
+saving is small (\S\ref{sec:law}).
 
 \begin{figure*}[t]\centering
 \includegraphics[width=\textwidth]{figures/F1_levels.pdf}
@@ -172,25 +185,38 @@ correlation; switched off by $\lambda\ge0$) is omitted.}\label{fig:levels}
 Figure~\ref{fig:waterfall} and Table~\ref{tab:main} decompose the saving over uniform sampling into the part a judge-free design obtains and the
 part the best evaluator adds on top. In retrieval, skipping documents that no comparison depends on and sampling the rest
 by decision weight saves 41--56\% of the labels of uniform sampling; the Qwen3-8B judge adds 1--9 points of that total
-(HES 3--20\% over the design). In MT, identical outputs (for a given pair of menu systems, 14--24\% of segments in the en$\to$de menu and 5--16\% in zh$\to$en) need no label,
+(HES 3--20\% over the design). In MT, identical outputs (per pair of menu systems, 14--24\% of en$\to$de and 5--16\% of zh$\to$en segments) need no label,
 and many paired MQM differences are exactly zero (53--59\% and 40--48\%); exploiting this saves 16\% (en$\to$de) and 8\%
-(zh$\to$en) at $\eps=0.01$. The best of the 31 metric variants, chosen \emph{post hoc} and therefore favoured, adds 7\% and
-$-1\%$. In all four pre-registered MT cells the design's saving exceeds the best metric's increment (H8, 4/4; H1 with
-the open judges, 4/4). Most of the MT design saving is deduplication: not re-rating identical outputs saves 13\% and
-6\% on en$\to$de and all 8\% on zh$\to$en, where proxy-weighted sampling adds nothing.
+(zh$\to$en) at $\eps=0.01$. The best of the 31 metric variants, chosen \emph{post hoc} and therefore favoured, adds 7\%
+on the same design in both language pairs, and the median metric adds nothing ($-1\%$ to $0\%$). In all four pre-registered MT cells the design's saving (8--16\%)
+exceeds the best metric's increment (1--7\%; H8, 4/4; H1 with the open judges, 4/4). Most of this is deduplication: not re-rating identical outputs saves 13\% and 6\% on en$\to$de and all 8\% on zh$\to$en.
 
 \paragraph{Across 30 decisions.} Four cells are few, and their Monte-Carlo intervals are wide. We therefore repeated
 the comparison (exploratory, post-lock) on every two-system decision among the top six WMT22 systems of each language
 pair: 30 decisions, two $\eps$ each, all 31 metric variants, COMET-22 and both GEMBA judges (Figure~\ref{fig:decisions}).
-In 33 of the 60 cells, from 19 decisions (4 en$\to$de and 29 zh$\to$en cells), at least 30\% of the uniform-sampling cost falls after the pilot (any threshold from 0.22 to 0.47 selects the same cells; App.~\ref{app:sens}); in the others
-the pilot nearly settles the decision and nothing can save much. Over these 33 cells the judge-free design saves a
+In 33 of the 60 cells, from 19 decisions (4 en$\to$de, 29 zh$\to$en), at least 30\% of the uniform-sampling cost falls
+after the pilot (any threshold from 0.22 to 0.47 selects the same cells; App.~\ref{app:sens}); in the others the pilot
+nearly settles the decision. Over these 33 cells the judge-free design saves a
 median 5.5\% (interquartile range 3--10\%), and the mean evaluator a median $-0.1\%$ with the pilot coefficient, 1.6\%
-refitted and 0.4\% cross-fitted (means over cells $-0.9\%$, 1.4\% and $-0.1\%$); the design saves more than the mean evaluator in 94\%, 82\% and 91\% of the cells (91\%, 76\% and 79\% for the ten evaluators with the highest system-level correlation). The best evaluator
+refitted and 0.4\% cross-fitted; the design saves more than the mean evaluator in 94\%, 82\% and 91\% of the cells (91\%, 76\% and 79\% for the ten evaluators with the highest system-level correlation). The best evaluator
 chosen post hoc beats the design in about half of them, but its lead over the mean evaluator (median 5.0, 4.6 and 4.3 points under the three rules) is what
-picking the largest of 34 equally good evaluators produces under the Monte-Carlo noise (4.8, 4.4 and 4.3 points, from
-the bootstrap deviations, which are correlated across evaluators); the lead is significant at 0.05 in at most 6\% of the
-cells, and in none with a refitted or cross-fitted coefficient. Only 5.5\% of MT decision--evaluator pairs have a refitted
+picking the largest of 34 equally good evaluators produces under the Monte-Carlo noise (4.8, 4.4 and 4.3 points from
+the bootstrap); it is significant at 0.05 in at most 6\% of cells, and in none with a refitted or cross-fitted coefficient. Only 5.5\% of MT decision--evaluator pairs have a refitted
 HES interval above zero.
+
+\paragraph{What the decisions rule out.} Absence of significant savings is not evidence of small ones unless the
+intervals are narrow, and with 300 simulated audits they are not: the median 95\% interval of one evaluator's HES is
+$\pm6.6$ points. We therefore re-ran the 30 decisions
+with 2,000 audits per cell (the 31 metric variants; same menus, $\eps$ and coefficient rules; Monte-Carlo error only),
+which narrows the interval to $\pm2.3$ points; 36 informative cells. The medians hold: the design saves 4.6\%,
+the mean evaluator 0.2 / 2.3 / 0.9\% (pilot / refit / cross-fit), and the design saves more in 100 / 89 / 100\% of
+cells (89 / 61 / 78\% against the mean of the ten strongest evaluators, which reaches 3.9\% refitted). With the refitted coefficient the one-sided 95\% upper bound of a single evaluator's HES over the design is below
+5\% in 64\% and below 10\% in 94\% of the 1,116 decision--evaluator pairs (29\% and 88\% for the ten evaluators with the
+highest system-level correlation; 89\% and 99\% with the pilot coefficient). For the \emph{mean} evaluator of a cell the
+bound is below 5\% in 89\% and below 10\% in 97\% of cells; the exception is one en$\to$de decision at $\eps=0.01$,
+where the mean evaluator saves 7\% (bound 13\%) and the design 14\%. Many small refitted savings are now distinguishable from zero (53\% of pairs; median 2.0\%, interquartile range
+0.8--3.6\%): real, and small. In labels, the median decision needs 246 with the best design, which saves 17 of uniform
+sampling's 256; the mean evaluator saves 6 (refitted; the ten strongest 11), the post-hoc best 17.
 
 \begin{figure*}[t]\centering
 \includegraphics[width=\textwidth]{figures/F5_decisions.pdf}
@@ -202,15 +228,15 @@ the tax-free ceiling $\rho^2(1-P/J)$ of (\ref{eq:law}), with the pilot-median $\
 \end{figure*}
 
 In retrieval, the evaluator's gain across 54 settings of an earlier study \citep{anonymous2026retrieval} correlated 0.75
-with $\rho$ and 0.03 with label accuracy. On the three collections held out there (NeuCLIRBench, TREC-COVID, Touch\'e-2020;
-\citealp{lawrie2025neuclirbench,voorhees2020treccovid,bondarenko2020touche}) the ordering of Table~\ref{tab:main} holds:
-the design saves 6--50\% of uniform-sampling labels and the judge adds HES 2--16\%; in the locked NeuCLIRBench test a
-20-query pilot over-estimated the judge's increment (cost ratio 0.71--0.76 predicted, 0.82--0.93 realised).
+with $\rho$ and 0.03 with label accuracy; on the three collections held out there (NeuCLIRBench, TREC-COVID, Touch\'e-2020;
+\citealp{lawrie2025neuclirbench,voorhees2020treccovid,bondarenko2020touche}) the design saves 6--50\% of uniform-sampling
+labels and the judge adds HES 2--16\%, and in the locked NeuCLIRBench test a 20-query pilot over-estimated the judge's
+increment (cost ratio 0.71--0.76 predicted, 0.82--0.93 realised).
 
 \begin{figure}[t]\centering
 \includegraphics[width=\columnwidth]{figures/F2_waterfall.pdf}
 \caption{Share of uniform-sampling human labels ($\Jt$) saved by the best fixed judge-free design and added by the best
-evaluator on top, both as shares of uniform-sampling labels (retrieval: Qwen3-8B, $\eps=0.02$; MT: best of 31 metric
+evaluator on the same design, both as shares of uniform-sampling labels (retrieval: Qwen3-8B, $\eps=0.02$; MT: best of 31 metric
 variants post hoc, pilot-fixed coefficient, $\eps=0.01$; e.g.\ en$\to$de's 6 points are a 7\% HES over the design).}\label{fig:waterfall}
 \end{figure}
 
@@ -222,19 +248,18 @@ IR ANTIQUE & 1{,}405 & 836 & 770 & 8\%\\
 IR CAsT 2019 & 4{,}778 & 2{,}127 & 1{,}720 & 19\%\\
 IR DBpedia-Entity & 5{,}563 & 2{,}543 & 2{,}046 & 20\%\\
 IR DL 21--23 & 4{,}092 & 1{,}783 & 1{,}722 & 3\%\\\midrule
-MT en$\to$de, $\eps$=.01 & 463 & 389 & 362 (390) & 7\% (0\%)\\
-MT en$\to$de, $\eps$=.02 & 261 & 238 & 233 (242) & 2\% ($-2$\%)\\
-MT zh$\to$en, $\eps$=.01 & 2{,}990 & 2{,}738 & 2{,}764 (2{,}838) & $-1$\% ($-4$\%)\\
-MT zh$\to$en, $\eps$=.02 & 1{,}166 & 1{,}066 & 1{,}058 (1{,}100) & 1\% ($-3$\%)\\\bottomrule
+MT en$\to$de, $\eps$=.01 & 463 & 389 (w) & 362 (390) & 7\% (0\%)\\
+MT en$\to$de, $\eps$=.02 & 261 & 238 (w) & 233 (242) & 2\% ($-2$\%)\\
+MT zh$\to$en, $\eps$=.01 & 2{,}990 & 2{,}738 (d) & 2{,}539 (2{,}760) & 7\% ($-1$\%)\\
+MT zh$\to$en, $\eps$=.02 & 1{,}166 & 1{,}066 (d) & 1{,}052 (1{,}104) & 1\% ($-4$\%)\\\bottomrule
 \end{tabular}}
-\caption{Unique human labels ($\Jt$, pilot included) for uniform sampling, the best fixed judge-free design, and that
-design with an evaluator. Retrieval: Qwen3-8B judge, $\eps=0.02$, pilot 20 queries. MT: the best of the 31 WMT22 metric variants
-chosen post hoc, and the median metric in parentheses; pilot 50 segments. MT evaluators are applied on the weighted
-design; for zh$\to$en the best fixed judge-free design is dedup, and on that matched base the best of the 11 strong evaluators
-saves 7.3\% ($\eps=0.01$) and $-0.5\%$ ($\eps=0.02$), \S\ref{sec:law}. 95\% Monte-Carlo intervals: retrieval HES
-[5, 10], [14, 24], [13, 27] and [1, 7]\%; MT design savings [8, 28], [$-11$, 16], [4, 14] and [7, 15]\%, best-metric HES
-[$-7$, 12], [$-14$, 5], [$-17$, 15] and [$-5$, 7]\%; single MT cells are therefore weak evidence, and
-Figure~\ref{fig:decisions} pools 33.}\label{tab:main}
+\caption{Unique human labels ($\Jt$, pilot included) for uniform sampling, the best fixed judge-free design, and the
+\emph{same} design with an evaluator added as control variate. Retrieval: Qwen3-8B judge, $\eps=0.02$, pilot 20 queries.
+MT: the best of the 31 WMT22 metric variants chosen post hoc, and the median metric in parentheses, on the cell's best
+fixed design (w: weighted, d: dedup); pilot 50 segments, pilot-fixed coefficient. 95\% Monte-Carlo intervals: retrieval
+HES [5, 10], [14, 24], [13, 27] and [1, 7]\%; MT design savings [10, 29], [$-13$, 15], [3, 14] and [6, 15]\%,
+best-metric HES [$-7$, 12], [$-15$, 6], [$-6$, 19] and [$-3$, 8]\%; single MT cells are therefore weak evidence, and
+Figure~\ref{fig:decisions} pools 33. The locked H8 test applied every metric on the weighted design (App.~\ref{app:sens}).}\label{tab:main}
 \end{table}
 
 \section{From correlation potential to realised saving}\label{sec:law}
@@ -252,8 +277,8 @@ $(1-\rho^2)(1+1/P_{\mathrm{eff}})$ times that of the uncorrected one and
 \end{equation}
 \end{proposition}
 Without homoskedasticity the variance of $\hat\lambda$ takes a sandwich form and the tax term changes accordingly; the
-semi-synthetic evaluators below satisfy the assumption, the real ones need not. The proposition is bookkeeping of known results, used here as an interpretive approximation rather than a new theorem;
-$\Jt$ is a median-power budget, which under the normal approximation scales with the expected variance. The first factor combines the PPI++ variance reduction $\rho^2$ \citep{angelopoulos2023ppipp} with the classical
+semi-synthetic evaluators below satisfy the assumption, the real ones need not. The proposition is bookkeeping of known results, an interpretive approximation rather than a theorem; $\Jt$ is a
+median-power budget, which under the normal approximation scales with the expected variance. The first factor combines the PPI++ variance reduction $\rho^2$ \citep{angelopoulos2023ppipp} with the classical
 inflation of a regression estimator whose coefficient is estimated \citep{cochran1977}; the second is the share of the
 cost that remains after the pilot. The derivation is in Appendix~\ref{app:law}. Equation~(\ref{eq:law}) implies that an
 evaluator with $\rho^2<1/(P_{\mathrm{eff}}+1)$ costs labels, about $\rho<0.2$ for the 50-item MT pilot, where half the
@@ -262,64 +287,61 @@ paired differences are zero.
 \paragraph{Controlled variation.} To test (\ref{eq:law}) over the whole range we built semi-synthetic evaluators, human
 utility plus Gaussian noise scaled to a target $\rho\in\{0.1,\dots,0.9\}$, and ran them through the same audits (MT
 pilots 50 and 100, three Arena pairs; 126 cells). Predicted and realised HES correlate 0.975 (mean absolute error 0.035;
-Figure~\ref{fig:dial}), but the tax-free ceiling $\rho^2(1-P/J)$ does almost as well (0.974, 0.040), and the law
-over-predicts by 0.02 on average, so this experiment supports the $\rho^2$ and dilution factors more than the tax term; the realised saving is 11\% at $\rho=0.5$ and 32\% at $\rho=0.8$. The law describes controlled
-variation of $\rho$; for the open evaluators on the two-system menus ($\rho\le0.36$), predicted and realised HES correlate only 0.20 and realised savings have an interquartile range of $-1\%$ to $+1\%$ (range $-18\%$ to $+11\%$), dominated by
-Monte-Carlo noise, and exceed the ceiling $\rho^2(1-P/J)$ by more than 0.03 in only 2--4\% of cells.
-
-\begin{figure}[t]\centering
-\includegraphics[width=\columnwidth]{figures/F3_rho_dial.pdf}
-\caption{Realised HES of semi-synthetic evaluators with a set decision-level $\rho$ (grey: individual runs) against the
-cost law (\ref{eq:law}) and its oracle-$\lambda$ ceiling. Shaded: the range of the real evaluators.}\label{fig:dial}
-\end{figure}
+Figure~\ref{fig:dial} in App.~\ref{app:dial}); the tax-free ceiling does almost as well (0.974, 0.040) and the law over-predicts by 0.02, so
+the experiment supports the $\rho^2$ and dilution factors more than the tax term. The realised saving is 11\% at
+$\rho=0.5$ and 32\% at $\rho=0.8$. For the open evaluators on the two-system menus ($\rho\le0.36$) predicted and
+realised HES correlate only 0.20: realised savings have an interquartile range of $-1\%$ to $+1\%$, dominated by
+Monte-Carlo noise, and exceed the ceiling by more than 0.03 in only 2--4\% of cells.
 
 \paragraph{The estimation tax on real metrics.} Replacing the pilot-fitted coefficient by the population-optimal one
 isolates the tax. Over the 31 metric variants it is 4.3 [3.5, 5.2] points on en$\to$de and 2.5 [2.0, 3.1] on zh$\to$en
-(metric-level bootstrap; H9). For the five metrics with the largest $\rho^2$ (0.11--0.15 on en$\to$de, both as $(\bar\rho)^2$ and as mean $\rho^2$, within the 0.09--0.15 PPSR reports),
-the realised saving over uniform sampling is between $-4\%$ and $+6\%$ (en$\to$de) and $-6\%$ and $+1\%$ (zh$\to$en), below the correlation-based saving in every cell. H10 held under the locked $(\bar\rho)^2$ definition and
-was unchanged in a post-lock robustness check with PPSR's mean of squared correlations $\overline{\rho^2}$. With the oracle coefficient the same en$\to$de metrics reach 6--12\% on the decision-aware
+(metric-level bootstrap; H9). For the five metrics with the largest $\rho^2$ (0.11--0.15 on en$\to$de, as $(\bar\rho)^2$
+or as PPSR's mean $\rho^2$, within the 0.09--0.15 PPSR reports), the realised saving over uniform sampling is between
+$-4\%$ and $+6\%$ (en$\to$de) and $-6\%$ and $+1\%$ (zh$\to$en), below the correlation-based saving in every cell (H10,
+under both definitions). With the oracle coefficient the same en$\to$de metrics reach 6--12\% on the decision-aware
 design: the asymptotic saving is not wrong, it is what an auditor who already knew $\lambda$ would obtain.
 
 \paragraph{Is the tax an artefact of freezing $\lambda$?} Mostly. Standard PPI++ fits $\lambda$ on all labelled
 items. We re-ran the eight strongest metric variants per language pair, COMET-22 and the two GEMBA judges with the
-coefficient refitted by least squares on the pilot and every post-pilot label, and cross-fitted over two folds
-(exploratory, Appendix~\ref{app:robust}). Mean HES on the weighted design rises from $+0.4\%$ (pilot coefficient) to
+coefficient refitted on the pilot and every post-pilot label, and cross-fitted over two folds (App.~\ref{app:robust}). Mean HES on the weighted design rises from $+0.4\%$ (pilot coefficient) to
 $+6.8\%$ with refitting and $+1.6\%$ with cross-fitting on en$\to$de, against $+6.7\%$ for the oracle coefficient; on
 zh$\to$en from $-0.4\%$ to $+2.0\%$ and $+1.1\%$, against $+1.3\%$; on the six chat pairs from $+1.1\%$ to $+2.3\%$ and $+1.5\%$, against $+2.1\%$. Its variance estimate ignores the coefficient's estimation
 error, but over the 30 decisions and the six chat pairs the refitted upper bound covered the true difference at 0.90
 (nominal 0.90), also at the budget nearest each design's $\Jt$, where it certifies (refit 0.902, cross-fit 0.903,
-pilot 0.903, human-only 0.904; 1.7\% of refitted cells below 0.85), and under boundary stress its largest type-I error
-was 0.05. Cross-fitting recovers less because each fold's coefficient rests on half of the labels; a practitioner who
-needs no budget plan can refit, one who wants a formal guarantee should cross-fit or freeze. Refitting can exceed the oracle because the oracle is the population least-squares
-coefficient, optimal for uniform sampling only. Across the 30 decisions (Figure~\ref{fig:decisions}b) refitted HES
+pilot 0.903, human-only 0.904), and under boundary stress its largest type-I error was 0.05. Cross-fitting recovers
+less because each fold's coefficient rests on half of the labels; a practitioner who needs no budget plan can refit,
+one who wants a formal guarantee should cross-fit or freeze. Refitting can exceed the oracle, which is the population
+least-squares coefficient, optimal for uniform sampling only. Across the 30 decisions (Figure~\ref{fig:decisions}b) refitted HES
 follows the tax-free ceiling $\rho^2(1-P/J)$ (median deviation $-0.4$ points, correlation 0.42 over 1{,}158
 decision--evaluator points), whereas with the pilot coefficient it falls a median 2.3 points below it; 94\% of the
-ceilings are below 5\%, because decision-level $\rho$ is at most 0.43 and the pilot is a median 39\% of the cost (range 15--66\%). The tax is therefore the price of committing to the coefficient before the audit (for
-instance to plan the budget), not a property of the evaluator. Refitting remains exploratory (the same labels set the
-coefficient and the inference). Even with it, on the best fixed judge-free base of the four locked cells the mean of the
-eleven is 6.9, 6.7, 4.8 and $-0.3\%$, below the design's 15.9, 9.0, 8.4 and 8.5\% (post-hoc best: 10.6, 12.1, 15.4, 1.0\%).
+ceilings are below 5\%, because decision-level $\rho$ is at most 0.43 and the pilot is a median 39\% of the cost (range 15--66\%). The tax is therefore the price of committing to the coefficient before the audit (to plan the budget, say), not a
+property of the evaluator; refitting remains exploratory (the same labels set the coefficient and the inference). Even refitted, in the four locked cells the mean of the eleven (6.9, 6.7, 4.8, $-0.3\%$) stays below the design
+(15.9, 9.0, 8.4, 8.5\%).
 
 \paragraph{Pilot size trades tax for fixed cost.} Equation~(\ref{eq:law}) predicts that a larger pilot lowers the tax
 $(1-\rho^2)/P_{\mathrm{eff}}$ but raises the fixed cost $P$. Both effects appear. Doubling the MT pilot to 100 segments
 shrinks the losses of the weak LLM judges (Mistral-7B, en$\to$de, $\eps=0.01$: $-7.1\%\to-0.9\%$) without making any
 LLM judge save more than 4\%, and halves the saving of a semi-synthetic $\rho=0.9$ evaluator (32\%$\to$15\%) because the
-pilot becomes most of the cost.
+pilot becomes most of the cost. A smaller pilot does not rescue the evaluators either: with pilots of 25 and 10 segments
+on the 30 two-system decisions (49 and 60 informative cells, now including en$\to$de; pilot share 27\% and 13\% of the
+cost; the 31 metric variants), the design saves a median 4.3\% and 4.4\%, the mean evaluator adds 0.7\% and 0.3\%
+refitted ($-2.7\%$ and $-7.7\%$ with the pilot coefficient, whose tax grows as $1/P_{\mathrm{eff}}$), and the design
+saves more in 86\% and 90\% of cells (App.~\ref{app:sens}).
 
 \section{Chat: close pairs and presentation order}\label{sec:arena}
-For the six close Arena pairs the pairwise judges reach (pilot-median) decision-level $\rho$ between $-0.01$ and 0.29, and the length heuristic 0.07--0.21. The best judge saves at least
-5\% with an interval above zero in two pairs (Figure~\ref{fig:arena}a in App.~\ref{app:arena}; H6 required three). Position bias explains part of
+On the six close Arena pairs the pairwise judges reach (pilot-median) decision-level $\rho$ of $-0.01$ to 0.29, the
+length heuristic 0.07--0.21. The best judge saves at least 5\% with an interval above zero in two pairs (Figure~\ref{fig:arena}a in App.~\ref{app:arena}; H6 required three). Position bias explains part of
 the low $\rho$: one presentation order gives $\rho$ of 0.19 (Qwen3-8B) and 0.12 (Mistral-7B), both orders averaged 0.25 and
-0.16, turning Mistral's saving from $-1$ to $-2\%$ into $+0.5\%$ (diagnostic runs with $\eps=0.02$ added to the locked
-grid; averaging is also an ensemble). The bias itself is corrected by the human labels; the noise it adds lowers $\rho$.
+0.16, turning Mistral's saving from $-1$ to $-2\%$ into $+0.5\%$ (diagnostic runs). The bias itself is corrected by the human labels; the noise it adds lowers $\rho$.
 
 
 
 \section{Pre-registered outcomes and validity}\label{sec:prereg}
 Table~\ref{tab:prereg} lists every pre-registered hypothesis. The design-dominance and estimation-tax hypotheses held;
 H2, H5 and H6 did not, and H4 held only in MT. H2 (value over uniform sampling inflated by $\ge$5 points) failed because the open judges' value was near zero on both
-baselines. H5 (selecting an evaluator by pilot-predicted cost beats selecting by pilot accuracy) did worse in both
-domains (excess cost 3.2\% vs.\ 2.3\% in MT, 2.8\% vs.\ 1.7\% in chat): near break-even, a 50-item pilot cannot resolve
-differences of a few points. H4 (pilot predicts relative design cost) held in MT (0.82) but not in chat (0.37).
+baselines; H5 (selection by pilot-predicted cost beats selection by pilot
+accuracy) did worse in both domains (excess cost 3.2\% vs.\ 2.3\% in MT, 2.8\% vs.\ 1.7\% in chat): near break-even, a
+50-item pilot cannot resolve differences of a few points. H4 (pilot predicts relative design cost) held in MT (0.82), not in chat (0.37).
 
 \begin{table}[t]\centering\footnotesize\setlength{\tabcolsep}{2.5pt}
 \resizebox{\columnwidth}{!}{\begin{tabular}{llc}\toprule
@@ -343,39 +365,40 @@ H7 and H2$'$ concern frontier judges and are recorded in Appendix~\ref{app:prere
 
 \paragraph{Validity.} Over all locked cells the observed wrong-certificate rate is at most 0.070 (Clopper--Pearson upper
 limit 0.105). Under boundary stress (the runner-up as candidate, $\eps$ at 0.9 times its regret) the largest observed
-type-I error among 882 chat cells (both chat decision sets; the maximum is on a pair of the superseded v0.8 set, 0.14 on the v0.9 set) is 0.143 at nominal 0.10; an exact binomial test per cell finds no cell significantly
-above $\alpha$ after Bonferroni correction (0.5\% of cells at $p<0.05$), and a Student-$t$ bound changes the maximum to
-0.140. These are Monte-Carlo checks of an asymptotic bound, not finite-sample guarantees.
+type-I error among 882 chat cells is 0.143 at nominal 0.10 (0.14 on the v0.9 set); no cell is significantly above
+$\alpha$ after Bonferroni correction (0.5\% of cells at $p<0.05$), and a Student-$t$ bound changes the maximum to 0.140.
+These are Monte-Carlo checks of an asymptotic bound, not finite-sample guarantees.
 
 \section{Related work}
 \paragraph{Judges and metrics as system rankers.} JuStRank \citep{gera2025justrank} and \citet{gao2025reeval} show that
 instance-level accuracy does not determine system-ranking quality and that ranking degrades for close systems;
-\citet{zhang2026utility} separate judgment quality from downstream utility. In MT, system-level correlation is driven by outlier systems
+\citet{zhang2026utility} separate judgment quality from downstream utility. In MT, system-level correlation is driven by outliers
 \citep{mathur2020tangled}, close systems are better compared by pairwise accuracy \citep{kocmi2021ship,deutsch2023ties},
-correlations restricted to close pairs are much lower \citep{deutsch2022reexamining}, and such comparisons are often
-underpowered \citep{card2020little}. We follow quality one level further, to the labels a close decision requires.
+correlations on close pairs are much lower \citep{deutsch2022reexamining}, and such comparisons are often underpowered
+\citep{card2020little}. We follow quality one level further, to the labels a close decision requires.
 \paragraph{Prediction-powered evaluation.} Control variates over human and metric scores, with modest savings \citep{chaganty2018price}; PPI and PPI++ \citep{angelopoulos2023ppi,angelopoulos2023ppipp,gligoric2024unconfident}, active
 inference \citep{zrnic2024active}, AutoEval and prediction-powered ranking on Chatbot Arena
-\citep{boyeau2024autoeval,chatzi2024ppr}, efficient noisy-judge inference \citep{chen2026noisy}, PRECISE for ranking
-metrics \citep{divekar2026precise}, and the bound of \citet{dorner2025limits} that an evaluator no better than the
-evaluated model saves at most half the labels. Closest to us, \citet{gao2026ppsr} rank WMT metrics by the annotation they
-save under prediction-powered evaluation (PPSR, the mean squared correlation of paired differences), with uniform
-labelling and the coefficient estimated on the evaluation labels. We take PPSR's quantity as the starting point and
-measure what remains of it under a decision-aware design and pilot-fixed coefficient.
-\paragraph{Annotation design.} Choosing which items humans label has long been studied for model comparison
-\citep{sawade2012active}, active testing \citep{kossen2021active} and IR test collections
-\citep{sakai2016topic,li2017active}, and within prediction-powered inference by cross-prediction
-\citep{zrnic2024cross} and stratification \citep{fisch2024stratified}. Our judge-free designs are simple instances
-(skipping known zeros, deduplication, proxy-weighted sampling), credited before the evaluator.
+\citep{boyeau2024autoeval,chatzi2024ppr}, noisy-judge inference \citep{chen2026noisy}, PRECISE \citep{divekar2026precise},
+and the bound of \citet{dorner2025limits} that an evaluator no better than the evaluated model saves at most half the labels. Closest to us, \citet{gao2026ppsr} rank WMT metrics by the annotation they
+save under prediction-powered evaluation (PPSR, the mean squared correlation of paired differences) and verify the
+saving by resampling, with uniform labelling over all systems and the coefficient estimated on the evaluation labels.
+PPSR answers which evaluator saves most; we ask whether the saving is worth having once the decision is local, the
+design is credited first and the coefficient must be fitted on a pilot, and we find that the design usually takes the
+larger share. The two are complementary: PPSR's $\rho^2$ is the first factor of our cost law.
+\paragraph{Annotation design.} Choosing which items humans label is studied for model comparison
+\citep{sawade2012active}, active testing \citep{kossen2021active}, IR test collections
+\citep{sakai2016topic,li2017active}, and within PPI by cross-prediction \citep{zrnic2024cross} and stratification
+\citep{fisch2024stratified}. Our judge-free designs are simple instances, credited before the evaluator.
 
-\section{Conclusion}
-For a close system decision, an automatic evaluator's value is set by the correlation of the differences the decision
-depends on, not by its system-level agreement, and it is diluted by the pilot's fixed cost and by what a judge-free
-design already obtains. Under these conditions WMT22 metrics and open LLM judges save between nothing and a few percent
-of human labels, and the typical evaluator saves less than organising the annotation itself, mostly by not paying twice
-for identical outputs. The savings follow $\rho^2(1-P/J)$ and can be anticipated before an audit. Reporting decision-level
-correlation next to system-level agreement, and crediting the design first, would make claims of evaluator savings
-comparable to what audits obtain.
+\section{Conclusion: three numbers to check before an audit}
+For a close system decision, an evaluator's value is set by the correlation of the differences the decision depends on,
+diluted by the pilot's fixed cost and by what a judge-free design already obtains; WMT22 metrics and open LLM judges then
+save at most a few percent of human labels, less than organising the annotation itself. The results reduce
+to a rule a team can apply before paying for an evaluator: (i) its decision-level $\rho$ on the systems at stake, from
+a prior campaign or the pilot, not its system-level agreement; (ii) the pilot's share of the cost, $P/J$, which a
+human-only pilot prediction supplies; (iii) what the judge-free design already saves, known in advance. The increment
+is at most $\rho^2(1-P/J)$, less $(1-\rho^2)/P_{\mathrm{eff}}$ of the post-pilot share if the coefficient is frozen: for
+the WMT22 metrics ($\rho\le0.43$, $P/J\approx0.4$) at most 11\%, typically 2--5\%, against design savings of 5--16\%.
 
 \section*{Limitations}
 The menus are built from full human labels to be deliberately hard; easier decisions leave less to save for any method.
@@ -460,6 +483,36 @@ evaluator's median HES $-0.6$, 1.4 and 0.1\% (pilot, refit, cross-fit) instead o
 beats it in 91, 85 and 91\% of the cells instead of 94, 82 and 91\%. The deduplication saving therefore does not rest on
 the averaging.
 
+\paragraph{Dissimilarity bins.} The weighted design bins the positive chrF dissimilarities into three groups (below the
+median, third and fourth quartile; identical outputs have weight zero). With four quartile bins instead, the design's
+$\Jt$ in the four locked cells changes by at most 0.8\% (weighted: 390 vs.\ 389, 238 vs.\ 238, 2{,}743 vs.\ 2{,}767 and
+1{,}103 vs.\ 1{,}095 labels), the best fixed design's saving by at most 0.1 points, and the best metric's increment by
+at most 1.2 points; over the 30 two-system decisions (the same 33 informative cells, 31 metric variants) the design's
+median saving is 5.5\% under both binnings and the mean evaluator's HES $-0.5$ / 1.3 / 0.2\% (pilot / refit / cross-fit)
+against $-0.1$ / 1.6 / 0.3\% with three bins (supplementary \texttt{results/VARIANTS.md}).
+
+\paragraph{Monte-Carlo precision.} With 2,000 audits per cell (31 metric variants) the informative cells are 36
+rather than 33 (en$\to$de decisions 13 and 24 at $\eps=0.01$ and zh$\to$en 05 at $\eps=0.02$ cross the 0.3 threshold,
+with post-pilot shares 0.37--0.42); the design's median saving is 4.6\% (300 audits: 5.5\%), the mean evaluator's
+0.2 / 2.3 / 0.9\% ($-0.1$ / 1.6 / 0.4\%), and for the ten strongest evaluators 1.4 / 3.9 / 2.2\% (0.6 / 2.8 / 1.8\%); the
+design saves more in 100 / 89 / 100\% of cells (89 / 61 / 78\% against the ten strongest). The one-sided bounds of
+\S\ref{sec:design} are in supplementary \texttt{results/EXCLUSION\_n2000.md}; the 300-audit runs remain the paper's
+primary analysis because they include the three LLM judges.
+
+\paragraph{Pilot size.} The 30 two-system decisions re-run with pilots of 25 and 10 segments (the 31 metric
+variants; the same menus, $\eps$ and coefficient rules). Informative cells: 49 and 60 (pilot 50: 33); pilot share of the
+cost, median: 27\% and 13\% (35\%); design saving, median: 4.3\% and 4.4\% (5.5\%); mean evaluator HES, median over
+cells, pilot / refit / cross-fit: $-2.7$ / 0.7 / 0.0\% and $-7.7$ / 0.3 / 0.0\% (pilot 50: $-0.1$ / 1.6 / 0.4\%); for the
+ten evaluators with the highest system-level correlation $-2.4$ / 2.2 / 0.0\% and $-6.8$ / 0.5 / 0.0\%; the design saves
+more than the mean evaluator in 98 / 86 / 92\% and 100 / 90 / 98\% of cells. The frozen-coefficient tax grows as the
+pilot shrinks, as (\ref{eq:law}) predicts, and refitting leaves the increment below 1\%.
+
+\paragraph{Evaluators on the weighted vs.\ the dedup base.} Lock v1.1 applied every metric on the weighted design and
+compared it with the cheapest judge-free design, which on zh$\to$en is dedup; Table~\ref{tab:main} now applies the metrics
+on that same base. On zh$\to$en at $\eps=0.01$ the best metric adds 7.3\% [$-6$, 19] on dedup against $-0.9\%$ on
+weighted; at $\eps=0.02$, 1.3\% against 0.8\%. The H8 verdict is unchanged either way, and the locked numbers are kept in
+\texttt{results/MTME\_VERDICTS.md}.
+
 \paragraph{Human noise ceiling.} WMT22 re-annotated en$\to$de with three raters per item. For each of the 15 pairs of the
 top six systems, the paired differences of two distinct raters (drawn at random per item, 200 repetitions) correlate
 0.31--0.41 (median 0.35; the same without identical outputs). Since the audits' labels are single ratings, an evaluator
@@ -478,6 +531,14 @@ any of its savings were computed; H10 as locked uses $(\bar\rho)^2$ and is repor
 correlations as a post-lock robustness check, and H9's interval is a metric-level bootstrap. Lock v1.0 (frontier
 judges) is committed with its exported inputs and scoring rule and has not been run. Analyses not listed in a lock
 (three-level anatomy, oracle-$\lambda$ tax for open judges, presentation order, semi-synthetic $\rho$) are exploratory.
+
+\section{Controlled variation of $\rho$}\label{app:dial}
+\begin{figure}[h]\centering
+\includegraphics[width=\columnwidth]{figures/F3_rho_dial.pdf}
+\caption{Realised HES of semi-synthetic evaluators with a set decision-level $\rho$ (grey: individual runs) against the
+cost law (\ref{eq:law}) and its oracle-$\lambda$ ceiling. Shaded: the range of the real evaluators.}\label{fig:dial}
+\end{figure}
+
 
 \section{Chat audits}\label{app:arena}
 Figure~\ref{fig:arena} shows the six close LMArena pairs of lock v0.9 (\S\ref{sec:arena}).

@@ -19,6 +19,14 @@ Corrections to the lock documents themselves:
 * The lock files were written with the date 2026-10-07 in their file names; they were committed on 2026-10-06
   (table above). The files were renamed without the date; their content is unchanged.
 
+Description corrected after submission review (2026-10-09; code unchanged):
+* The weighted design's `bin_index` + `np.maximum(., 1)` in `110_unit_audit.py` folds the dissimilarities below the
+  first quartile into the first bin, so the positive dissimilarities fall into three bins (below the median, third
+  quartile, fourth quartile), not the four quartile bins an earlier manuscript draft described. This has been the
+  behaviour since lock v0.8 (`a6ba3a3`); no lock specifies the number of bins. The locked runs are unchanged and the
+  manuscript now describes three bins. A four-quartile variant (`--bins 4`) is reported as a sensitivity check
+  (`results/LOCKED_VARIANTS.md`, `results/VARIANTS.md`).
+
 Judge prompt changes made before any full run (format only, decided without looking at human labels):
 * Arena prompt: final line changed to "Even if both responses are similar, you must pick one. Answer with exactly one
   letter, A or B, and nothing else." after a 100-battle smoke test in which Mistral-7B's first token was mostly " Both".

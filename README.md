@@ -22,6 +22,13 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
   In the 33 informative decision × ε cells (19 decisions) the judge-free design saves a median 5.5% and beats the mean
   of 34 evaluators in 82–94% of cells; the post-hoc best evaluator's lead is within selection noise. Refitted HES
   follows the tax-free ceiling ρ²(1 − P/J), which is below 5% in 94% of decision–evaluator pairs.
+* **Pre-submission checks (2026-10-09; `results/VARIANTS.md`, `results/LOCKED_VARIANTS.md`, `results/EXCLUSION.md`).**
+  The weighted design's dissimilarity bins are three, not four (description corrected; `prereg/LOCK_HISTORY.md`); a
+  four-quartile variant, pilots of 10 and 25 segments, 2,000 audits per cell and the same-design comparison of all 31
+  metric variants in the locked cells are reported there. With 2,000 audits per cell the one-sided 95% upper bound of an
+  evaluator's refitted HES over the design is below 5% in 64% and below 10% in 94% of decision–evaluator pairs (29% / 88%
+  for the ten strongest evaluators); with pilots of 25 and 10 segments the mean evaluator adds 0.7% and 0.3% refitted
+  (−2.7% and −7.7% with a frozen coefficient) against a design saving of 4.3–4.4%; four bins change the summary by ≤ 0.4 points.
 * **The design saving in MT is mostly deduplication** (not re-rating identical outputs): 13%/6% of uniform-sampling labels on
   en→de and all of the 8% on zh→en.
   It does not rest on averaging the separate WMT22 ratings of identical strings: sharing one random rating instead gives
@@ -47,6 +54,7 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
 | `code/111_summarize.py` | J_τ, HES, inflation, selection, pilot-prediction scores with paired bootstrap intervals |
 | `code/121_robustness.py`, `code/122_decisions.py`, `code/RUN_PAIRS_MTME.sh`, `code/RUN_ARENA_ROBUST2.sh` | Exploratory: coefficient rules (pilot / refit / cross-fit / oracle), 30 two-system decisions, coverage, selection-noise test |
 | `code/123_decision_sensitivity.py`, `code/124_human_ceiling.py` | Exploratory: informativeness threshold, evaluator set and identical-string label (`--ident pick`) sensitivity; human noise ceiling for decision-level ρ |
+| `code/125_exclusion.py`, `code/126_variants.py`, `code/127_locked_variants.py`, `code/RUN_PAIRS_EXTRA.sh` | Pre-submission: one-sided upper bounds on evaluator savings (what the decisions rule out), the 30 decisions with pilots 10/25, four bins and 2,000 audits (`--bins`, `--draws`), matched-base comparison of all 31 metrics in the locked cells |
 | `code/112–120`, `mtme_import.py` | Judge anatomy, cost law, ρ dial, position bias, estimation tax, hypothesis verdicts, boundary calibration, v1.1 verdicts, figures; WMT22 metric import |
 | `code/101_ir_hes.py` | Retrieval block: J_τ, HES and selection from the per-draw records of an earlier retrieval study |
 | `code/mt_*.py`, `code/arena_*.py` | Pool builders (WMT22 MQM, LMArena 55k) and judges (COMET-22, GEMBA-DA, pairwise LLM judge) |
@@ -76,7 +84,16 @@ bash code/RUN_PAIRS_MTME.sh; bash code/RUN_ARENA_ROBUST2.sh; python3 code/122_de
 IDENT=pick bash code/RUN_PAIRS_MTME.sh; DECISIONS_VARIANT=pick python3 code/122_decisions.py
 for s in 0 1 2; do for lp in ende zhen; do python3 code/110_unit_audit.py mt $lp --pilot 50 --eps 0.01 0.02 --ident pick --ident_seed $s --tag _pick$s; done; done
 python3 code/123_decision_sensitivity.py; python3 code/124_human_ceiling.py
+# pre-submission: what the decisions rule out; pilot 25 / 10, four bins, 2,000 audits; locked cells with --extra arms and four bins
+python3 code/125_exclusion.py
+for v in "25 300 3 p25" "10 300 3 p10" "50 300 4 b4" "50 2000 3 n2000"; do set -- $v; PILOT=$1 DRAWS=$2 BINS=$3 TAG=$4 bash code/RUN_PAIRS_EXTRA.sh; python3 code/125_exclusion.py --variant $4; done
+python3 code/126_variants.py
+for lp in ende zhen; do for v in "3 _mtmex" "4 _mtmeb4"; do set -- $v; python3 code/110_unit_audit.py mt $lp --judges $(python3 -c "import json;print(' '.join(json.load(open('results/mt/mt_${lp}_m4_p50_mtme_info.json'))['judges']))") --pilot 50 --eps 0.01 0.02 --oracle --extra --bins $1 --tag $2; done; done
+python3 code/127_locked_variants.py
 ```
+Reproduction check (2026-10-09): rebuilding the pools and the 31 metric judges from the public sources above on another
+machine (numpy 2.5.3) and re-running `110_unit_audit.py mt zhen --judges <31 metrics> --pilot 50 --eps 0.01 0.02 --oracle`
+reproduced `results/mt/mt_zhen_m4_p50_mtme_draws.parquet` exactly (every cost, certificate and pilot quantity).
 Every summary in `results/` is regenerated from the committed per-draw records by `111_summarize.py` without the data.
 
 ## Licence

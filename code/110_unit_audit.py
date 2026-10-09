@@ -18,7 +18,8 @@ Designs (sampling x estimator):
   dedup         pi uniform over units where some competitor's output differs from the candidate's; identical
                 strings rated once; D_j = 0 known exactly when output_j == output_c                 (MT only)
   weighted      pi ∝ g(s) = sqrt(sum_j sigma^2(bin of dissimilarity(c, j))), sigma^2 fitted on the pilot
-                (bin 0 = identical output, weight 0); dedup costs                                    (MT only)
+                (bin 0 = identical output, weight 0; positive dissimilarities in three bins by default: below the
+                pilot-free population median, third quartile, fourth quartile; --bins 4: quartiles); dedup costs (MT only)
   uniform_cvl:f uniform sampling and cost + judge f control variate (pilot lam)
   weighted_cvl:f weighted sampling + judge f control variate                                         (MT only)
   active_cvl:f  pi ∝ sqrt(sum_j sigma_R^2(bin)), residual variance by (dissimilarity bin x |Jd| half) on the pilot (MT)
@@ -208,7 +209,15 @@ def run_draw(args):
         designs["dedup"] = dict(g=relevant.astype(float), cost=c_dedup, lam=None)
         xs = np.stack([X[:, c, j] for j in comp], 1)
         edges = np.quantile(xs[xs > 0], [0.25, 0.5, 0.75]) if (xs > 0).any() else np.array([1.0])
-        xb = np.where(same, 0, np.maximum(bin_index(xs, edges), 1)); nb = len(edges) + 1   # weight 0 only for identical strings
+        if cfg.get("bins", 3) == 4:
+            # four quartile bins of the positive dissimilarities (1..4); weight 0 only for identical strings
+            xb = np.where(same, 0, np.searchsorted(edges, xs, side="right") + 1); nb = len(edges) + 2
+        else:
+            # locked runs (default): bin_index gives 0 for x below the first quartile and np.maximum(., 1) folds it into
+            # bin 1, so the positive dissimilarities fall into THREE bins (below the median; third quartile; fourth
+            # quartile), not four. Kept as the default because every locked and exploratory run used it; --bins 4 is the
+            # four-quartile variant (sensitivity check).
+            xb = np.where(same, 0, np.maximum(bin_index(xs, edges), 1)); nb = len(edges) + 1   # weight 0 only for identical strings
         sig = fit_bin_var((D[pil] ** 2).ravel(), xb[pil].ravel(), nb)
         g_w = np.sqrt((sig[xb] * (xb > 0)).sum(1))
         designs["weighted"] = dict(g=g_w, cost=c_dedup, lam=None)
@@ -262,7 +271,7 @@ def run_draw(args):
         for eps in eps_list:
             s_j = eps - D[pil].mean(0)
             L = np.where(s_j > 0, z ** 2 * Gc * len(rest) * m_j / (N ** 2 * np.maximum(s_j, 1e-12) ** 2), np.inf).max()
-            pred.append(dict(draw=i, design=name, eps=eps, L_pred=float(L), pilot_cost=pilot_cost))
+            pred.append((i, name, eps, float(L), pilot_cost))
         base_rest = (lm * jd)[rest].sum(0)
         for n in cfg["budgets"]:
             pi = poisson_pi(g, n)
@@ -299,8 +308,7 @@ def run_draw(args):
             cover = int((ucb >= Dbar - 1e-9).all())      # simultaneous one-sided coverage of the true mean differences (nominal 1 - alpha; tolerance for census rounding)
             for eps in eps_list:
                 act = bool((ucb <= eps).all())
-                rows.append(dict(draw=i, design=name, budget=n, eps=eps, cost=float(cost), act=int(act),
-                                 wrong=int(act and regret > eps), regret=float(regret), cover=cover))
+                rows.append((i, name, n, eps, float(cost), int(act), int(act and regret > eps), float(regret), cover))
     meta = dict(draw=i, cand=c, regret=float(regret), pilot_cost=pilot_cost,
                 **{f"lam:{f}": float(lam[f].mean()) for f in J}, **{f"lamo:{f}": float(lam[f"__o:{f}"].mean()) for f in J if f"__o:{f}" in lam}, **{f"acc:{f}": acc[f] for f in J}, **{f"rho:{f}": rho[f] for f in J})
     return rows, pred, meta
@@ -325,6 +333,7 @@ def main():
     ap.add_argument("--oracle", action="store_true", help="exploratory: add population-lambda arms *_cvo")
     ap.add_argument("--ident", choices=["mean", "pick"], default="mean", help="mt sensitivity: identical strings share the mean rating or one random rating")
     ap.add_argument("--ident_seed", type=int, default=0)
+    ap.add_argument("--bins", type=int, choices=[3, 4], default=3, help="weighted design: positive dissimilarity bins; 3 = the locked runs (below the median, third and fourth quartile), 4 = quartiles (sensitivity)")
     ap.add_argument("--tag", default="")
     ap.add_argument("--out", default=os.path.join(HERE, "..", "results"))
     ap.add_argument("--procs", type=int, default=64)
@@ -332,10 +341,12 @@ def main():
     data = load_mt(a.unit, a.menu_k, a.menu, a.judges, ident=a.ident, ident_seed=a.ident_seed) if a.domain == "mt" else load_arena(a.unit, a.judges)
     N = data["Y"].shape[0]
     budgets = a.budgets or sorted({int(x) for x in np.geomspace(10, N - a.pilot, 14)})
-    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, boundary_frac=a.boundary_frac, oracle=a.oracle, bound=a.bound, extra=a.extra)
+    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, boundary_frac=a.boundary_frac, oracle=a.oracle, bound=a.bound, extra=a.extra, bins=a.bins)
     with Pool(a.procs) as pool:
         res = pool.map(run_draw, [(data, cfg, i) for i in range(a.draws)])
-    rows = pd.DataFrame([r for x in res for r in x[0]]); pred = pd.DataFrame([r for x in res for r in x[1]])
+    # tuples rather than dicts: the same columns, several times faster to assemble for millions of rows
+    rows = pd.DataFrame([r for x in res for r in x[0]], columns=["draw", "design", "budget", "eps", "cost", "act", "wrong", "regret", "cover"])
+    pred = pd.DataFrame([r for x in res for r in x[1]], columns=["draw", "design", "eps", "L_pred", "pilot_cost"])
     meta = pd.DataFrame([x[2] for x in res])
     od = os.path.join(a.out, a.domain); os.makedirs(od, exist_ok=True)
     stem = f"{data['name']}_m{len(data['menu'])}_p{a.pilot}{'_boundary' if a.boundary else ''}{a.tag}"

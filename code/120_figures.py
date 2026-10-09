@@ -49,10 +49,14 @@ rows = []
 for c, lab in (("antique", "ANTIQUE"), ("cast19", "CAsT"), ("dbpedia-entity", "DBpedia"), ("dl212223", "DL 21–23")):
     J = ir[ir.collection == c].set_index("arm").value
     rows.append((f"IR {lab}", 1 - J["weighted"] / J["uniform"], 1 - J["cvl_llm"] / J["uniform"]))
+LV = pd.read_csv(f"{R}/LOCKED_VARIANTS.csv") if os.path.exists(f"{R}/LOCKED_VARIANTS.csv") else None   # matched-base increments (127_locked_variants.py)
 for lp, lab in (("ende", "en→de"), ("zhen", "zh→en")):
     g = T[T.lp == lp]; e = 0.01
     best = g.loc[g[f"hes_best_{e}"].idxmax()]
-    d = best[f"design_save_{e}"]; rows.append((f"MT {lab}", d, 1 - (1 - d) * (1 - best[f"hes_best_{e}"])))
+    d = best[f"design_save_{e}"]; inc = best[f"hes_best_{e}"]
+    if LV is not None:   # best metric on the cell's best fixed design (same base), pilot coefficient
+        r = LV[(LV.lp == lp) & (LV.eps == e) & LV.variant.str.startswith("3")].iloc[0]; inc = r[f"{r.best_fixed}_pilot_best"]
+    rows.append((f"MT {lab}", d, 1 - (1 - d) * (1 - inc)))
 fig, ax = plt.subplots(figsize=(3.4, 2.2))
 y = np.arange(len(rows))[::-1]
 for yi, (lab, d, tot) in zip(y, rows):
@@ -104,7 +108,7 @@ save(fig, "F4_arena")
 if os.path.exists(f"{R}/DECISIONS.csv"):
     T = pd.read_csv(f"{R}/DECISIONS.csv"); T = T[T.informative]
     G = T[T.lp != "chat"].groupby(["lp", "pair", "eps"]).agg(save=("save", "first"), mean=("refit", "mean"), best=("refit", "max")).reset_index()   # chat has no judge-free design
-    fig, ax = plt.subplots(1, 2, figsize=(7.0, 2.5)); fig.subplots_adjust(wspace=0.28)
+    fig, ax = plt.subplots(1, 2, figsize=(7.0, 2.25)); fig.subplots_adjust(wspace=0.28)
     sty = (("ende", BLUE, "o", "en→de"), ("zhen", ORANGE, "s", "zh→en"), ("chat", AQUA, "^", "chat"))
     for lp, c, mk, lab in sty:
         g = G[G.lp == lp]
