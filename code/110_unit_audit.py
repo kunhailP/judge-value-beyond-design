@@ -26,6 +26,12 @@ Designs (sampling x estimator):
                 or by |Jd| quintile (Arena); dedup costs in MT, unit cost in Arena
 Pilot-only predictions per draw and design: predicted post-pilot labels L = max_j z^2 (sum_rest g c) N_rest m_j / (N^2 s_j^2),
 m_j = pilot mean of R_j^2 / g over units with g > 0, s_j = eps - pilot mean of D_j; plus pilot judge accuracy and pilot rho.
+
+Known-zero differences. Units whose every competitor output equals the candidate's have D = 0 and pi = 0 under dedup /
+weighted / active sampling; the estimator still adds lam * Jd over them (sum_rest) and no residual ever corrects it, so
+it is unbiased only if the evaluator gives identical outputs identical scores (Jd = 0 there). Every real evaluator here
+does (chrF, COMET, the WMT22 metrics and the GEMBA judges score the string); the semi-synthetic judges do so since
+2026-10-10 (--syn_noise string); --syn_noise output reproduces the earlier runs, whose bias is (1/N) sum_{pi=0} lam Jd.
 """
 import argparse, json, os, sys
 from multiprocessing import Pool
@@ -40,16 +46,26 @@ MBR = ("bleu_bestmbr", "bleurt_bestmbr", "comet_bestmbr", "chrf_bestmbr")
 
 
 # ----------------------------------------------------------------------------------------------- data adapters
-def _synthetic(Y, rho, seed):
-    """Judge = human utility + i.i.d. Gaussian noise per output, with the noise scale set so that the correlation of the
-    paired differences (averaged over menu pairs, all units) is approximately rho. Exploratory calibration device only."""
+def _synthetic(Y, rho, seed, S=None):
+    """Judge = human utility + Gaussian noise, with the noise scale set so that the correlation of the paired differences
+    (averaged over menu pairs, all units) is approximately rho. Exploratory calibration device only.
+    S (string ids per unit and menu slot): identical output strings of a unit share ONE noise draw, so a known-zero
+    difference (D_i = 0, never sampled by the dedup / weighted / active designs) has judge difference 0 as well; the
+    noise scale is then set on the non-identical pairs (share q) to keep the all-unit rho at the target. S=None: an
+    independent draw per output (runs before 2026-10-10), which leaves the uncorrected term (1/N) sum_{pi_i=0} lam Dhat_i
+    in the estimate (see the note in the module docstring)."""
     import zlib
     rng = np.random.default_rng(zlib.crc32(f"{rho:.3f}".encode()))
     M = Y.shape[1]
-    vD = np.mean([np.var(Y[:, a] - Y[:, b]) for a in range(M) for b in range(a + 1, M)])
-    sig = np.sqrt(vD * (1 / rho ** 2 - 1) / 2) if rho < 1 else 0.0
-    return Y + sig * rng.standard_normal(Y.shape)
-def load_mt(lp, menu_k=4, menu=None, judges=("chrf",), judge_dir=None, ident="mean", ident_seed=0):
+    pairs = [(a, b) for a in range(M) for b in range(a + 1, M)]
+    vD = np.mean([np.var(Y[:, a] - Y[:, b]) for a, b in pairs])
+    q = np.mean([np.mean(S[:, a] != S[:, b]) for a, b in pairs]) if S is not None else 1.0
+    sig = np.sqrt(vD * (1 / rho ** 2 - 1) / (2 * q)) if rho < 1 else 0.0
+    E = sig * rng.standard_normal(Y.shape)
+    if S is not None:
+        E = np.take_along_axis(E, S, axis=1)        # slot j of unit i takes the noise of its string id S[i, j]
+    return Y + E
+def load_mt(lp, menu_k=4, menu=None, judges=("chrf",), judge_dir=None, ident="mean", ident_seed=0, syn_noise="string"):
     from mt_common import load_pool, dissimilarity
     judge_dir = judge_dir or f"{DATA}/mt"
     d = load_pool(lp)
@@ -83,7 +99,7 @@ def load_mt(lp, menu_k=4, menu=None, judges=("chrf",), judge_dir=None, ident="me
         if f == "chrf":
             J[f] = piv("chrf").to_numpy(float)
         elif f.startswith("syn"):                       # exploratory: utility + Gaussian noise, paired-difference rho ~ target
-            J[f] = _synthetic(Y, float(f[3:]), seed=hash(f) % 2**31)
+            J[f] = _synthetic(Y, float(f[3:]), seed=hash(f) % 2**31, S=S if syn_noise == "string" else None)
         else:
             base, inv = (f[4:], True) if f.startswith("inv_") else (f, False)
             jd = pd.read_parquet(os.path.join(judge_dir, lp, f"judge_{base}.parquet"))
@@ -333,15 +349,16 @@ def main():
     ap.add_argument("--oracle", action="store_true", help="exploratory: add population-lambda arms *_cvo")
     ap.add_argument("--ident", choices=["mean", "pick"], default="mean", help="mt sensitivity: identical strings share the mean rating or one random rating")
     ap.add_argument("--ident_seed", type=int, default=0)
+    ap.add_argument("--syn_noise", choices=["string", "output"], default="string", help="semi-synthetic judges (syn<rho>): one noise draw per distinct output string (identical outputs share a score; default since 2026-10-10) or per output (the earlier runs; biased on known-zero differences under dedup/weighted/active sampling)")
     ap.add_argument("--bins", type=int, choices=[3, 4], default=3, help="weighted design: positive dissimilarity bins; 3 = the locked runs (below the median, third and fourth quartile), 4 = quartiles (sensitivity)")
     ap.add_argument("--tag", default="")
     ap.add_argument("--out", default=os.path.join(HERE, "..", "results"))
     ap.add_argument("--procs", type=int, default=64)
     a = ap.parse_args()
-    data = load_mt(a.unit, a.menu_k, a.menu, a.judges, ident=a.ident, ident_seed=a.ident_seed) if a.domain == "mt" else load_arena(a.unit, a.judges)
+    data = load_mt(a.unit, a.menu_k, a.menu, a.judges, ident=a.ident, ident_seed=a.ident_seed, syn_noise=a.syn_noise) if a.domain == "mt" else load_arena(a.unit, a.judges)
     N = data["Y"].shape[0]
     budgets = a.budgets or sorted({int(x) for x in np.geomspace(10, N - a.pilot, 14)})
-    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, boundary_frac=a.boundary_frac, oracle=a.oracle, bound=a.bound, extra=a.extra, bins=a.bins)
+    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, boundary_frac=a.boundary_frac, oracle=a.oracle, bound=a.bound, extra=a.extra, bins=a.bins, syn_noise=a.syn_noise)
     with Pool(a.procs) as pool:
         res = pool.map(run_draw, [(data, cfg, i) for i in range(a.draws)])
     # tuples rather than dicts: the same columns, several times faster to assemble for millions of rows

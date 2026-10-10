@@ -36,7 +36,12 @@
   ],
   "seed": 20261007,
   "boundary": false,
-  "oracle": false
+  "boundary_frac": 0.9,
+  "oracle": false,
+  "bound": "normal",
+  "extra": false,
+  "bins": 3,
+  "syn_noise": "string"
  },
  "judges": [
   "syn0.1",

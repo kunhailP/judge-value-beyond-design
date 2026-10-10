@@ -37,7 +37,7 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
   (`results/DECISIONS_SENSITIVITY.md`). The 33-cell summary is also unchanged for informativeness thresholds 0.2–0.5
   and for the ten evaluators with the highest system-level correlation.
 * **A finite-pilot cost law describes the dependence on ρ.** HES ≈ [ρ² − (1−ρ²)/P_eff](1 − P/J). Under *controlled*
-  variation of ρ (semi-synthetic evaluators, ρ = 0.1–0.9, 126 cells) prediction and realisation correlate 0.975; about
+  variation of ρ (semi-synthetic evaluators, ρ = 0.1–0.9, 126 cells; identical strings share one synthetic score) prediction and realisation correlate 0.97; about
   ρ ≈ 0.5 is needed to save 10%, ρ ≈ 0.8 to save 30%. Real evaluators lie at ρ ≤ 0.43, where realised savings are within a
   few points of zero and Monte-Carlo noise dominates cell-level prediction.
 * **Chat.** Pairwise LLM judges reach ρ 0.07–0.29 on close LMArena pairs; averaging both presentation orders raises ρ.

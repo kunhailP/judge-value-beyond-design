@@ -110,8 +110,8 @@ $D_j=u_j-u_{\hat m}$ and an evaluator's predicted difference $\hat D_j$,
 \hat\Delta_j=\tfrac1N\Big[\sum_{\text{pilot}}D_j+\sum_{\text{rest}}\lambda_j\hat D_j+\sum_{i\in S}\tfrac{D_j(i)-\lambda_j\hat D_j(i)}{\pi_i}\Big],\label{eq:est}
 \end{equation}
 with $\lambda_j=\max(0,\widehat{\mathrm{Cov}}(D_j,\hat D_j)/\widehat{\mathrm{Var}}(\hat D_j))$ fitted on the pilot and
-frozen; $\lambda=0$ is the human-only estimator. Given the pilot, (\ref{eq:est}) is unbiased for the finite-population
-mean for any evaluator; its variance is estimated by $\sum_S(1-\pi_i)R_i^2/(\pi_i^2N^2)$, $R=D-\lambda\hat D$.
+frozen; $\lambda=0$ is the human-only estimator; where two outputs coincide we set $\hat D_j(i)=0$ with $D_j(i)=0$. Given the pilot, (\ref{eq:est}) is then unbiased for the finite-population
+mean for any evaluator (items the design never samples contribute only $\lambda\hat D_j$, which the zero rule keeps exact; 13--14 of the 31 WMT22 metrics score identical strings slightly differently, by at most $7\times10^{-6}$ in the mean difference); its variance is estimated by $\sum_S(1-\pi_i)R_i^2/(\pi_i^2N^2)$, $R=D-\lambda\hat D$.
 
 \paragraph{Designs.} \emph{Uniform}: constant $\pi$; every menu output of a sampled item is labelled, identical
 strings included, as in WMT22's own MQM campaign, which rated each system's output separately (42\% of en$\to$de and
@@ -285,10 +285,10 @@ paired differences are zero.
 
 \paragraph{Controlled variation.} To test (\ref{eq:law}) over the whole range we built semi-synthetic evaluators, human
 utility plus Gaussian noise scaled to a target $\rho\in\{0.1,\dots,0.9\}$, and ran them through the same audits (MT
-pilots 50 and 100, three Arena pairs; 126 cells). Predicted and realised HES correlate 0.975 (mean absolute error 0.035;
-Figure~\ref{fig:dial} in App.~\ref{app:dial}); the tax-free ceiling does almost as well (0.974, 0.040) and the law over-predicts by 0.02, so
-the experiment supports the $\rho^2$ and dilution factors more than the tax term. The realised saving is 11\% at
-$\rho=0.5$ and 32\% at $\rho=0.8$. For the open evaluators on the two-system menus ($\rho\le0.36$) predicted and
+pilots 50 and 100, three Arena pairs; 126 cells). Predicted and realised HES correlate 0.97 (mean absolute error 0.04;
+Figure~\ref{fig:dial} in App.~\ref{app:dial}); the tax-free ceiling does as well (0.97, 0.04) and the law over-predicts by 0.02, so
+the experiment supports the $\rho^2$ and dilution factors more than the tax term. The realised saving is 10\% at
+$\rho=0.5$ and 31\% at $\rho=0.8$ (identical outputs share one synthetic score, so known-zero differences stay zero; App.~\ref{app:dial}). For the open evaluators on the two-system menus ($\rho\le0.36$) predicted and
 realised HES correlate only 0.20: realised savings (interquartile range $-1\%$ to $+1\%$) are dominated by Monte-Carlo
 noise and exceed the ceiling by more than 0.03 in only 2--4\% of cells.
 
@@ -311,7 +311,8 @@ pilot 0.903, human-only 0.904), and under boundary stress its largest type-I err
 less because each fold's coefficient rests on half of the labels; a practitioner who needs no budget plan can refit,
 one who wants the variance estimate to account for the coefficient should cross-fit or freeze (the bound itself is
 calibrated by simulation, not proved). Refitting can exceed the oracle, which is the population
-least-squares coefficient, optimal for uniform sampling only. Across the 30 decisions (Figure~\ref{fig:decisions}b) refitted HES
+least-squares coefficient, optimal for uniform sampling only; on the weighted design the coefficient that minimises the
+realised Poisson-design variance differs from it by a median 0.0\% and at most 3.7\% of that variance (App.~\ref{app:law}), so the two are interchangeable here. Across the 30 decisions (Figure~\ref{fig:decisions}b) refitted HES
 follows the tax-free ceiling $\rho^2(1-P/J)$ (median deviation $-0.4$ points, correlation 0.42 over 1{,}158
 decision--evaluator points), whereas with the pilot coefficient it falls a median 2.3 points below it; 94\% of the
 ceilings are below 5\%, because decision-level $\rho$ is at most 0.43 and the pilot is a median 39\% of the cost (range 15--66\%). The tax is therefore the price of committing to the coefficient before the audit (to plan the budget, say), not a
@@ -396,8 +397,8 @@ save a few percent of human labels on average, the strongest somewhat more, and 
 the annotation itself. The results reduce
 to a rule a team can apply before paying for an evaluator: (i) its decision-level $\rho$ on the systems at stake, from
 a prior campaign or the pilot, not its system-level agreement; (ii) the pilot's share of the cost, $P/J$, which a
-human-only pilot prediction supplies; (iii) what the judge-free design already saves, known in advance. The increment
-is at most $\rho^2(1-P/J)$, less $(1-\rho^2)/P_{\mathrm{eff}}$ of the post-pilot share if the coefficient is frozen: for
+human-only pilot prediction supplies; (iii) what the judge-free design already saves, known in advance. Under the assumptions of (\ref{eq:law}) the increment
+is about $\rho^2(1-P/J)$, less $(1-\rho^2)/P_{\mathrm{eff}}$ of the post-pilot share if the coefficient is frozen: for
 the WMT22 metrics ($\rho\le0.43$, $P/J\approx0.4$) at most 11\%, typically 2--5\%, against design savings of 5--16\%.
 
 \section*{Limitations}
@@ -437,6 +438,10 @@ $1/P_{\mathrm{eff}}$. With the pilot cost $P$ common to both arms, $\HES=1-(P+L)
 $\lambda$ at zero bounds the loss of an evaluator with $\rho\le0$ by the variance of $\hat\lambda$ only; zero-difference
 items reduce $P_{\mathrm{eff}}$ below $P$, which is why MT, with about half its paired differences zero, pays more tax.
 In general, $\mathrm{Var}(\hat\lambda)\approx\mathrm{E}[(\hat D-\mathrm{E}\hat D)^2R^2]/(P_{\mathrm{eff}}\,\mathrm{Var}(\hat D)^2)$ (sandwich form), which reduces to the expression above under homoskedasticity; heavy-tailed or heteroskedastic residuals, as with sparse MQM differences, raise the tax.
+The coefficient that minimises the variance of (\ref{eq:est}) under a given design, $\sum_i(1-\pi_i)/\pi_i\,(D_i-\lambda\hat D_i)^2$, is a
+least-squares fit with weights $(1-\pi_i)/\pi_i$ and equals the population coefficient only under uniform sampling; on the
+weighted design of the top-4 menus (31 metrics, three semi-synthetic evaluators, 20 pilots) the population coefficient's variance
+exceeds it by a median 0.0\%, a 90th percentile of 0.2\% and at most 3.7\%, so $\rho^2$ is used as an interpretive approximation, not a bound.
 
 \section{Robustness of the estimation tax}\label{app:robust}
 Mean HES over the evaluators of each set, over their own judge-free base, by how the coefficient is set ($\Jt$; MT:
@@ -536,7 +541,9 @@ judges) is committed with its exported inputs and scoring rule and has not been 
 \begin{figure}[h]\centering
 \includegraphics[width=\columnwidth]{figures/F3_rho_dial.pdf}
 \caption{Realised HES of semi-synthetic evaluators with a set decision-level $\rho$ (grey: individual runs) against the
-cost law (\ref{eq:law}) and its oracle-$\lambda$ ceiling. Shaded: the range of the real evaluators.}\label{fig:dial}
+cost law (\ref{eq:law}) and its oracle-$\lambda$ ceiling. Shaded: the range of the real evaluators. Identical output strings of
+an item share one noise draw (an earlier version drew noise per output, which left the never-sampled known-zero items with a
+non-zero prediction term of at most $6\times10^{-4}$; the correlation was 0.975 and the savings 11\% / 32\%).}\label{fig:dial}
 \end{figure}
 
 
