@@ -52,7 +52,7 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
   frozen coefficient pilot selection costs 4.2% more. The post-hoc best (−7.0%) is a reference, not a strategy. Coverage of
   every strategy's bound is nominal at the certifying budget (0.89–0.90) and 0.86–0.89 at the worst budget once known-zero
   differences are set to zero (the 300-audit records without it had S2 at 0.45–0.50 at the smallest budgets); in boundary
-  stress the type-I error at ten post-pilot labels is 0.18 (S1), 0.17 (S2), 0.12 (S3), nominal from 30–60 labels on, and
+  stress the type-I error at a post-pilot budget of ten items (about 110–116 labels in total) is 0.18 (S1), 0.17 (S2), 0.12 (S3), and
   below the human-only design on average (above it at 15–34% of cell–budget points, by over 2 points at 1–3%). The observed
   mean error is at or below 0.10 at every later budget from about 206 (en-de) / 265 (zh-en) labels on, and at or below 0.125
   from about 145 (an observation on this simulation, checked on a second seed; not a calibrated bound). Post-hoc sensitivity

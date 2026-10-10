@@ -23,23 +23,17 @@
 \maketitle
 
 \begin{abstract}
-Automatic evaluators are credited with the human labels they save, and the credit is usually inferred from their
-correlation with human scores. We measure it for the decision an evaluation is run for: certifying, from a human
-audit, that a chosen system is within $\eps$ of the best of a few close competitors. The measure is a count of unique
-human labels, pilot included, with and without the evaluator, after a judge-free annotation design (skip known-zero
-differences, label identical outputs once) has been credited first. On WMT22 MQM, LMArena and retrieval the design
-saves a median 4.6\% of uniform-sampling labels over 30 close MT decisions (8--16\% in the pre-registered cells,
-41--56\% in retrieval); the mean metric adds 2.3\% with a refitted coefficient and nothing with a frozen one, the
-strongest metric of each year 4--5\%. The reason is the level of measurement: metrics with system-level correlation
-0.93--0.99 correlate only 0.11--0.38 with the paired differences a close decision depends on, and the saving is about
-$\rho^2(1-P/J)$, diluted by the pilot's share of the cost. Four auditor strategies fixed on WMT22 and applied
-unchanged to WMT23 give the rule: deduplicate; where the decision needs more labels than the pilot and the first
-hundred or so after it, add one strong evaluator fixed in advance and refit its coefficient (3\% cheaper than the
-design alone under the unrestricted protocol, 0.4\% when no certificate is issued below the budgets at which the
-bound's error is at nominal); choosing the evaluator from a 50-segment pilot is no better ($-0.1\%$, 95\% interval $[-0.7, +0.5]$),
-and freezing the coefficient costs the evaluator's whole value. Under boundary stress the bound's type-I error is above
-nominal at the smallest budgets for every strategy, human-only included, and the saving is confined to the decisions
-that need more labels. Three pre-registered locks; the failed hypotheses are reported.
+Automatic evaluators are credited with the human labels they save, usually by correlation with human scores. We
+measure the credit for the decision an evaluation is run for: certifying from a human audit that a chosen system is
+within $\eps$ of the best of a few close competitors. It counts unique human labels with and without the evaluator,
+after a judge-free annotation design (deduplication, known-zero differences skipped) is credited first. On WMT22 MQM,
+LMArena and retrieval the design saves a median 4.6\% of uniform-sampling labels over 30 close MT decisions; the mean
+metric adds 2.3\% refitted and nothing frozen, the strongest metric of each year 4--5\%. The reason is the level of
+measurement: metrics with system-level correlation 0.93--0.99 correlate only 0.11--0.38 with the paired differences a
+close decision depends on; the saving is about $\rho^2(1-P/J)$. Strategies fixed on WMT22 and applied to WMT23 give
+the rule: deduplicate, add one strong evaluator fixed in advance, refit its coefficient (3\% cheaper than the design
+under the unrestricted protocol, 0.4\% once certificates wait for budgets where the bound's error is nominal); choosing
+the evaluator from a pilot is no better ($-0.1\%$, $[-0.7, +0.5]$), and freezing the coefficient costs its value.
 \end{abstract}
 
 \section{Introduction}
@@ -520,7 +514,7 @@ pilot 0.903, human-only 0.904), and under boundary stress its largest type-I err
 less because each fold's coefficient rests on half of the labels; a practitioner who needs no budget plan can refit,
 one who wants the variance estimate to account for the coefficient should cross-fit or freeze (the bound itself is
 calibrated by simulation, not proved). Refitting can exceed the oracle, which is the population
-population covariance-over-variance coefficient (App.~\ref{app:law}); on the weighted design the coefficient that minimises the
+covariance-over-variance coefficient (App.~\ref{app:law}); on the weighted design the coefficient that minimises the
 realised Poisson-design variance differs from it by a median 0.0\% and at most 3.7\% of that variance (App.~\ref{app:law}), so the two are interchangeable here. Across the 30 decisions (Figure~\ref{fig:decisions}b) refitted HES
 follows the tax-free approximation $\rho^2(1-P/J)$ (median deviation $-0.4$ points, correlation 0.42 over 1{,}158
 decision--evaluator points), whereas with the pilot coefficient it falls a median 2.3 points below it; 94\% of the
