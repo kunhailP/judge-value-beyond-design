@@ -4,7 +4,7 @@
 * **A1 Limitations.** Yes — section "Limitations" (after the conclusion).
 * **A2 Potential risks.** Yes, briefly in Limitations: the paper argues that correlation-based claims of evaluator savings can
   overstate what an audit obtains; misreading its negative results as "automatic evaluators are useless" would be a risk,
-  which is why the text states the conditions (close decisions, 20–50-item pilots, ρ ≤ 0.38) under which they hold.
+  which is why the text states the conditions (close decisions, 20–50-item pilots, decision-level ρ ≤ 0.43) under which they hold.
   No new model, dataset or system is released that could be misused.
 
 ## B. Did you use or create scientific artifacts? — Yes
@@ -48,7 +48,7 @@
 * **C4 Existing packages.** Yes — vLLM, unbabel-comet, sacrebleu (chrF), NumPy/SciPy/pandas; versions in `requirements.txt`.
 
 ## D. Human annotators / participants — No new annotation
-All human judgments are existing released labels (WMT22 MQM, LMArena votes, TREC/benchmark relevance judgments).
+All human judgments are existing released labels (WMT22 and WMT23 MQM, LMArena votes, TREC/benchmark relevance judgments).
 D1–D5: not applicable.
 
 ## E. AI assistants in research or writing — Yes
