@@ -35,7 +35,8 @@ strongest metric of each year 4--5\%. The reason is the level of measurement: me
 $\rho^2(1-P/J)$, diluted by the pilot's share of the cost. Four auditor strategies fixed on WMT22 and applied
 unchanged to WMT23 give the rule: deduplicate; where the decision needs more labels than the pilot and the first
 hundred or so after it, add one strong evaluator fixed in advance and refit its coefficient (3\% cheaper than the
-design alone); choosing the evaluator from a 50-segment pilot is no better ($-0.1\%$, 95\% interval $[-0.7, +0.5]$),
+design alone under the unrestricted protocol, 0.4\% when no certificate is issued below the budgets at which the
+bound's error is at nominal); choosing the evaluator from a 50-segment pilot is no better ($-0.1\%$, 95\% interval $[-0.7, +0.5]$),
 and freezing the coefficient costs the evaluator's whole value. Under boundary stress the bound's type-I error is above
 nominal at the smallest budgets for every strategy, human-only included, and the saving is confined to the decisions
 that need more labels. Three pre-registered locks; the failed hypotheses are reported.
@@ -519,7 +520,7 @@ pilot 0.903, human-only 0.904), and under boundary stress its largest type-I err
 less because each fold's coefficient rests on half of the labels; a practitioner who needs no budget plan can refit,
 one who wants the variance estimate to account for the coefficient should cross-fit or freeze (the bound itself is
 calibrated by simulation, not proved). Refitting can exceed the oracle, which is the population
-least-squares coefficient, optimal for uniform sampling only; on the weighted design the coefficient that minimises the
+population covariance-over-variance coefficient (App.~\ref{app:law}); on the weighted design the coefficient that minimises the
 realised Poisson-design variance differs from it by a median 0.0\% and at most 3.7\% of that variance (App.~\ref{app:law}), so the two are interchangeable here. Across the 30 decisions (Figure~\ref{fig:decisions}b) refitted HES
 follows the tax-free approximation $\rho^2(1-P/J)$ (median deviation $-0.4$ points, correlation 0.42 over 1{,}158
 decision--evaluator points), whereas with the pilot coefficient it falls a median 2.3 points below it; 94\% of the
@@ -554,7 +555,7 @@ $(1-\rho^2)(1+1/P_{\mathrm{eff}})$ times that of the uncorrected one and
 \section{Robustness of the estimation tax}\label{app:robust}
 Mean HES over the evaluators of each set, over their own judge-free base, by how the coefficient is set ($\Jt$; MT:
 eight strongest metric variants per language pair, COMET-22, Qwen3-8B, Mistral-7B; chat: Qwen3-8B, Mistral-7B,
-longer). Pilot: fitted on the pilot and frozen (the paper's estimator); refit: refitted by unweighted least squares on the pilot
+longer). Pilot: fitted on the pilot and frozen (the frozen-coefficient baseline); refit: refitted by unweighted least squares on the pilot
 and every post-pilot label; xfit: cross-fitted over two folds; HT: the same with $1/\pi$-weighted least squares;
 oracle: population-optimal. COMET-22 enters twice in MT, as the WMT22 submission (COMET-22-refA) and as our own run;
 their segment scores correlate only 0.78--0.79, and dropping ours changes the MT means by at most 0.3 points.
