@@ -24,24 +24,21 @@
 
 \begin{abstract}
 Automatic evaluators are credited with the human labels they save, and the credit is usually inferred from their
-correlation with human scores. We measure it for the decision an evaluation is usually run for: certifying, from a human
-audit, that a chosen system is within $\eps$ of the best of a few close competitors. The measure is a count: the unique
-human labels, pilot included, that the audit needs with and without the evaluator, after a judge-free annotation design
-(skip known-zero differences, label identical outputs once) has been credited first. On WMT22 MQM (31 metric variants,
-two open LLM judges), LMArena and retrieval, the design saves a median 4.6\% of uniform-sampling labels over 30 close MT
-decisions (8--16\% in the pre-registered cells, 41--56\% in retrieval); the mean metric adds 2.3\% on top of it with a
-refitted coefficient, and a 10\% increment is ruled out for 94\% of decision--evaluator pairs. Strong evaluators are
-the exception: the best metric of each year (MetricX, XCOMET) adds 4--5\%, as much as the design itself in a third to
-over half of the cells. The reason is the level of measurement: metrics with system-level correlation 0.93--0.99 correlate only
-0.11--0.38 with the paired differences a close decision depends on, and the saving is about $\rho^2(1-P/J)$, diluted
-by the pilot's share $P/J$ of the cost. Four auditor strategies fixed on WMT22 and applied unchanged to WMT23 (42
-metrics) give the practical rule: deduplicate, add one strong evaluator fixed in advance and refit its coefficient
-(3\% cheaper than the design alone, in all 26 informative held-out cells); choosing the evaluator from the pilot is no better (paired
-difference $-0.1\%$, 95\% interval $[-0.7, +0.5]$ over 2,000 audits per cell), and with a frozen coefficient it costs 4\%.
-Under boundary stress the bound's type-I error is above nominal below about 200 labels, for the human-only design as
-much as for the evaluators; on the same cells, certifying only beyond that budget leaves 0.4\% of the evaluator's
-saving (3.0\% at a tolerated error of 0.125), because most decisions certify earlier. Three pre-registered locks; the failed
-hypotheses are reported.
+correlation with human scores. We measure it for the decision an evaluation is run for: certifying, from a human
+audit, that a chosen system is within $\eps$ of the best of a few close competitors. The measure is a count of unique
+human labels, pilot included, with and without the evaluator, after a judge-free annotation design (skip known-zero
+differences, label identical outputs once) has been credited first. On WMT22 MQM, LMArena and retrieval the design
+saves a median 4.6\% of uniform-sampling labels over 30 close MT decisions (8--16\% in the pre-registered cells,
+41--56\% in retrieval); the mean metric adds 2.3\% with a refitted coefficient and nothing with a frozen one, the
+strongest metric of each year 4--5\%. The reason is the level of measurement: metrics with system-level correlation
+0.93--0.99 correlate only 0.11--0.38 with the paired differences a close decision depends on, and the saving is about
+$\rho^2(1-P/J)$, diluted by the pilot's share of the cost. Four auditor strategies fixed on WMT22 and applied
+unchanged to WMT23 give the rule: deduplicate; where the decision needs more labels than the pilot and the first
+hundred or so after it, add one strong evaluator fixed in advance and refit its coefficient (3\% cheaper than the
+design alone); choosing the evaluator from a 50-segment pilot is no better ($-0.1\%$, 95\% interval $[-0.7, +0.5]$),
+and freezing the coefficient costs the evaluator's whole value. Under boundary stress the bound's type-I error is above
+nominal at the smallest budgets for every strategy, human-only included, and the saving is confined to the decisions
+that need more labels. Three pre-registered locks; the failed hypotheses are reported.
 \end{abstract}
 
 \section{Introduction}
@@ -88,9 +85,10 @@ WMT22 and applied unchanged to WMT23 (42 metrics) give the same answer in both y
 fixed in advance, with a refitted coefficient, costs 3\% less than the design alone (in all 26 informative WMT23 cells);
 choosing the evaluator from the pilot instead changes the cost by $-0.1\%$ [$-0.7$, $+0.5$] in a paired comparison
 at 2,000 audits per cell, and costs 4\% more when the coefficient is frozen. Under boundary stress the bound's type-I
-error is above nominal below about 200 labels, for the human-only design as much as for the evaluators; a protocol
-that certifies only beyond that budget keeps 0.4\% of the evaluator's saving on the same cells (3.0\% at a tolerated
-error of 0.125), because most of the 30 decisions certify earlier (\S\ref{sec:heldout}).
+error is above nominal below this experiment's minimum budgets (about 206 and 265 labels on the two language pairs),
+for the human-only design as much as for the evaluators; a protocol that certifies only beyond them keeps 0.4\% of the
+evaluator's saving on the same cells (3.0\% at a tolerated error of 0.125), because most of the 30 decisions certify
+earlier (\S\ref{sec:heldout}).
 \end{enumerate}
 PPSR answers which evaluator saves most; we ask what the saving is worth once the decision is local, the design is
 credited first and the coefficient is fitted on the audit. We propose no estimator: the corrected estimator is PPI++
@@ -302,7 +300,7 @@ strategies is the same under every rule. The new judges raise decision-level $\r
 (MetricX-23, XCOMET; GEMBA-MQM 0.22). The rule that survives both years is short: deduplicate; if the decision is
 expected to need more labels than the pilot and the first hundred or so after it, add one strong evaluator fixed in
 advance and refit its coefficient; do not spend the pilot on choosing the evaluator or on committing to the
-coefficient. For a decision that settles within about 200 labels, no evaluator has room to save much.
+coefficient. For a decision that settles within those minimum budgets, no evaluator has room to save much.
 
 \section{Why: the level of measurement and the cost of the pilot}\label{sec:why}
 \paragraph{Evaluator quality collapses across levels.} Among the 11 WMT22 submissions the strong metrics correlate with
@@ -399,8 +397,8 @@ and freezing the coefficient cost the evaluator's whole value.
 \section*{Limitations}
 The menus are built from full human labels to be deliberately hard; easier decisions leave less to save for any method.
 The certificate uses a normal bound whose calibration we checked by simulation, not proved; under boundary stress its
-type-I error is above nominal below about 200 labels, for every strategy, and the savings reported at face value
-include decisions that certify in that range; the budget cut-offs were read off the same boundary simulation and
+type-I error is above nominal below the minimum budgets read off the two WMT23 language pairs (about 206 and 265
+labels), for every strategy, and the savings reported at face value include decisions that certify in that range; the budget cut-offs were read off the same boundary simulation and
 checked on a second seed, but they are observations, not a calibrated bound (\S\ref{sec:heldout}). MT savings are computed on
 the MQM-rated subsets of WMT22 (two language pairs), chat on six pairs from a 2023 Arena release, retrieval on
 re-analysed audits of an earlier study with two judges. The cost approximation is first-order; it describes
@@ -493,9 +491,13 @@ $\lambda$ at zero bounds the loss of an evaluator with $\rho\le0$ by the varianc
 items reduce $P_{\mathrm{eff}}$ below $P$, which is why MT, with about half its paired differences zero, pays more tax.
 In general, $\mathrm{Var}(\hat\lambda)\approx\mathrm{E}[(\hat D-\mathrm{E}\hat D)^2R^2]/(P_{\mathrm{eff}}\,\mathrm{Var}(\hat D)^2)$ (sandwich form), which reduces to the expression above under homoskedasticity; heavy-tailed or heteroskedastic residuals, as with sparse MQM differences, raise the tax.
 The coefficient that minimises the variance of (\ref{eq:est}) under a given design, $\sum_i(1-\pi_i)/\pi_i\,(D_i-\lambda\hat D_i)^2$, is a
-least-squares fit with weights $(1-\pi_i)/\pi_i$ and equals the population coefficient only under uniform sampling; on the
-weighted design of the top-4 menus (31 metrics, three semi-synthetic evaluators, 20 pilots) the population coefficient's variance
-exceeds it by a median 0.0\%, a 90th percentile of 0.2\% and at most 3.7\%, so $\rho^2$ is used as an interpretive approximation, not a bound.
+least-squares slope through the origin with weights $(1-\pi_i)/\pi_i$. Under uniform sampling the weights are constant
+and it is $\sum_i D_i\hat D_i/\sum_i\hat D_i^2$, which coincides with the covariance-over-variance coefficient
+$\lambda_j$ of (\ref{eq:est}) only when $\hat D$ has mean zero over the items (or an intercept is fitted); in general
+the two differ by a term in the means, and the paper's $\lambda_j$ is the covariance-over-variance form throughout.
+Empirically the difference is small: on the weighted design of the top-4 menus (31 metrics, three semi-synthetic
+evaluators, 20 pilots) the variance with $\lambda_j$ exceeds the design-optimal minimum by a median 0.0\%, a 90th
+percentile of 0.2\% and at most 3.7\%, so $\rho^2$ is used as an interpretive approximation, not a bound.
 
 \section{The estimation tax on real evaluators}\label{app:tax}
 \paragraph{The estimation tax on real metrics.} Replacing the pilot-fitted coefficient by the population-optimal one
@@ -784,13 +786,13 @@ Cut-offs from the boundary run above: 55 / 88 items (en$\to$de / zh$\to$en; obse
 every later budget) and 23 / 29 items (at or below 0.125). The cell sets are fixed to the 26 informative cells of the
 unrestricted run and to all 60 (\texttt{--cells\_from}), so the three protocols are compared on the same cells (Table~\ref{tab:restricted}).
 \begin{table*}[t]\centering\footnotesize
-\begin{tabular}{lrrrrr}\toprule
+\resizebox{\textwidth}{!}{\begin{tabular}{lrrrrr}\toprule
 & \multicolumn{3}{c}{26 informative cells} & \multicolumn{2}{c}{all 60 cells}\\
 protocol & S2 vs S1 & S3 vs S1 & $G$ & S2 vs S1 & $G$\\\midrule
 unrestricted & $+3.4$ $[2.9, 3.9]$ & $+3.3$ $[2.7, 3.9]$ & $-0.1$ $[-0.7, +0.5]$ & $+1.8$ $[1.5, 2.0]$ & $-0.1$ $[-0.3, +0.2]$\\
 cut-off at 0.10 (55 / 88 items) & $+0.4$ $[0.2, 0.6]$ & $+0.2$ $[-0.1, 0.5]$ & $-0.2$ $[-0.4, +0.1]$ & $+0.2$ $[0.1, 0.2]$ & $-0.1$ $[-0.2, +0.0]$\\
 cut-off at 0.125 (23 / 29 items) & $+3.0$ $[2.5, 3.4]$ & $+3.0$ $[2.4, 3.5]$ & $-0.0$ $[-0.5, +0.5]$ & $+1.3$ $[1.1, 1.5]$ & $-0.0$ $[-0.2, +0.2]$\\\bottomrule
-\end{tabular}
+\end{tabular}}
 \caption{Post-hoc sensitivity analysis: the strategies under a protocol that issues no certificate below a minimum
 post-pilot budget (en$\to$de / zh$\to$en items), the same rule for every strategy, on fixed cell sets. Means in points
 of $\Jt$ with Monte-Carlo intervals (\texttt{S2\_vs\_S3\_wmt23\_n2000\_restricted*.md}).}\label{tab:restricted}
