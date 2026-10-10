@@ -24,9 +24,9 @@ unchanged, from the development repository in which the work started). Commit ti
 Corrections to the lock documents themselves:
 * The lock files were written with the date 2026-10-07 in their file names; they were committed on 2026-10-06
   (table above). The files were renamed without the date; their content is unchanged.
-* 2026-10-10: in `PROSPECTIVE_LOCK_v0.9.md` the pool path of the development machine (`06_naacl/code/arena_pool_v09.py`
-  → `/root/naacl_data/arena/pool_v09.parquet`) was replaced by the repository path (`code/arena_pool_v09.py` →
-  `$JV_DATA/arena/pool_v09.parquet`); nothing else in the file changed.
+* 2026-10-10: paths of the development machine and repository were replaced by repository paths in two lock files:
+  `PROSPECTIVE_LOCK_v0.9.md` (pool builder and pool file, now `code/arena_pool_v09.py` → `$JV_DATA/arena/pool_v09.parquet`)
+  and `PROSPECTIVE_LOCK_v1.0.md` (input directory, now `frontier/inputs/`); nothing else in the files changed.
 
 Description corrected after submission review (2026-10-09; code unchanged):
 * The weighted design's `bin_index` + `np.maximum(., 1)` in `110_unit_audit.py` folds the dissimilarities below the

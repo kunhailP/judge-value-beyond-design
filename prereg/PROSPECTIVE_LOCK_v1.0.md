@@ -12,7 +12,7 @@ answer the objection that only weak judges were tried.
 All v0.8 MT results (open judges), v0.8 Arena results, and part of the v0.9 Arena results (open judges).
 
 ## Fixed elements
-* Inputs: `06_naacl/frontier/inputs/{mt_ende,mt_zhen,arena_v09}.jsonl` produced by `frontier_export.py` at this commit
+* Inputs: `frontier/inputs/{mt_ende,mt_zhen,arena_v09}.jsonl` produced by `frontier_export.py` at this commit
   (identical prompts and truncation to the open judges; MT: top-6 WMT submissions per language pair; Arena: both orders).
 * Requests: `run_frontier.py`, temperature 0, max 8 tokens; OpenAI-style endpoints with top-20 logprobs where available.
 * Scoring: `frontier_to_parquet.py` (expected value over first-token alternatives when logprobs carry ≥ 0.5 mass,
