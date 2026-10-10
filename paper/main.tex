@@ -292,6 +292,20 @@ $\rho=0.5$ and 31\% at $\rho=0.8$ (identical outputs share one synthetic score, 
 realised HES correlate only 0.20: realised savings (interquartile range $-1\%$ to $+1\%$) are dominated by Monte-Carlo
 noise and exceed the ceiling by more than 0.03 in only 2--4\% of cells.
 
+\paragraph{Held-out year: what should an auditor do?} The comparisons above choose the cheapest judge-free design and the best
+evaluator after seeing the costs. We therefore fixed four strategies on WMT22 and applied them, unchanged, to the WMT23 MQM
+sets (en$\to$de 460 paragraph-level segments, 11 systems; zh$\to$en 1{,}177 segments, 14 systems; the 42 submitted metric
+variants; the same 15 two-system menus per language pair, pilot 50, $\eps\in\{0.01,0.02\}$; pre-registered as lock
+v1.2, App.~\ref{app:heldout}): S1 the dedup design alone; S2 dedup plus COMET-22, the strongest WMT22 metric submitted under
+the same name in both years; S3 dedup plus the evaluator with the highest pilot $\rho$; S4 as S3 unless that $\rho$ is below
+the cost law's break-even of 0.2. With refitting, S2 and S3 cost 3.1\% and 3.3\% less than S1 on WMT23 (cheaper in 92\% and
+85\% of the 26 informative cells; WMT22: 4.4\% and 3.2\%, 85\% and 88\%), the post-hoc best 7.9\% less (within selection noise
+in every cell), and selection costs more than 2\% extra in 4\% of cells. With the frozen coefficient, S2 saves 0.3\% and pilot
+selection costs 3.4\% more than S1 (cheaper in 19\% of cells; WMT22: 27\%). Abstention changes nothing (2--4\% of audits). The
+new judges raise decision-level $\rho$ to 0.36 (MetricX-23, XCOMET) and the best refitted increment to 5--6\%, still below
+the design's own saving in most cells. The rule that survives both years is therefore: deduplicate, add one strong
+evaluator, refit its coefficient, and do not spend the pilot on choosing the evaluator or on freezing the coefficient.
+
 \paragraph{The estimation tax on real metrics.} Replacing the pilot-fitted coefficient by the population-optimal one
 isolates the tax. Over the 31 metric variants it is 4.3 [3.5, 5.2] points on en$\to$de and 2.5 [2.0, 3.1] on zh$\to$en
 (metric-level bootstrap; H9). For the five metrics with the largest $\rho^2$ (0.11--0.15 on en$\to$de, as $(\bar\rho)^2$
@@ -397,7 +411,7 @@ save a few percent of human labels on average, the strongest somewhat more, and 
 the annotation itself. The results reduce
 to a rule a team can apply before paying for an evaluator: (i) its decision-level $\rho$ on the systems at stake, from
 a prior campaign or the pilot, not its system-level agreement; (ii) the pilot's share of the cost, $P/J$, which a
-human-only pilot prediction supplies; (iii) what the judge-free design already saves, known in advance. Under the assumptions of (\ref{eq:law}) the increment
+human-only pilot prediction supplies; (iii) what the judge-free design already saves, known in advance. On a held-out year the strategies these numbers imply (dedup, one strong evaluator, a refitted coefficient) saved 3\% over the judge-free design, and pilot-based evaluator selection added nothing a fixed strong evaluator did not already give. Under the assumptions of (\ref{eq:law}) the increment
 is about $\rho^2(1-P/J)$, less $(1-\rho^2)/P_{\mathrm{eff}}$ of the post-pilot share if the coefficient is frozen: for
 the WMT22 metrics ($\rho\le0.43$, $P/J\approx0.4$) at most 11\%, typically 2--5\%, against design savings of 5--16\%.
 
@@ -546,6 +560,36 @@ an item share one noise draw (an earlier version drew noise per output, which le
 non-zero prediction term of at most $6\times10^{-4}$; the correlation was 0.975 and the savings 11\% / 32\%).}\label{fig:dial}
 \end{figure}
 
+
+\section{Held-out year: auditor strategies on WMT23}\label{app:heldout}
+Pre-registered (\texttt{prereg/PROSPECTIVE\_LOCK\_v1.2.md}) after the WMT22 development analysis and before any WMT23 record
+was examined; \texttt{code/128\_strategies.py}, \texttt{results/HELDOUT\_WMT23.md}. WMT23 pools use the official
+mt-metrics-eval MQM scores (equal to the sum of Google's merged error weights in 100\% / 98.5\% of items; one rater per item);
+references and the BLEU-MBR system are excluded as in WMT22. Every strategy is a per-audit choice of one arm from the same
+simulated audits, made with pilot information only; cost is $\Jt$ with the pilot included. On WMT22 the dedup design was
+cheaper than the weighted one in 83\% (zh$\to$en) and 75\% (en$\to$de) of informative cells, so S1 is dedup; COMET-22 had the
+highest decision-level $\rho$ among metrics submitted in both years (MetricX-22 has no WMT23 counterpart); pilot $\rho$ and
+the pilot-predicted label count gave the same development result as selection statistics; a predicted-saving threshold
+only removed gains and is not used.
+\begin{table}[h]\centering\small
+\begin{tabular}{lrrrr}\toprule
+& \multicolumn{2}{c}{refitted} & \multicolumn{2}{c}{frozen}\\
+cost relative to S1 (dedup) & WMT22 & WMT23 & WMT22 & WMT23\\\midrule
+informative cells & 33 & 26 & 33 & 26\\
+S2 fixed COMET-22 & $-4.4$ (85) & $-3.1$ (92) & $-2.2$ (76) & $-0.3$ (62)\\
+S3 pilot selection & $-3.2$ (88) & $-3.3$ (85) & $+2.3$ (27) & $+3.4$ (19)\\
+S4 select or abstain & $-3.2$ (88) & $-3.1$ (85) & $+2.2$ (27) & $+3.5$ (15)\\
+post-hoc best (reference) & $-7.7$ & $-7.9$ & $-6.2$ & $-5.5$\\
+mean evaluator (reference) & $-2.0$ & $-2.5$ & $+0.1$ & $+0.0$\\
+S3 costlier than S1 by $>2\%$ & 3\% & 4\% & 45\% & 50\%\\
+wrong certificates at $\Jt$, S1 / S3 & .003 / .003 & .008 / .007 & .003 / .003 & .008 / .006\\\bottomrule
+\end{tabular}
+\caption{Mean excess cost over the judge-free dedup design, in \% of its $\Jt$ (negative: cheaper), with the share of
+informative cells in which the strategy is cheaper in parentheses; design saving over uniform: median 5.2\% (WMT22) and
+4.1\% (WMT23); pilot share 37\% and 53\%. Decision-level $\rho$: WMT22 at most 0.28 over the 31 metrics (COMET-22 rank 4),
+WMT23 at most 0.36 over 42 (MetricX-23-QE, XCOMET; COMET-22 rank 20; GEMBA-MQM 0.20). The post-hoc best is within
+selection noise in every cell at 300 audits.}\label{tab:heldout}
+\end{table}
 
 \section{Chat audits}\label{app:arena}
 Figure~\ref{fig:arena} shows the six close LMArena pairs of lock v0.9 (\S\ref{sec:arena}).

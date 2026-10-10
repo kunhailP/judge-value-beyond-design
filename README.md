@@ -41,6 +41,11 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
   ρ ≈ 0.5 is needed to save 10%, ρ ≈ 0.8 to save 30%. Real evaluators lie at ρ ≤ 0.43, where realised savings are within a
   few points of zero and Monte-Carlo noise dominates cell-level prediction.
 * **Chat.** Pairwise LLM judges reach ρ 0.07–0.29 on close LMArena pairs; averaging both presentation orders raises ρ.
+* **Held-out year (2026-10-10; `prereg/PROSPECTIVE_LOCK_v1.2.md`, `results/HELDOUT_WMT23.md`).** Four auditor strategies fixed on
+  WMT22 and applied unchanged to WMT23 en→de / zh→en (42 metrics, 30 two-system decisions, 26 informative cells): with a
+  refitted coefficient, dedup + a pre-fixed COMET-22 costs 3.1% less than dedup alone (cheaper in 92% of cells) and pilot
+  selection of the evaluator 3.3% less (85%); with a frozen coefficient pilot selection costs 3.4% more (cheaper in 19%).
+  The post-hoc best (−7.9%) is within selection noise; the new judges (MetricX-23, XCOMET) reach ρ 0.36.
 * **Failed pre-registered hypotheses are reported:** H2 (inflation over uniform), H4 in chat, H5 (pilot-based judge
   selection), H6 (chat savings ≥ 5% in ≥ 3/6 pairs).
 * Terminology: "best fixed judge-free baseline" is a benchmark chosen per cell from realised costs, not a procedure an
@@ -55,6 +60,7 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
 | `code/111_summarize.py` | J_τ, HES, inflation, selection, pilot-prediction scores with paired bootstrap intervals |
 | `code/121_robustness.py`, `code/122_decisions.py`, `code/RUN_PAIRS_MTME.sh`, `code/RUN_ARENA_ROBUST2.sh` | Exploratory: coefficient rules (pilot / refit / cross-fit / oracle), 30 two-system decisions, coverage, selection-noise test |
 | `code/123_decision_sensitivity.py`, `code/124_human_ceiling.py` | Exploratory: informativeness threshold, evaluator set and identical-string label (`--ident pick`) sensitivity; human noise ceiling for decision-level ρ |
+| `code/mt_build_pool23.py`, `code/mtme_import23.py`, `code/RUN_PAIRS_23.sh`, `code/128_strategies.py` | Held-out year: WMT23 pools and metrics, the 30 WMT23 decisions, pre-fixed auditor strategies (dev grid `results/strategies/devgrid/`) |
 | `code/125_exclusion.py`, `code/126_variants.py`, `code/127_locked_variants.py`, `code/RUN_PAIRS_EXTRA.sh` | Pre-submission: one-sided upper bounds on evaluator savings (what the decisions rule out), the 30 decisions with pilots 10/25, four bins and 2,000 audits (`--bins`, `--draws`), matched-base comparison of all 31 metrics in the locked cells |
 | `code/112–120`, `mtme_import.py` | Judge anatomy, cost law, ρ dial, position bias, estimation tax, hypothesis verdicts, boundary calibration, v1.1 verdicts, figures; WMT22 metric import |
 | `code/101_ir_hes.py` | Retrieval block: J_τ, HES and selection from the per-draw records of an earlier retrieval study |
@@ -70,6 +76,7 @@ Pools and judge outputs live under `$JV_DATA` (default `./data`) and are not red
 * LMArena: `lmarena-ai/arena-human-preference-55k` → `code/arena_pool.py`, `code/arena_pool_v09.py` → `$JV_DATA/arena/pool*.parquet`
 * Judges: `code/mt_comet.py`, `code/mt_gemba.py`, `code/arena_judge.py` (one 24 GB GPU; models and revisions in the scripts)
 * WMT22 metric scores: mt-metrics-eval-v2 (`https://data.statmt.org/wmt26/mt-metrics-eval-v2.tgz`) extracted to `$JV_DATA/mtme/` → `code/mtme_import.py`
+* WMT23 (held-out): the same archive's `wmt23/` (human-scores, system-outputs, references, metric-scores) → `code/mt_build_pool23.py`, `code/mtme_import23.py`
 * Retrieval: `101_ir_hes.py` reads the per-draw records of the earlier retrieval study (`*_draws.csv`); its outputs are in `results/ir/`.
 
 ## Reproduction
@@ -91,6 +98,9 @@ for v in "25 300 3 p25" "10 300 3 p10" "50 300 4 b4" "50 2000 3 n2000"; do set -
 python3 code/126_variants.py
 for lp in ende zhen; do for v in "3 _mtmex" "4 _mtmeb4"; do set -- $v; python3 code/110_unit_audit.py mt $lp --judges $(python3 -c "import json;print(' '.join(json.load(open('results/mt/mt_${lp}_m4_p50_mtme_info.json'))['judges']))") --pilot 50 --eps 0.01 0.02 --oracle --extra --bins $1 --tag $2; done; done
 python3 code/127_locked_variants.py
+# held-out year: WMT23 pools, 30 decisions, strategies fixed on WMT22 (per-draw records regenerable; ~2 min per cell on 128 cores)
+python3 -I code/mt_build_pool23.py; python3 -I code/mtme_import23.py; bash code/RUN_PAIRS_23.sh
+for m in cvq cvl; do python3 code/128_strategies.py --glob 'results/mt/mt_*_m2_p50_pairmtme??' --design dedup --fixed mtme_COMET-22-refA --mode $m --stat rho --r0 0.2 --out results/strategies/STRATEGIES_wmt22_$m; python3 code/128_strategies.py --glob 'results/mt/mt_*23_m2_p50_pair23??' --design dedup --fixed mtme_COMET-refA --mode $m --stat rho --r0 0.2 --out results/strategies/STRATEGIES_wmt23_$m; done
 ```
 Reproduction check (2026-10-09): rebuilding the pools and the 31 metric judges from the public sources above on another
 machine (numpy 2.5.3) and re-running `110_unit_audit.py mt zhen --judges <31 metrics> --pilot 50 --eps 0.01 0.02 --oracle`

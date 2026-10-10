@@ -28,3 +28,6 @@ results/mt/*_mtmex_pred.parquet
 results/mt/*_mtmeb4_draws.parquet
 results/mt/*_mtmeb4_pred.parquet
 results/*.log
+results/mt/mt_*23_m2_p50_pair23*_draws.parquet
+results/mt/mt_*23_m2_p50_pair23*_meta.parquet
+results/mt/mt_*23_m2_p50_pair23*_pred.parquet
