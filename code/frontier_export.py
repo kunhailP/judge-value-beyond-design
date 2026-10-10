@@ -5,7 +5,7 @@ judge sees identical text). Output: 06_naacl/frontier/inputs/{mt_ende,mt_zhen,ar
   {"id": ..., "task": "mt"|"arena", "user": <user message>, "assistant_prefix": "Score: " (mt only)}
 MT: the 6 best WMT submissions per language pair (MBR systems excluded) = the menus of every locked MT analysis.
 Arena: lock v0.9 battles, both orders (id = <battle_id>|1 shows x as A, <battle_id>|2 shows y as A).
-Run with the vLLM venv (needs transformers): /root/venv_vllm/bin/python -I frontier_export.py
+Run in the vLLM environment (needs transformers): python -I frontier_export.py
 """
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))

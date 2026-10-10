@@ -12,7 +12,7 @@ The judges, prompt and scoring are those of v0.8 and are not changed. **No judge
 this lock is committed.**
 
 ## Fixed elements
-* Pool: `06_naacl/code/arena_pool_v09.py` → `/root/naacl_data/arena/pool_v09.parquet`: English single-turn battles of
+* Pool: `code/arena_pool_v09.py` → `$JV_DATA/arena/pool_v09.parquet`: English single-turn battles of
   lmarena-ai/arena-human-preference-55k; pairs with ≥ 300 battles (ties kept) not used in v0.8; the 6 with the smallest
   |win-rate gap| (selected on human votes only): pair ids 10–15 =
   gpt-4-0314/gpt-4-0613 (472, gap .011), llama-2-70b-chat/vicuna-33b (377, .021), gpt-3.5-turbo-0613/vicuna-33b (375, .048),
