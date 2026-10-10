@@ -89,14 +89,24 @@ certification rate is the type-I error (nominal 0.10). Mean over the 30 cells at
 S3/S4 0.12; 0.10 by about 60 (S1) and 30 (S2–S4) labels, 0.05 by about 200, 0.01–0.02 at the largest budgets; per-cell
 maxima average 0.18 / 0.18 / 0.13 (S1 / S2 / S3), at most 0.24. Against S1 on the same cell and budget the evaluator strategies
 are lower on average (0.1–1.5 points) and higher at 15–34% of the 210 cell–budget points of a pair, by over 2 points at 1–3%.
-Budgets are expected items; 10 items ≈ 110–116 labels in total. The pooled rate is not significantly above 0.10 from 55 (en-de,
-206 labels) / 61 (zh-en, 211 labels) post-pilot items on for S1 (`S2_vs_S3_wmt23_boundary_certification_range.csv`).
+Budgets are expected items; 10 items ≈ 110–116 labels in total. Rates are means over the 15 cells of a pair with Monte-Carlo
+intervals from the joint resampling of draw indices. The observed mean rate is at or below 0.10 at every later budget from
+55 items (en-de, 206 labels; S1 0.092 [0.078, 0.105]) / 88 items (zh-en, 265 labels; 0.087 [0.076, 0.099]) on, and at or below
+0.125 from 23 / 29 items (~145 labels) (`S2_vs_S3_wmt23_boundary_certification_range.csv`; second seed `_boundary_seed2`).
+These are observations on this simulation, not a validated range.
 
-Restricted protocol (no certificate below that budget, same rule for every arm; `S2_vs_S3_wmt23_n2000_restricted*`,
-`STRATEGIES_wmt23_n2000_restricted*`): strict 55/61 items — 21 of the 26 informative cells tie, S2 vs S1 +0.3% [0.2, 0.4],
-G −0.1% [−0.2, +0.0] over 60 cells, savings kept only where J50 > ~200 labels (en-de 01, 34: 3.0–3.3%); tolerance 0.125
-(23/29 items, ~145 labels) — S2 vs S1 +1.5% [1.3, 1.7], G +0.0% [−0.2, +0.3] over 56 cells. The ranking of the strategies is the
-same under every rule.
+Restricted protocol, post-hoc sensitivity analysis (no certificate below the cut-off, same rule for every arm, J50 interpolated
+over the allowed budgets only; cell sets fixed to the unrestricted run's 26 informative cells and all 60;
+`S2_vs_S3_wmt23_n2000_restricted*`, `STRATEGIES_wmt23_n2000_restricted*`):
+
+| protocol | S2 vs S1, 26 cells | S3 vs S1, 26 | G, 26 | S2 vs S1, 60 | G, 60 |
+|---|---|---|---|---|---|
+| unrestricted | +3.4 [2.9, 3.9] | +3.3 [2.7, 3.9] | −0.1 [−0.7, +0.5] | +1.8 [1.5, 2.0] | −0.1 [−0.3, +0.2] |
+| cut-off at 0.10 (55 / 88 items) | +0.4 [0.2, 0.6] | +0.2 [−0.1, 0.5] | −0.2 [−0.4, +0.1] | +0.2 [0.1, 0.2] | −0.1 [−0.2, +0.0] |
+| cut-off at 0.125 (23 / 29 items) | +3.0 [2.5, 3.4] | +3.0 [2.4, 3.5] | −0.0 [−0.5, +0.5] | +1.3 [1.1, 1.5] | −0.0 [−0.2, +0.2] |
+
+At the 0.10 cut-off 22 of the 26 cells certify at the first allowed budget (204–272 labels) under every strategy; the saving
+survives only where J50 was already above it (en-de 01, 34: 3.0–3.3%). The ranking of the strategies is the same under every rule.
 
 Strong evaluators (2,000 audits): XCOMET-XXL adds a median 4.7% (mean 5.4%) refitted on WMT23 and the design saves more labels
 in only 11/26 cells; for the ten evaluators with the highest pilot rho, 44% of (cell, evaluator) pairs (WMT22: MetricX-XXL

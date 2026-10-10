@@ -1,43 +1,43 @@
 # S2 (fixed mtme_COMET-refA) vs S3 (pilot selection by rho), cvq; results/mt/mt_*23_m2_p50_pair23n??
 
 G = 1 - J50(S3)/J50(S2) per cell, paired over audits (2000 per cell, 1000 bootstrap draws); positive = selection cheaper. Margin of practical equivalence: 2% (lock v1.2 addendum).
-Restricted protocol: no certificate below post-pilot budget {'ende23': 55.0, 'zhen23': 61.0} (same rule for every strategy).
+Restricted protocol: no certificate below post-pilot budget {'ende23': 55.0, 'zhen23': 88.0} (same rule for every strategy).
 
 ## Pooled, primary: mean over cells; 95% Monte-Carlo interval from the joint resampling of draw indices (fixed benchmark)
 
 | cells       | lp     |   n |   G_mean |    G_lo |   G_hi |   share_G_pos |   D2_mean |   D2_lo |   D2_hi |   D3_mean |   D3_lo |   D3_hi | verdict                                  |
 |:------------|:-------|----:|---------:|--------:|-------:|--------------:|----------:|--------:|--------:|----------:|--------:|--------:|:-----------------------------------------|
-| informative | pooled |  60 |  -0.0007 | -0.0018 | 0.0003 |        0.5167 |    0.003  |  0.0024 |  0.0039 |    0.0023 |  0.0013 |  0.0035 | S2 as good (gain of the margin excluded) |
-| informative | ende23 |  30 |  -0.0007 | -0.0022 | 0.0006 |        0.4333 |    0.0053 |  0.0041 |  0.0069 |    0.0046 |  0.0033 |  0.0063 | S2 as good (gain of the margin excluded) |
-| informative | zhen23 |  30 |  -0.0007 | -0.0023 | 0.0008 |        0.6    |    0.0008 |  0.0001 |  0.0016 |    0      | -0.0015 |  0.0016 | S2 as good (gain of the margin excluded) |
-| all 60      | pooled |  60 |  -0.0007 | -0.0018 | 0.0003 |        0.5167 |    0.003  |  0.0024 |  0.0039 |    0.0023 |  0.0013 |  0.0035 | S2 as good (gain of the margin excluded) |
-| all 60      | ende23 |  30 |  -0.0007 | -0.0022 | 0.0006 |        0.4333 |    0.0053 |  0.0041 |  0.0069 |    0.0046 |  0.0033 |  0.0063 | S2 as good (gain of the margin excluded) |
-| all 60      | zhen23 |  30 |  -0.0007 | -0.0023 | 0.0008 |        0.6    |    0.0008 |  0.0001 |  0.0016 |    0      | -0.0015 |  0.0016 | S2 as good (gain of the margin excluded) |
+| informative | pooled |  26 |  -0.0016 | -0.0044 | 0.0005 |        0.0385 |    0.0036 |  0.0023 |  0.0056 |    0.0021 | -0.0006 |  0.0046 | S2 as good (gain of the margin excluded) |
+| informative | ende23 |  16 |  -0.0014 | -0.0039 | 0.001  |        0.0625 |    0.0059 |  0.0038 |  0.0089 |    0.0046 |  0.0023 |  0.0077 | S2 as good (gain of the margin excluded) |
+| informative | zhen23 |  10 |  -0.002  | -0.0079 | 0      |        0      |    0      | -0.0013 |  0.0019 |   -0.002  | -0.0077 |  0      | S2 as good (gain of the margin excluded) |
+| all 60      | pooled |  60 |  -0.0007 | -0.0019 | 0.0002 |        0.0167 |    0.0016 |  0.001  |  0.0024 |    0.0009 | -0.0003 |  0.002  | S2 as good (gain of the margin excluded) |
+| all 60      | ende23 |  30 |  -0.0007 | -0.0021 | 0.0005 |        0.0333 |    0.0031 |  0.002  |  0.0047 |    0.0024 |  0.0012 |  0.0041 | S2 as good (gain of the margin excluded) |
+| all 60      | zhen23 |  30 |  -0.0007 | -0.0026 | 0      |        0      |    0      | -0.0004 |  0.0006 |   -0.0007 | -0.0026 |  0      | S2 as good (gain of the margin excluded) |
 
 ## Pooled, sensitivity: decisions as clusters (point = mean over decisions of the within-decision mean; cluster bootstrap over decisions x joint draws)
 
 | cells       | lp     |   n |   G_dec |   G_dec_lo |   G_dec_hi |   D2_dec |   D2_dec_lo |   D2_dec_hi |   D3_dec |   D3_dec_lo |   D3_dec_hi |
 |:------------|:-------|----:|--------:|-----------:|-----------:|---------:|------------:|------------:|---------:|------------:|------------:|
-| informative | pooled |  60 | -0.0007 |    -0.0035 |     0.0009 |   0.003  |      0.0012 |      0.0058 |   0.0023 |     -0.0006 |      0.0057 |
-| informative | ende23 |  30 | -0.0007 |    -0.004  |     0.0015 |   0.0053 |      0.0022 |      0.011  |   0.0046 |      0.0015 |      0.0103 |
-| informative | zhen23 |  30 | -0.0007 |    -0.0046 |     0.0012 |   0.0008 |     -0.0003 |      0.0021 |   0      |     -0.004  |      0.0027 |
-| all 60      | pooled |  60 | -0.0007 |    -0.0032 |     0.0008 |   0.003  |      0.0012 |      0.006  |   0.0023 |     -0.0006 |      0.0053 |
-| all 60      | ende23 |  30 | -0.0007 |    -0.0037 |     0.0015 |   0.0053 |      0.002  |      0.0109 |   0.0046 |      0.0015 |      0.0099 |
-| all 60      | zhen23 |  30 | -0.0007 |    -0.0045 |     0.0012 |   0.0008 |     -0.0002 |      0.0021 |   0      |     -0.0045 |      0.0025 |
+| informative | pooled |  26 | -0.0015 |    -0.0061 |     0.0013 |   0.0034 |      0      |      0.0093 |   0.0019 |     -0.0035 |      0.0085 |
+| informative | ende23 |  16 | -0.0014 |    -0.007  |     0.0024 |   0.0059 |      0      |      0.0155 |   0.0046 |     -0.0007 |      0.0149 |
+| informative | zhen23 |  10 | -0.0016 |    -0.0113 |     0      |   0      |     -0.0011 |      0.0018 |  -0.0016 |     -0.0099 |      0      |
+| all 60      | pooled |  60 | -0.0007 |    -0.0028 |     0.0007 |   0.0016 |      0      |      0.0044 |   0.0009 |     -0.0017 |      0.004  |
+| all 60      | ende23 |  30 | -0.0007 |    -0.0036 |     0.0014 |   0.0031 |      0      |      0.0091 |   0.0024 |     -0.0002 |      0.008  |
+| all 60      | zhen23 |  30 | -0.0007 |    -0.0043 |     0      |   0      |     -0.0004 |      0.0008 |  -0.0007 |     -0.0048 |      0      |
 
 ## Per-cell interval widths (informative cells, medians)
 
-G: 0.001; D2 (S2 vs S1): 0.001; D3 (S3 vs S1): 0.002
-cells with G interval above 0: 8/60; below 0: 0/60; D2 above 0: 31; D3 above 0: 35
+G: 0.000; D2 (S2 vs S1): 0.000; D3 (S3 vs S1): 0.000
+cells with G interval above 0: 0/26; below 0: 0/26; D2 above 0: 3; D3 above 0: 2
 
 ## Coverage of the chosen arm's upper bound (nominal 0.90) and wrong certificates, informative cells
 
 | strategy             |   ('cover_all', 'mean') |   ('cover_all', 'min') |   ('cover_all', 'max') |   ('cover_min_budget', 'mean') |   ('cover_min_budget', 'min') |   ('cover_min_budget', 'max') |   ('cover_at_J50', 'mean') |   ('cover_at_J50', 'min') |   ('cover_at_J50', 'max') |   ('wrong_at_J50', 'mean') |   ('wrong_at_J50', 'min') |   ('wrong_at_J50', 'max') |   ('wrong_max', 'mean') |   ('wrong_max', 'min') |   ('wrong_max', 'max') |   ('wrong_mean', 'mean') |   ('wrong_mean', 'min') |   ('wrong_mean', 'max') |
 |:---------------------|------------------------:|-----------------------:|-----------------------:|-------------------------------:|------------------------------:|------------------------------:|---------------------------:|--------------------------:|--------------------------:|---------------------------:|--------------------------:|--------------------------:|------------------------:|-----------------------:|-----------------------:|-------------------------:|------------------------:|------------------------:|
-| S1_design            |                   0.92  |                  0.897 |                  0.934 |                          0.895 |                         0.868 |                         0.91  |                      0.912 |                     0.88  |                     0.931 |                      0.002 |                         0 |                     0.02  |                   0.002 |                      0 |                  0.02  |                    0.001 |                       0 |                   0.005 |
-| S2_fixed             |                   0.916 |                  0.895 |                  0.934 |                          0.891 |                         0.87  |                         0.906 |                      0.908 |                     0.881 |                     0.929 |                      0.002 |                         0 |                     0.018 |                   0.002 |                      0 |                  0.018 |                    0     |                       0 |                   0.005 |
-| S3_select            |                   0.908 |                  0.894 |                  0.929 |                          0.884 |                         0.862 |                         0.904 |                      0.898 |                     0.88  |                     0.92  |                      0.002 |                         0 |                     0.018 |                   0.002 |                      0 |                  0.018 |                    0     |                       0 |                   0.005 |
-| S4_select_or_abstain |                   0.908 |                  0.894 |                  0.928 |                          0.884 |                         0.862 |                         0.904 |                      0.898 |                     0.88  |                     0.92  |                      0.002 |                         0 |                     0.018 |                   0.002 |                      0 |                  0.018 |                    0     |                       0 |                   0.005 |
+| S1_design            |                   0.909 |                  0.897 |                  0.924 |                          0.888 |                         0.868 |                         0.897 |                      0.901 |                     0.886 |                     0.916 |                      0.005 |                         0 |                     0.02  |                   0.012 |                      0 |                  0.031 |                    0.005 |                       0 |                   0.015 |
+| S2_fixed             |                   0.905 |                  0.895 |                  0.921 |                          0.883 |                         0.87  |                         0.893 |                      0.897 |                     0.885 |                     0.907 |                      0.004 |                         0 |                     0.018 |                   0.011 |                      0 |                  0.031 |                    0.004 |                       0 |                   0.014 |
+| S3_select            |                   0.901 |                  0.894 |                  0.919 |                          0.875 |                         0.862 |                         0.892 |                      0.895 |                     0.88  |                     0.908 |                      0.004 |                         0 |                     0.018 |                   0.009 |                      0 |                  0.03  |                    0.004 |                       0 |                   0.014 |
+| S4_select_or_abstain |                   0.901 |                  0.894 |                  0.919 |                          0.875 |                         0.862 |                         0.892 |                      0.895 |                     0.88  |                     0.908 |                      0.004 |                         0 |                     0.018 |                   0.009 |                      0 |                  0.03  |                    0.004 |                       0 |                   0.014 |
 
 ## Wrong-certificate rate by post-pilot budget, mean over all 60 cells (boundary runs: type-I error, nominal 0.1)
 
@@ -45,16 +45,16 @@ Budgets are expected sampled items (Poisson design); 'cost' is the realised mean
 
 |   budget |   S1_design |   S2_fixed |   S3_select |   S4_select_or_abstain |
 |---------:|------------:|-----------:|------------:|-----------------------:|
-|       10 |       0     |      0     |       0     |                  0     |
-|       13 |       0     |      0     |       0     |                  0     |
-|       14 |       0     |      0     |       0     |                  0     |
-|       17 |       0     |      0     |       0     |                  0     |
-|       20 |       0     |      0     |       0     |                  0     |
-|       23 |       0     |      0     |       0     |                  0     |
-|       29 |       0     |      0     |       0     |                  0     |
-|       31 |       0     |      0     |       0     |                  0     |
-|       41 |       0     |      0     |       0     |                  0     |
-|       42 |       0     |      0     |       0     |                  0     |
+|       10 |       0.006 |      0.005 |       0.004 |                  0.004 |
+|       13 |       0.008 |      0.007 |       0.006 |                  0.006 |
+|       14 |       0.002 |      0.002 |       0.001 |                  0.001 |
+|       17 |       0.006 |      0.006 |       0.005 |                  0.005 |
+|       20 |       0.002 |      0.002 |       0.001 |                  0.001 |
+|       23 |       0.005 |      0.004 |       0.005 |                  0.005 |
+|       29 |       0.002 |      0.001 |       0.001 |                  0.001 |
+|       31 |       0.004 |      0.004 |       0.003 |                  0.003 |
+|       41 |       0.004 |      0.004 |       0.004 |                  0.004 |
+|       42 |       0.001 |      0.001 |       0.001 |                  0.001 |
 |       55 |       0.003 |      0.003 |       0.003 |                  0.003 |
 |       61 |       0.001 |      0.001 |       0.001 |                  0.001 |
 |       73 |       0.002 |      0.002 |       0.002 |                  0.002 |
@@ -77,200 +77,200 @@ Per-cell maximum over budgets, mean / max over cells:
 
 | strategy             |   mean |   max |
 |:---------------------|-------:|------:|
-| S1_design            |  0.002 | 0.02  |
-| S2_fixed             |  0.002 | 0.018 |
-| S3_select            |  0.002 | 0.018 |
-| S4_select_or_abstain |  0.002 | 0.018 |
+| S1_design            |  0.006 | 0.031 |
+| S2_fixed             |  0.005 | 0.031 |
+| S3_select            |  0.004 | 0.03  |
+| S4_select_or_abstain |  0.004 | 0.03  |
 
-### Pooled rate per budget and language pair (one-sided binomial test of rate > alpha over cells x draws; * = from this budget on, no later budget is significantly above alpha)
+### Mean rate per budget and language pair, 95% Monte-Carlo interval from the joint resampling of draw indices (* = from this budget on, the observed mean rate is at or below 0.1 at every later budget; an observation on this simulation, not a test)
 
-| lp     | strategy             |   budget |   cost |   rate |   p_above | from_here_on   |
-|:-------|:---------------------|---------:|-------:|-------:|----------:|:---------------|
-| ende23 | S1_design            |       10 |  116.8 |  0     |         1 | *              |
-| ende23 | S1_design            |       13 |  123.1 |  0     |         1 |                |
-| ende23 | S1_design            |       17 |  130.9 |  0     |         1 |                |
-| ende23 | S1_design            |       23 |  142.5 |  0     |         1 |                |
-| ende23 | S1_design            |       31 |  158.9 |  0     |         1 |                |
-| ende23 | S1_design            |       41 |  178.5 |  0     |         1 |                |
-| ende23 | S1_design            |       55 |  206.2 |  0.003 |         1 |                |
-| ende23 | S1_design            |       73 |  243.3 |  0.002 |         1 |                |
-| ende23 | S1_design            |       98 |  292.9 |  0.002 |         1 |                |
-| ende23 | S1_design            |      130 |  357.3 |  0.002 |         1 |                |
-| ende23 | S1_design            |      174 |  444.9 |  0.001 |         1 |                |
-| ende23 | S1_design            |      231 |  559.2 |  0.001 |         1 |                |
-| ende23 | S1_design            |      308 |  713.4 |  0     |         1 |                |
-| ende23 | S1_design            |      410 |  867   |  0     |         1 |                |
-| ende23 | S2_fixed             |       10 |  116.8 |  0     |         1 | *              |
-| ende23 | S2_fixed             |       13 |  123.1 |  0     |         1 |                |
-| ende23 | S2_fixed             |       17 |  130.9 |  0     |         1 |                |
-| ende23 | S2_fixed             |       23 |  142.5 |  0     |         1 |                |
-| ende23 | S2_fixed             |       31 |  158.9 |  0     |         1 |                |
-| ende23 | S2_fixed             |       41 |  178.5 |  0     |         1 |                |
-| ende23 | S2_fixed             |       55 |  206.2 |  0.003 |         1 |                |
-| ende23 | S2_fixed             |       73 |  243.3 |  0.002 |         1 |                |
-| ende23 | S2_fixed             |       98 |  292.9 |  0.002 |         1 |                |
-| ende23 | S2_fixed             |      130 |  357.3 |  0.001 |         1 |                |
-| ende23 | S2_fixed             |      174 |  444.9 |  0.001 |         1 |                |
-| ende23 | S2_fixed             |      231 |  559.2 |  0.001 |         1 |                |
-| ende23 | S2_fixed             |      308 |  713.4 |  0     |         1 |                |
-| ende23 | S2_fixed             |      410 |  867   |  0     |         1 |                |
-| ende23 | S3_select            |       10 |  116.8 |  0     |         1 | *              |
-| ende23 | S3_select            |       13 |  123.1 |  0     |         1 |                |
-| ende23 | S3_select            |       17 |  130.9 |  0     |         1 |                |
-| ende23 | S3_select            |       23 |  142.5 |  0     |         1 |                |
-| ende23 | S3_select            |       31 |  158.9 |  0     |         1 |                |
-| ende23 | S3_select            |       41 |  178.5 |  0     |         1 |                |
-| ende23 | S3_select            |       55 |  206.2 |  0.003 |         1 |                |
-| ende23 | S3_select            |       73 |  243.3 |  0.002 |         1 |                |
-| ende23 | S3_select            |       98 |  292.9 |  0.002 |         1 |                |
-| ende23 | S3_select            |      130 |  357.3 |  0.001 |         1 |                |
-| ende23 | S3_select            |      174 |  444.9 |  0.001 |         1 |                |
-| ende23 | S3_select            |      231 |  559.2 |  0.001 |         1 |                |
-| ende23 | S3_select            |      308 |  713.4 |  0     |         1 |                |
-| ende23 | S3_select            |      410 |  867   |  0     |         1 |                |
-| ende23 | S4_select_or_abstain |       10 |  116.8 |  0     |         1 | *              |
-| ende23 | S4_select_or_abstain |       13 |  123.1 |  0     |         1 |                |
-| ende23 | S4_select_or_abstain |       17 |  130.9 |  0     |         1 |                |
-| ende23 | S4_select_or_abstain |       23 |  142.5 |  0     |         1 |                |
-| ende23 | S4_select_or_abstain |       31 |  158.9 |  0     |         1 |                |
-| ende23 | S4_select_or_abstain |       41 |  178.5 |  0     |         1 |                |
-| ende23 | S4_select_or_abstain |       55 |  206.2 |  0.003 |         1 |                |
-| ende23 | S4_select_or_abstain |       73 |  243.3 |  0.002 |         1 |                |
-| ende23 | S4_select_or_abstain |       98 |  292.9 |  0.002 |         1 |                |
-| ende23 | S4_select_or_abstain |      130 |  357.3 |  0.001 |         1 |                |
-| ende23 | S4_select_or_abstain |      174 |  444.9 |  0.001 |         1 |                |
-| ende23 | S4_select_or_abstain |      231 |  559.2 |  0.001 |         1 |                |
-| ende23 | S4_select_or_abstain |      308 |  713.4 |  0     |         1 |                |
-| ende23 | S4_select_or_abstain |      410 |  867   |  0     |         1 |                |
-| zhen23 | S1_design            |       10 |  110.6 |  0     |         1 | *              |
-| zhen23 | S1_design            |       14 |  118.7 |  0     |         1 |                |
-| zhen23 | S1_design            |       20 |  130.6 |  0     |         1 |                |
-| zhen23 | S1_design            |       29 |  148.7 |  0     |         1 |                |
-| zhen23 | S1_design            |       42 |  174.4 |  0     |         1 |                |
-| zhen23 | S1_design            |       61 |  212.2 |  0.001 |         1 |                |
-| zhen23 | S1_design            |       88 |  266   |  0.001 |         1 |                |
-| zhen23 | S1_design            |      127 |  344.9 |  0.001 |         1 |                |
-| zhen23 | S1_design            |      183 |  457.9 |  0.001 |         1 |                |
-| zhen23 | S1_design            |      263 |  606.7 |  0     |         1 |                |
-| zhen23 | S1_design            |      378 |  811.5 |  0     |         1 |                |
-| zhen23 | S1_design            |      544 | 1077.3 |  0     |         1 |                |
-| zhen23 | S1_design            |      783 | 1460.5 |  0     |         1 |                |
-| zhen23 | S1_design            |     1127 | 1924.5 |  0     |         1 |                |
-| zhen23 | S2_fixed             |       10 |  110.6 |  0     |         1 | *              |
-| zhen23 | S2_fixed             |       14 |  118.7 |  0     |         1 |                |
-| zhen23 | S2_fixed             |       20 |  130.6 |  0     |         1 |                |
-| zhen23 | S2_fixed             |       29 |  148.7 |  0     |         1 |                |
-| zhen23 | S2_fixed             |       42 |  174.4 |  0     |         1 |                |
-| zhen23 | S2_fixed             |       61 |  212.2 |  0.001 |         1 |                |
-| zhen23 | S2_fixed             |       88 |  266   |  0.001 |         1 |                |
-| zhen23 | S2_fixed             |      127 |  344.9 |  0.001 |         1 |                |
-| zhen23 | S2_fixed             |      183 |  457.9 |  0.001 |         1 |                |
-| zhen23 | S2_fixed             |      263 |  606.7 |  0     |         1 |                |
-| zhen23 | S2_fixed             |      378 |  811.5 |  0     |         1 |                |
-| zhen23 | S2_fixed             |      544 | 1077.3 |  0     |         1 |                |
-| zhen23 | S2_fixed             |      783 | 1460.5 |  0     |         1 |                |
-| zhen23 | S2_fixed             |     1127 | 1924.5 |  0     |         1 |                |
-| zhen23 | S3_select            |       10 |  110.6 |  0     |         1 | *              |
-| zhen23 | S3_select            |       14 |  118.7 |  0     |         1 |                |
-| zhen23 | S3_select            |       20 |  130.6 |  0     |         1 |                |
-| zhen23 | S3_select            |       29 |  148.7 |  0     |         1 |                |
-| zhen23 | S3_select            |       42 |  174.4 |  0     |         1 |                |
-| zhen23 | S3_select            |       61 |  212.2 |  0.001 |         1 |                |
-| zhen23 | S3_select            |       88 |  266   |  0.001 |         1 |                |
-| zhen23 | S3_select            |      127 |  344.9 |  0.001 |         1 |                |
-| zhen23 | S3_select            |      183 |  457.9 |  0     |         1 |                |
-| zhen23 | S3_select            |      263 |  606.7 |  0     |         1 |                |
-| zhen23 | S3_select            |      378 |  811.5 |  0     |         1 |                |
-| zhen23 | S3_select            |      544 | 1077.3 |  0     |         1 |                |
-| zhen23 | S3_select            |      783 | 1460.5 |  0     |         1 |                |
-| zhen23 | S3_select            |     1127 | 1924.5 |  0     |         1 |                |
-| zhen23 | S4_select_or_abstain |       10 |  110.6 |  0     |         1 | *              |
-| zhen23 | S4_select_or_abstain |       14 |  118.7 |  0     |         1 |                |
-| zhen23 | S4_select_or_abstain |       20 |  130.6 |  0     |         1 |                |
-| zhen23 | S4_select_or_abstain |       29 |  148.7 |  0     |         1 |                |
-| zhen23 | S4_select_or_abstain |       42 |  174.4 |  0     |         1 |                |
-| zhen23 | S4_select_or_abstain |       61 |  212.2 |  0.001 |         1 |                |
-| zhen23 | S4_select_or_abstain |       88 |  266   |  0.001 |         1 |                |
-| zhen23 | S4_select_or_abstain |      127 |  344.9 |  0.001 |         1 |                |
-| zhen23 | S4_select_or_abstain |      183 |  457.9 |  0     |         1 |                |
-| zhen23 | S4_select_or_abstain |      263 |  606.7 |  0     |         1 |                |
-| zhen23 | S4_select_or_abstain |      378 |  811.5 |  0     |         1 |                |
-| zhen23 | S4_select_or_abstain |      544 | 1077.3 |  0     |         1 |                |
-| zhen23 | S4_select_or_abstain |      783 | 1460.5 |  0     |         1 |                |
-| zhen23 | S4_select_or_abstain |     1127 | 1924.5 |  0     |         1 |                |
+| lp     | strategy             |   budget |   cost |   rate |   mc_lo |   mc_hi | from_here_on   |
+|:-------|:---------------------|---------:|-------:|-------:|--------:|--------:|:---------------|
+| ende23 | S1_design            |       10 |  116.8 |  0.009 |   0.007 |   0.01  | *              |
+| ende23 | S1_design            |       13 |  123.1 |  0.008 |   0.007 |   0.01  |                |
+| ende23 | S1_design            |       17 |  130.9 |  0.006 |   0.005 |   0.007 |                |
+| ende23 | S1_design            |       23 |  142.5 |  0.005 |   0.004 |   0.006 |                |
+| ende23 | S1_design            |       31 |  158.9 |  0.004 |   0.004 |   0.005 |                |
+| ende23 | S1_design            |       41 |  178.5 |  0.004 |   0.003 |   0.005 |                |
+| ende23 | S1_design            |       55 |  206.2 |  0.003 |   0.003 |   0.004 |                |
+| ende23 | S1_design            |       73 |  243.3 |  0.002 |   0.002 |   0.003 |                |
+| ende23 | S1_design            |       98 |  292.9 |  0.002 |   0.001 |   0.002 |                |
+| ende23 | S1_design            |      130 |  357.3 |  0.002 |   0.001 |   0.002 |                |
+| ende23 | S1_design            |      174 |  444.9 |  0.001 |   0.001 |   0.001 |                |
+| ende23 | S1_design            |      231 |  559.2 |  0.001 |   0.001 |   0.001 |                |
+| ende23 | S1_design            |      308 |  713.4 |  0     |   0     |   0     |                |
+| ende23 | S1_design            |      410 |  867   |  0     |   0     |   0     |                |
+| ende23 | S2_fixed             |       10 |  116.8 |  0.008 |   0.007 |   0.009 | *              |
+| ende23 | S2_fixed             |       13 |  123.1 |  0.007 |   0.006 |   0.008 |                |
+| ende23 | S2_fixed             |       17 |  130.9 |  0.006 |   0.005 |   0.007 |                |
+| ende23 | S2_fixed             |       23 |  142.5 |  0.004 |   0.004 |   0.005 |                |
+| ende23 | S2_fixed             |       31 |  158.9 |  0.004 |   0.003 |   0.005 |                |
+| ende23 | S2_fixed             |       41 |  178.5 |  0.004 |   0.003 |   0.004 |                |
+| ende23 | S2_fixed             |       55 |  206.2 |  0.003 |   0.003 |   0.004 |                |
+| ende23 | S2_fixed             |       73 |  243.3 |  0.002 |   0.002 |   0.003 |                |
+| ende23 | S2_fixed             |       98 |  292.9 |  0.002 |   0.001 |   0.002 |                |
+| ende23 | S2_fixed             |      130 |  357.3 |  0.001 |   0.001 |   0.002 |                |
+| ende23 | S2_fixed             |      174 |  444.9 |  0.001 |   0.001 |   0.001 |                |
+| ende23 | S2_fixed             |      231 |  559.2 |  0.001 |   0.001 |   0.001 |                |
+| ende23 | S2_fixed             |      308 |  713.4 |  0     |   0     |   0     |                |
+| ende23 | S2_fixed             |      410 |  867   |  0     |   0     |   0     |                |
+| ende23 | S3_select            |       10 |  116.8 |  0.006 |   0.006 |   0.007 | *              |
+| ende23 | S3_select            |       13 |  123.1 |  0.006 |   0.005 |   0.007 |                |
+| ende23 | S3_select            |       17 |  130.9 |  0.005 |   0.004 |   0.006 |                |
+| ende23 | S3_select            |       23 |  142.5 |  0.005 |   0.004 |   0.005 |                |
+| ende23 | S3_select            |       31 |  158.9 |  0.003 |   0.003 |   0.004 |                |
+| ende23 | S3_select            |       41 |  178.5 |  0.004 |   0.003 |   0.004 |                |
+| ende23 | S3_select            |       55 |  206.2 |  0.003 |   0.003 |   0.004 |                |
+| ende23 | S3_select            |       73 |  243.3 |  0.002 |   0.002 |   0.003 |                |
+| ende23 | S3_select            |       98 |  292.9 |  0.002 |   0.001 |   0.002 |                |
+| ende23 | S3_select            |      130 |  357.3 |  0.001 |   0.001 |   0.002 |                |
+| ende23 | S3_select            |      174 |  444.9 |  0.001 |   0.001 |   0.001 |                |
+| ende23 | S3_select            |      231 |  559.2 |  0.001 |   0.001 |   0.001 |                |
+| ende23 | S3_select            |      308 |  713.4 |  0     |   0     |   0     |                |
+| ende23 | S3_select            |      410 |  867   |  0     |   0     |   0     |                |
+| ende23 | S4_select_or_abstain |       10 |  116.8 |  0.006 |   0.006 |   0.007 | *              |
+| ende23 | S4_select_or_abstain |       13 |  123.1 |  0.006 |   0.005 |   0.007 |                |
+| ende23 | S4_select_or_abstain |       17 |  130.9 |  0.005 |   0.004 |   0.006 |                |
+| ende23 | S4_select_or_abstain |       23 |  142.5 |  0.005 |   0.004 |   0.005 |                |
+| ende23 | S4_select_or_abstain |       31 |  158.9 |  0.003 |   0.003 |   0.004 |                |
+| ende23 | S4_select_or_abstain |       41 |  178.5 |  0.004 |   0.003 |   0.004 |                |
+| ende23 | S4_select_or_abstain |       55 |  206.2 |  0.003 |   0.003 |   0.004 |                |
+| ende23 | S4_select_or_abstain |       73 |  243.3 |  0.002 |   0.002 |   0.003 |                |
+| ende23 | S4_select_or_abstain |       98 |  292.9 |  0.002 |   0.001 |   0.002 |                |
+| ende23 | S4_select_or_abstain |      130 |  357.3 |  0.001 |   0.001 |   0.002 |                |
+| ende23 | S4_select_or_abstain |      174 |  444.9 |  0.001 |   0.001 |   0.001 |                |
+| ende23 | S4_select_or_abstain |      231 |  559.2 |  0.001 |   0.001 |   0.001 |                |
+| ende23 | S4_select_or_abstain |      308 |  713.4 |  0     |   0     |   0     |                |
+| ende23 | S4_select_or_abstain |      410 |  867   |  0     |   0     |   0     |                |
+| zhen23 | S1_design            |       10 |  110.6 |  0.003 |   0.002 |   0.003 | *              |
+| zhen23 | S1_design            |       14 |  118.7 |  0.002 |   0.002 |   0.003 |                |
+| zhen23 | S1_design            |       20 |  130.6 |  0.002 |   0.002 |   0.003 |                |
+| zhen23 | S1_design            |       29 |  148.7 |  0.002 |   0.001 |   0.002 |                |
+| zhen23 | S1_design            |       42 |  174.4 |  0.001 |   0.001 |   0.002 |                |
+| zhen23 | S1_design            |       61 |  212.2 |  0.001 |   0.001 |   0.002 |                |
+| zhen23 | S1_design            |       88 |  266   |  0.001 |   0.001 |   0.001 |                |
+| zhen23 | S1_design            |      127 |  344.9 |  0.001 |   0     |   0.001 |                |
+| zhen23 | S1_design            |      183 |  457.9 |  0.001 |   0     |   0.001 |                |
+| zhen23 | S1_design            |      263 |  606.7 |  0     |   0     |   0     |                |
+| zhen23 | S1_design            |      378 |  811.5 |  0     |   0     |   0     |                |
+| zhen23 | S1_design            |      544 | 1077.3 |  0     |   0     |   0     |                |
+| zhen23 | S1_design            |      783 | 1460.5 |  0     |   0     |   0     |                |
+| zhen23 | S1_design            |     1127 | 1924.5 |  0     |   0     |   0     |                |
+| zhen23 | S2_fixed             |       10 |  110.6 |  0.002 |   0.002 |   0.003 | *              |
+| zhen23 | S2_fixed             |       14 |  118.7 |  0.002 |   0.001 |   0.002 |                |
+| zhen23 | S2_fixed             |       20 |  130.6 |  0.002 |   0.001 |   0.002 |                |
+| zhen23 | S2_fixed             |       29 |  148.7 |  0.001 |   0.001 |   0.002 |                |
+| zhen23 | S2_fixed             |       42 |  174.4 |  0.001 |   0.001 |   0.002 |                |
+| zhen23 | S2_fixed             |       61 |  212.2 |  0.001 |   0.001 |   0.002 |                |
+| zhen23 | S2_fixed             |       88 |  266   |  0.001 |   0     |   0.001 |                |
+| zhen23 | S2_fixed             |      127 |  344.9 |  0.001 |   0     |   0.001 |                |
+| zhen23 | S2_fixed             |      183 |  457.9 |  0.001 |   0     |   0.001 |                |
+| zhen23 | S2_fixed             |      263 |  606.7 |  0     |   0     |   0     |                |
+| zhen23 | S2_fixed             |      378 |  811.5 |  0     |   0     |   0     |                |
+| zhen23 | S2_fixed             |      544 | 1077.3 |  0     |   0     |   0     |                |
+| zhen23 | S2_fixed             |      783 | 1460.5 |  0     |   0     |   0     |                |
+| zhen23 | S2_fixed             |     1127 | 1924.5 |  0     |   0     |   0     |                |
+| zhen23 | S3_select            |       10 |  110.6 |  0.001 |   0.001 |   0.002 | *              |
+| zhen23 | S3_select            |       14 |  118.7 |  0.001 |   0.001 |   0.002 |                |
+| zhen23 | S3_select            |       20 |  130.6 |  0.001 |   0.001 |   0.002 |                |
+| zhen23 | S3_select            |       29 |  148.7 |  0.001 |   0.001 |   0.002 |                |
+| zhen23 | S3_select            |       42 |  174.4 |  0.001 |   0.001 |   0.001 |                |
+| zhen23 | S3_select            |       61 |  212.2 |  0.001 |   0.001 |   0.001 |                |
+| zhen23 | S3_select            |       88 |  266   |  0.001 |   0     |   0.001 |                |
+| zhen23 | S3_select            |      127 |  344.9 |  0.001 |   0     |   0.001 |                |
+| zhen23 | S3_select            |      183 |  457.9 |  0     |   0     |   0.001 |                |
+| zhen23 | S3_select            |      263 |  606.7 |  0     |   0     |   0     |                |
+| zhen23 | S3_select            |      378 |  811.5 |  0     |   0     |   0     |                |
+| zhen23 | S3_select            |      544 | 1077.3 |  0     |   0     |   0     |                |
+| zhen23 | S3_select            |      783 | 1460.5 |  0     |   0     |   0     |                |
+| zhen23 | S3_select            |     1127 | 1924.5 |  0     |   0     |   0     |                |
+| zhen23 | S4_select_or_abstain |       10 |  110.6 |  0.001 |   0.001 |   0.002 | *              |
+| zhen23 | S4_select_or_abstain |       14 |  118.7 |  0.001 |   0.001 |   0.002 |                |
+| zhen23 | S4_select_or_abstain |       20 |  130.6 |  0.001 |   0.001 |   0.002 |                |
+| zhen23 | S4_select_or_abstain |       29 |  148.7 |  0.001 |   0.001 |   0.002 |                |
+| zhen23 | S4_select_or_abstain |       42 |  174.4 |  0.001 |   0.001 |   0.001 |                |
+| zhen23 | S4_select_or_abstain |       61 |  212.2 |  0.001 |   0.001 |   0.001 |                |
+| zhen23 | S4_select_or_abstain |       88 |  266   |  0.001 |   0     |   0.001 |                |
+| zhen23 | S4_select_or_abstain |      127 |  344.9 |  0.001 |   0     |   0.001 |                |
+| zhen23 | S4_select_or_abstain |      183 |  457.9 |  0     |   0     |   0.001 |                |
+| zhen23 | S4_select_or_abstain |      263 |  606.7 |  0     |   0     |   0     |                |
+| zhen23 | S4_select_or_abstain |      378 |  811.5 |  0     |   0     |   0     |                |
+| zhen23 | S4_select_or_abstain |      544 | 1077.3 |  0     |   0     |   0     |                |
+| zhen23 | S4_select_or_abstain |      783 | 1460.5 |  0     |   0     |   0     |                |
+| zhen23 | S4_select_or_abstain |     1127 | 1924.5 |  0     |   0     |   0     |                |
 
 ### Each strategy against S1 on the same cell and budget (difference of wrong-certificate rates)
 
 | lp     | strategy             |   cells_x_budgets |   mean_diff_vs_S1 |   share_above_S1 |   share_above_S1_by_2pts |   max_diff |
 |:-------|:---------------------|------------------:|------------------:|-----------------:|-------------------------:|-----------:|
-| ende23 | S2_fixed             |               420 |           -0.0001 |            0.033 |                        0 |      0.002 |
-| ende23 | S3_select            |               420 |           -0.0001 |            0.043 |                        0 |      0.004 |
-| ende23 | S4_select_or_abstain |               420 |           -0.0001 |            0.043 |                        0 |      0.004 |
-| zhen23 | S2_fixed             |               420 |           -0      |            0.01  |                        0 |      0.001 |
-| zhen23 | S3_select            |               420 |           -0.0001 |            0.007 |                        0 |      0.001 |
-| zhen23 | S4_select_or_abstain |               420 |           -0.0001 |            0.007 |                        0 |      0.001 |
+| ende23 | S2_fixed             |               420 |           -0.0004 |            0.079 |                        0 |      0.003 |
+| ende23 | S3_select            |               420 |           -0.0006 |            0.081 |                        0 |      0.004 |
+| ende23 | S4_select_or_abstain |               420 |           -0.0006 |            0.081 |                        0 |      0.004 |
+| zhen23 | S2_fixed             |               420 |           -0.0001 |            0.055 |                        0 |      0.001 |
+| zhen23 | S3_select            |               420 |           -0.0003 |            0.017 |                        0 |      0.001 |
+| zhen23 | S4_select_or_abstain |               420 |           -0.0003 |            0.017 |                        0 |      0.001 |
 
 ## Per cell
 
-| lp     |   pair |   eps | informative   |   J_uniform |    J_S1 |    J_S2 |    J_S3 |      G |   G_lo |   G_hi |   G_sd |     D2 |   D2_lo |   D2_hi |     D3 |   D3_lo |   D3_hi |   n_audits |
-|:-------|-------:|------:|:--------------|------------:|--------:|--------:|--------:|-------:|-------:|-------:|-------:|-------:|--------:|--------:|-------:|--------:|--------:|-----------:|
-| ende23 |     01 |  0.01 | True          |     560.426 | 531.577 | 515.527 | 513.307 |  0.004 | -0.012 |  0.02  |  0.008 |  0.03  |   0.014 |   0.052 |  0.034 |   0.016 |   0.057 |       2000 |
-| ende23 |     01 |  0.02 | True          |     286.323 | 275.347 | 266.645 | 267.272 | -0.002 | -0.027 |  0.024 |  0.013 |  0.032 |   0.014 |   0.055 |  0.029 |   0.006 |   0.06  |       2000 |
-| ende23 |     02 |  0.01 | True          |     204.291 | 203.927 | 203.192 | 203.172 |  0     | -0.003 |  0.003 |  0.001 |  0.004 |   0.001 |   0.006 |  0.004 |   0.001 |   0.006 |       2000 |
-| ende23 |     02 |  0.02 | True          |     199.812 | 199.585 | 199.282 | 199.058 |  0.001 | -0.001 |  0.003 |  0.001 |  0.002 |   0     |   0.003 |  0.003 |   0.001 |   0.004 |       2000 |
-| ende23 |     03 |  0.01 | True          |     195.238 | 194.955 | 194.713 | 194.773 | -0     | -0.001 |  0     |  0     |  0.001 |   0.001 |   0.002 |  0.001 |   0     |   0.002 |       2000 |
-| ende23 |     03 |  0.02 | True          |     194.371 | 194.188 | 194.109 | 194.18  | -0     | -0.001 |  0     |  0     |  0     |   0     |   0.001 |  0     |  -0     |   0.001 |       2000 |
-| ende23 |     04 |  0.01 | True          |     194.557 | 194.221 | 194.023 | 194.048 | -0     | -0.001 |  0.001 |  0     |  0.001 |   0     |   0.002 |  0.001 |   0     |   0.002 |       2000 |
-| ende23 |     04 |  0.02 | True          |     193.861 | 193.72  | 193.566 | 193.596 | -0     | -0.001 |  0     |  0     |  0.001 |   0     |   0.001 |  0.001 |   0     |   0.001 |       2000 |
-| ende23 |     05 |  0.01 | True          |     194.158 | 194.051 | 193.892 | 193.871 |  0     | -0     |  0     |  0     |  0.001 |   0     |   0.001 |  0.001 |   0.001 |   0.001 |       2000 |
-| ende23 |     05 |  0.02 | True          |     193.905 | 193.864 | 193.786 | 193.786 |  0     | -0     |  0     |  0     |  0     |   0     |   0.001 |  0     |   0     |   0.001 |       2000 |
-| ende23 |     12 |  0.01 | True          |     207.692 | 204.703 | 202.921 | 203.356 | -0.002 | -0.005 |  0.001 |  0.002 |  0.009 |   0.006 |   0.017 |  0.007 |   0.003 |   0.015 |       2000 |
-| ende23 |     12 |  0.02 | True          |     199.758 | 199.146 | 198.248 | 198.278 | -0     | -0.002 |  0.002 |  0.001 |  0.005 |   0.003 |   0.006 |  0.004 |   0.002 |   0.007 |       2000 |
-| ende23 |     13 |  0.01 | True          |     194.711 | 194.423 | 194.033 | 194.144 | -0.001 | -0.001 |  0     |  0     |  0.002 |   0.001 |   0.003 |  0.001 |   0.001 |   0.002 |       2000 |
-| ende23 |     13 |  0.02 | True          |     193.823 | 193.752 | 193.504 | 193.488 |  0     | -0     |  0     |  0     |  0.001 |   0.001 |   0.002 |  0.001 |   0.001 |   0.002 |       2000 |
-| ende23 |     14 |  0.01 | True          |     194.075 | 193.68  | 193.22  | 193.311 | -0     | -0.001 |  0     |  0     |  0.002 |   0.002 |   0.003 |  0.002 |   0.001 |   0.003 |       2000 |
-| ende23 |     14 |  0.02 | True          |     193.212 | 192.992 | 192.802 | 192.786 |  0     | -0     |  0     |  0     |  0.001 |   0     |   0.002 |  0.001 |   0.001 |   0.002 |       2000 |
-| ende23 |     15 |  0.01 | True          |     194.25  | 194.187 | 194.116 | 194.081 |  0     | -0     |  0     |  0     |  0     |   0     |   0.001 |  0.001 |   0     |   0.001 |       2000 |
-| ende23 |     15 |  0.02 | True          |     194.158 | 194.074 | 194.06  | 194.053 |  0     |  0     |  0     |  0     |  0     |  -0     |   0     |  0     |   0     |   0     |       2000 |
-| ende23 |     23 |  0.01 | True          |     215.365 | 204.032 | 203.064 | 203.14  | -0     | -0.004 |  0.003 |  0.002 |  0.005 |   0.002 |   0.034 |  0.004 |   0.001 |   0.034 |       2000 |
-| ende23 |     23 |  0.02 | True          |     198.925 | 198.272 | 197.696 | 197.874 | -0.001 | -0.003 |  0.001 |  0.001 |  0.003 |   0.001 |   0.004 |  0.002 |   0     |   0.004 |       2000 |
-| ende23 |     24 |  0.01 | True          |     202.793 | 201.018 | 199.422 | 199.791 | -0.002 | -0.004 |  0.001 |  0.001 |  0.008 |   0.006 |   0.01  |  0.006 |   0.003 |   0.009 |       2000 |
-| ende23 |     24 |  0.02 | True          |     197.058 | 196.34  | 195.891 | 195.905 | -0     | -0.001 |  0.001 |  0.001 |  0.002 |   0.001 |   0.004 |  0.002 |   0.001 |   0.004 |       2000 |
-| ende23 |     25 |  0.01 | True          |     195.068 | 194.968 | 194.594 | 194.426 |  0.001 |  0     |  0.002 |  0     |  0.002 |   0.001 |   0.003 |  0.003 |   0.002 |   0.004 |       2000 |
-| ende23 |     25 |  0.02 | True          |     194.136 | 193.898 | 193.852 | 193.821 |  0     | -0     |  0.001 |  0     |  0     |  -0     |   0.001 |  0     |  -0     |   0.001 |       2000 |
-| ende23 |     34 |  0.01 | True          |     537.568 | 469.226 | 469.165 | 471.947 | -0.006 | -0.02  |  0.005 |  0.006 |  0     |  -0.011 |   0.012 | -0.006 |  -0.018 |   0.006 |       2000 |
-| ende23 |     34 |  0.02 | True          |     259.225 | 245.108 | 237.14  | 241.418 | -0.018 | -0.041 |  0.004 |  0.011 |  0.033 |   0.013 |   0.049 |  0.015 |  -0.008 |   0.036 |       2000 |
-| ende23 |     35 |  0.01 | True          |     204.157 | 203.491 | 202.593 | 202.771 | -0.001 | -0.003 |  0.001 |  0.001 |  0.004 |   0.002 |   0.007 |  0.004 |   0.001 |   0.006 |       2000 |
-| ende23 |     35 |  0.02 | True          |     199.798 | 199.328 | 198.985 | 198.957 |  0     | -0.001 |  0.001 |  0.001 |  0.002 |   0     |   0.003 |  0.002 |   0     |   0.004 |       2000 |
-| ende23 |     45 |  0.01 | True          |     203.91  | 202.875 | 201.718 | 200.862 |  0.004 |  0.002 |  0.007 |  0.001 |  0.006 |   0.003 |   0.008 |  0.01  |   0.007 |   0.013 |       2000 |
-| ende23 |     45 |  0.02 | True          |     199.198 | 198.78  | 198.166 | 197.974 |  0.001 | -0.001 |  0.003 |  0.001 |  0.003 |   0.002 |   0.004 |  0.004 |   0.002 |   0.006 |       2000 |
-| zhen23 |     01 |  0.01 | True          |     294.778 | 265.505 | 265.481 | 276.375 | -0.041 | -0.088 |  0.002 |  0.024 |  0     |  -0.018 |   0.021 | -0.041 |  -0.088 |   0.002 |       2000 |
-| zhen23 |     01 |  0.02 | True          |     207.886 | 206.527 | 206.527 | 206.222 |  0.001 | -0     |  0.003 |  0.001 |  0     |  -0.001 |   0.001 |  0.001 |  -0     |   0.003 |       2000 |
-| zhen23 |     02 |  0.01 | True          |     200.803 | 200.782 | 200.801 | 200.762 |  0     | -0     |  0     |  0     | -0     |  -0     |   0     |  0     |  -0     |   0     |       2000 |
-| zhen23 |     02 |  0.02 | True          |     200.707 | 200.676 | 200.676 | 200.695 | -0     | -0     |  0     |  0     |  0     |   0     |   0     | -0     |  -0     |   0     |       2000 |
-| zhen23 |     03 |  0.01 | True          |     200.742 | 200.733 | 200.743 | 200.714 |  0     | -0     |  0     |  0     | -0     |  -0     |   0     |  0     |  -0     |   0     |       2000 |
-| zhen23 |     03 |  0.02 | True          |     200.685 | 200.657 | 200.657 | 200.657 |  0     |  0     |  0     |  0     |  0     |   0     |   0     |  0     |   0     |   0     |       2000 |
-| zhen23 |     04 |  0.01 | True          |     200.633 | 200.562 | 200.581 | 200.533 |  0     | -0     |  0.001 |  0     | -0     |  -0     |   0     |  0     |  -0     |   0     |       2000 |
-| zhen23 |     04 |  0.02 | True          |     200.499 | 200.457 | 200.457 | 200.457 |  0     |  0     |  0     |  0     |  0     |   0     |   0     |  0     |   0     |   0     |       2000 |
-| zhen23 |     05 |  0.01 | True          |     200.944 | 200.915 | 200.896 | 200.896 |  0     | -0     |  0     |  0     |  0     |   0     |   0     |  0     |   0     |   0     |       2000 |
-| zhen23 |     05 |  0.02 | True          |     200.887 | 200.886 | 200.886 | 200.886 |  0     |  0     |  0     |  0     |  0     |   0     |   0     |  0     |   0     |   0     |       2000 |
-| zhen23 |     12 |  0.01 | True          |     202.709 | 202.62  | 202.609 | 202.345 |  0.001 |  0.001 |  0.002 |  0     |  0     |  -0     |   0.001 |  0.001 |   0.001 |   0.002 |       2000 |
-| zhen23 |     12 |  0.02 | True          |     201.964 | 201.926 | 201.906 | 201.876 |  0     | -0     |  0     |  0     |  0     |  -0     |   0     |  0     |  -0     |   0.001 |       2000 |
-| zhen23 |     13 |  0.01 | True          |     202.528 | 202.503 | 202.492 | 202.282 |  0.001 |  0     |  0.002 |  0     |  0     |  -0     |   0.001 |  0.001 |   0     |   0.002 |       2000 |
-| zhen23 |     13 |  0.02 | True          |     201.874 | 201.837 | 201.817 | 201.797 |  0     | -0     |  0     |  0     |  0     |  -0     |   0     |  0     |  -0     |   0.001 |       2000 |
-| zhen23 |     14 |  0.01 | True          |     202.665 | 202.511 | 202.416 | 202.197 |  0.001 |  0     |  0.002 |  0     |  0     |   0     |   0.001 |  0.002 |   0.001 |   0.002 |       2000 |
-| zhen23 |     14 |  0.02 | True          |     201.88  | 201.833 | 201.813 | 201.773 |  0     | -0     |  0     |  0     |  0     |  -0     |   0     |  0     |   0     |   0.001 |       2000 |
-| zhen23 |     15 |  0.01 | True          |     201.796 | 201.784 | 201.744 | 201.657 |  0     |  0     |  0.001 |  0     |  0     |  -0     |   0     |  0.001 |   0     |   0.001 |       2000 |
-| zhen23 |     15 |  0.02 | True          |     201.612 | 201.589 | 201.579 | 201.598 | -0     | -0     |  0     |  0     |  0     |   0     |   0     | -0     |  -0     |   0     |       2000 |
-| zhen23 |     23 |  0.01 | True          |     170.934 | 161.403 | 161.412 | 161.422 | -0     | -0     |  0     |  0     | -0     |  -0     |   0     | -0     |  -0     |   0     |       2000 |
-| zhen23 |     23 |  0.02 | True          |     163.149 | 161.178 | 161.178 | 161.178 |  0     |  0     |  0     |  0     |  0     |   0     |   0     |  0     |   0     |   0     |       2000 |
-| zhen23 |     24 |  0.01 | True          |     197.953 | 171.805 | 171.721 | 171.569 |  0.001 | -0     |  0.002 |  0.001 |  0     |  -0     |   0.001 |  0.001 |  -0     |   0.003 |       2000 |
-| zhen23 |     24 |  0.02 | True          |     171.283 | 167.734 | 167.734 | 167.754 | -0     | -0     |  0     |  0     |  0     |   0     |   0     | -0     |  -0     |   0     |       2000 |
-| zhen23 |     25 |  0.01 | True          |     216.206 | 215.3   | 214.138 | 213.983 |  0.001 | -0.003 |  0.004 |  0.002 |  0.005 |   0.002 |   0.009 |  0.006 |   0.002 |   0.011 |       2000 |
-| zhen23 |     25 |  0.02 | True          |     207.001 | 206.514 | 206.069 | 205.924 |  0.001 | -0.001 |  0.003 |  0.001 |  0.002 |   0     |   0.004 |  0.003 |   0.001 |   0.005 |       2000 |
-| zhen23 |     34 |  0.01 | True          |     218.749 | 174.993 | 174.908 | 174.392 |  0.003 |  0.001 |  0.005 |  0.001 |  0     |  -0.001 |   0.002 |  0.003 |   0.002 |   0.005 |       2000 |
-| zhen23 |     34 |  0.02 | True          |     173.408 | 168.688 | 168.668 | 168.697 | -0     | -0     |  0     |  0     |  0     |  -0     |   0     | -0     |  -0     |   0     |       2000 |
-| zhen23 |     35 |  0.01 | True          |     217.546 | 216.23  | 215.108 | 214.685 |  0.002 | -0.002 |  0.006 |  0.002 |  0.005 |   0.002 |   0.014 |  0.007 |   0.003 |   0.017 |       2000 |
-| zhen23 |     35 |  0.02 | True          |     207.473 | 206.856 | 206.532 | 206.014 |  0.003 |  0     |  0.005 |  0.001 |  0.002 |  -0     |   0.003 |  0.004 |   0.002 |   0.006 |       2000 |
-| zhen23 |     45 |  0.01 | True          |     216.636 | 215.186 | 214.081 | 213.222 |  0.004 | -0     |  0.008 |  0.002 |  0.005 |   0.002 |   0.009 |  0.009 |   0.005 |   0.013 |       2000 |
-| zhen23 |     45 |  0.02 | True          |     206.733 | 205.644 | 205.343 | 205.343 |  0     | -0.002 |  0.002 |  0.001 |  0.001 |   0     |   0.003 |  0.001 |  -0     |   0.003 |       2000 |
+| lp     |   pair |   eps | informative   |   J_uniform |    J_S1 |    J_S2 |    J_S3 |      G |   G_lo |   G_hi |   G_sd |    D2 |   D2_lo |   D2_hi |     D3 |   D3_lo |   D3_hi |   n_audits |
+|:-------|-------:|------:|:--------------|------------:|--------:|--------:|--------:|-------:|-------:|-------:|-------:|------:|--------:|--------:|-------:|--------:|--------:|-----------:|
+| ende23 |     01 |  0.01 | True          |     560.426 | 531.577 | 515.527 | 513.307 |  0.004 | -0.012 |  0.02  |  0.008 | 0.03  |   0.014 |   0.052 |  0.034 |   0.016 |   0.057 |       2000 |
+| ende23 |     01 |  0.02 | True          |     286.323 | 275.347 | 266.645 | 267.272 | -0.002 | -0.027 |  0.024 |  0.013 | 0.032 |   0.014 |   0.055 |  0.029 |   0.006 |   0.06  |       2000 |
+| ende23 |     02 |  0.01 | True          |     207.158 | 207.078 | 207.078 | 207.078 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     02 |  0.02 | True          |     207.158 | 207.078 | 207.078 | 207.078 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     03 |  0.01 | False         |     207.068 | 206.938 | 206.938 | 206.938 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     03 |  0.02 | False         |     207.068 | 206.938 | 206.938 | 206.938 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     04 |  0.01 | False         |     206.757 | 206.74  | 206.74  | 206.74  |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     04 |  0.02 | False         |     206.757 | 206.74  | 206.74  | 206.74  |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     05 |  0.01 | False         |     207.501 | 207.429 | 207.429 | 207.429 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     05 |  0.02 | False         |     207.501 | 207.429 | 207.429 | 207.429 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     12 |  0.01 | True          |     207.692 | 205.638 | 205.638 | 205.638 |  0     |  0     |  0     |  0     | 0     |   0     |   0.007 |  0     |   0     |   0.007 |       2000 |
+| ende23 |     12 |  0.02 | True          |     205.674 | 205.638 | 205.638 | 205.638 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     13 |  0.01 | False         |     206.424 | 206.387 | 206.387 | 206.387 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     13 |  0.02 | False         |     206.424 | 206.387 | 206.387 | 206.387 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     14 |  0.01 | False         |     205.797 | 205.777 | 205.777 | 205.777 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     14 |  0.02 | False         |     205.797 | 205.777 | 205.777 | 205.777 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     15 |  0.01 | False         |     207.825 | 207.755 | 207.755 | 207.755 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     15 |  0.02 | False         |     207.825 | 207.755 | 207.755 | 207.755 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     23 |  0.01 | True          |     215.365 | 204.278 | 204.278 | 204.278 |  0     | -0.001 |  0     |  0.002 | 0     |   0     |   0.032 |  0     |   0     |   0.032 |       2000 |
+| ende23 |     23 |  0.02 | True          |     204.192 | 204.278 | 204.278 | 204.278 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     24 |  0.01 | True          |     204.056 | 204.042 | 204.042 | 204.042 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     24 |  0.02 | True          |     204.056 | 204.042 | 204.042 | 204.042 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     25 |  0.01 | False         |     206.961 | 206.897 | 206.897 | 206.897 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     25 |  0.02 | False         |     206.961 | 206.897 | 206.897 | 206.897 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     34 |  0.01 | True          |     537.568 | 469.226 | 469.165 | 471.947 | -0.006 | -0.02  |  0.005 |  0.006 | 0     |  -0.011 |   0.012 | -0.006 |  -0.018 |   0.006 |       2000 |
+| ende23 |     34 |  0.02 | True          |     259.225 | 245.108 | 237.14  | 241.418 | -0.018 | -0.041 |  0.004 |  0.011 | 0.033 |   0.013 |   0.049 |  0.015 |  -0.008 |   0.036 |       2000 |
+| ende23 |     35 |  0.01 | True          |     206.98  | 206.984 | 206.984 | 206.984 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     35 |  0.02 | True          |     206.98  | 206.984 | 206.984 | 206.984 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     45 |  0.01 | True          |     206.304 | 206.304 | 206.304 | 206.304 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| ende23 |     45 |  0.02 | True          |     206.304 | 206.304 | 206.304 | 206.304 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     01 |  0.01 | True          |     294.778 | 271.069 | 271.069 | 276.375 | -0.02  | -0.079 |  0     |  0.025 | 0     |  -0.013 |   0.019 | -0.02  |  -0.077 |   0     |       2000 |
+| zhen23 |     01 |  0.02 | True          |     271.209 | 271.069 | 271.069 | 271.069 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     02 |  0.01 | False         |     273.212 | 273.138 | 273.138 | 273.138 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     02 |  0.02 | False         |     273.212 | 273.138 | 273.138 | 273.138 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     03 |  0.01 | False         |     273.21  | 273.114 | 273.114 | 273.114 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     03 |  0.02 | False         |     273.21  | 273.114 | 273.114 | 273.114 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     04 |  0.01 | False         |     273.052 | 272.934 | 272.934 | 272.934 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     04 |  0.02 | False         |     273.052 | 272.934 | 272.934 | 272.934 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     05 |  0.01 | False         |     273.506 | 273.444 | 273.444 | 273.444 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     05 |  0.02 | False         |     273.506 | 273.444 | 273.444 | 273.444 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     12 |  0.01 | False         |     274.05  | 274.086 | 274.086 | 274.086 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     12 |  0.02 | False         |     274.05  | 274.086 | 274.086 | 274.086 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     13 |  0.01 | False         |     274.05  | 274.086 | 274.086 | 274.086 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     13 |  0.02 | False         |     274.05  | 274.086 | 274.086 | 274.086 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     14 |  0.01 | False         |     274.016 | 274.034 | 274.034 | 274.034 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     14 |  0.02 | False         |     274.016 | 274.034 | 274.034 | 274.034 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     15 |  0.01 | False         |     274.05  | 273.973 | 273.973 | 273.973 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     15 |  0.02 | False         |     274.05  | 273.973 | 273.973 | 273.973 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     23 |  0.01 | False         |     233.59  | 234.062 | 234.062 | 234.062 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     23 |  0.02 | False         |     233.59  | 234.062 | 234.062 | 234.062 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     24 |  0.01 | True          |     240.106 | 240.356 | 240.356 | 240.356 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     24 |  0.02 | False         |     240.106 | 240.356 | 240.356 | 240.356 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     25 |  0.01 | True          |     271.396 | 271.496 | 271.496 | 271.496 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     25 |  0.02 | True          |     271.396 | 271.496 | 271.496 | 271.496 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     34 |  0.01 | True          |     240.89  | 240.751 | 240.751 | 240.751 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     34 |  0.02 | False         |     240.89  | 240.751 | 240.751 | 240.751 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     35 |  0.01 | True          |     271.434 | 271.548 | 271.548 | 271.548 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     35 |  0.02 | True          |     271.434 | 271.548 | 271.548 | 271.548 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     45 |  0.01 | True          |     271.186 | 271.268 | 271.268 | 271.268 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |
+| zhen23 |     45 |  0.02 | True          |     271.186 | 271.268 | 271.268 | 271.268 |  0     |  0     |  0     |  0     | 0     |   0     |   0     |  0     |   0     |   0     |       2000 |

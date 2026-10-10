@@ -38,8 +38,9 @@ by the pilot's share $P/J$ of the cost. Four auditor strategies fixed on WMT22 a
 metrics) give the practical rule: deduplicate, add one strong evaluator fixed in advance and refit its coefficient
 (3\% cheaper than the design alone, in all 26 informative held-out cells); choosing the evaluator from the pilot is no better (paired
 difference $-0.1\%$, 95\% interval $[-0.7, +0.5]$ over 2,000 audits per cell), and with a frozen coefficient it costs 4\%.
-The certificate holds its nominal error only from about 200 labels on; an auditor who waits for that keeps the
-evaluator's saving only on the decisions that need more, 0.3--1.5\% on average. Three pre-registered locks; the failed
+Under boundary stress the bound's type-I error is above nominal below about 200 labels, for the human-only design as
+much as for the evaluators; on the same cells, certifying only beyond that budget leaves 0.4\% of the evaluator's
+saving (3.0\% at a tolerated error of 0.125), because most decisions certify earlier. Three pre-registered locks; the failed
 hypotheses are reported.
 \end{abstract}
 
@@ -84,12 +85,12 @@ XCOMET-XXL on WMT23) adds 4--5\%, more than the design itself in a third to over
 $\rho^2(1-P/J)$: the squared decision-level correlation, diluted by the pilot's share of the cost (\S\ref{sec:why}).
 \item \textbf{A pre-fixed strong evaluator is as good as choosing one from the pilot.} Four strategies fixed on
 WMT22 and applied unchanged to WMT23 (42 metrics) give the same answer in both years: dedup plus one strong evaluator
-fixed in advance, with a refitted coefficient, costs 3\% less than the design alone (in every WMT23 cell);
+fixed in advance, with a refitted coefficient, costs 3\% less than the design alone (in all 26 informative WMT23 cells);
 choosing the evaluator from the pilot instead changes the cost by $-0.1\%$ [$-0.7$, $+0.5$] in a paired comparison
-at 2,000 audits per cell, and costs 4\% more when the coefficient is frozen. Under boundary stress the certificate
-is at its nominal error only from about 200 labels on, for the human-only design as much as for the evaluators; a
-protocol that waits for that range keeps 0.3--1.5\% of the evaluator's saving, because most of the 30 decisions
-certify earlier (\S\ref{sec:heldout}).
+at 2,000 audits per cell, and costs 4\% more when the coefficient is frozen. Under boundary stress the bound's type-I
+error is above nominal below about 200 labels, for the human-only design as much as for the evaluators; a protocol
+that certifies only beyond that budget keeps 0.4\% of the evaluator's saving on the same cells (3.0\% at a tolerated
+error of 0.125), because most of the 30 decisions certify earlier (\S\ref{sec:heldout}).
 \end{enumerate}
 PPSR answers which evaluator saves most; we ask what the saving is worth once the decision is local, the design is
 credited first and the coefficient is fitted on the audit. We propose no estimator: the corrected estimator is PPI++
@@ -188,8 +189,9 @@ XCOMET-XXL on WMT23, adds a median 3.7\% and 4.7\% refitted, and the post-hoc be
 design saves more than XCOMET-XXL adds in only 11 of the 26 WMT23 cells (22 of 33 for MetricX-XXL on WMT22), and
 more than the ten evaluators with the highest pilot $\rho$ in 44\% (WMT23) and 67\% (WMT22) of decision--evaluator
 pairs. The statement ``the design saves more than the evaluator'' therefore holds for the typical evaluator and for
-every evaluator with a frozen coefficient, not for the strongest with a refitted one; what the strongest cannot do is
-to be identified in advance, which is the question of \S\ref{sec:heldout}. On the six close chat pairs the open
+every evaluator with a frozen coefficient, not for the strongest with a refitted one; whether the strongest can be
+identified in advance from a pilot is the question of \S\ref{sec:heldout} (the 50-segment pilot-$\rho$ rule we
+tested does not). On the six close chat pairs the open
 7--8B judges reach decision-level $\rho$ of $-0.01$ to 0.29 and save at least 5\% in two pairs (H6 required three;
 App.~\ref{app:arena}).
 
@@ -283,22 +285,24 @@ on the known-zero items, and a coefficient fitted on few labels amplifies it (Ap
 Whether the certificate keeps its nominal error where it matters is a different question, answered under boundary
 stress (the runner-up as candidate, $\eps$ at 0.9 times its regret, 300 audits), where every certificate is wrong. At
 the smallest post-pilot budget (ten sampled items, about 20 labels on top of the pilot's 95) the type-I error is 0.18
-for the human-only design, 0.17 for S2 and 0.12 for S3; it is not significantly above the nominal 0.10 from a total
-of about 206 (en$\to$de) and 211 (zh$\to$en) labels on for every strategy, and 0.05 by about 450. The evaluator
-strategies are below the human-only design on average (by 0.1--1.5 points) and above it at 15--34\% of the cell--budget
-points, by more than 2 points at 1--3\%. The inflation is the normal bound on few items, and it applies to the
-human-only baseline as much as to the evaluators, so it does not restore the certificate: the procedure is validated
-only from about 200 labels on. Under a protocol that issues no certificate before that budget (55 and 61 post-pilot items, the same rule for every
-strategy; App.~\ref{app:heldout}), the 21 informative cells that certify earlier tie, and over the 60 cells S2 saves
-0.3\% [0.2, 0.4] over S1 with $G=-0.1\%$ $[-0.2, +0.0]$; the evaluator's saving survives only in the five cells that
-need more than 200 labels (3.0--3.3\% in three of them). Tolerating a type-I error of 0.125 validates the certificate
-from about 140--150 labels (23 and 29 items), where S2 saves 1.5\% [1.3, 1.7] over 56 informative cells and
-$G=+0.0\%$ $[-0.2, +0.3]$. The 3\% of Table~\ref{tab:heldout} is therefore the saving of an auditor who takes the
-certificate at face value at 140--200 labels, where its boundary type-I error is 0.11--0.12 rather than 0.10; the
-ranking of the strategies is the same under every rule, and what shrinks is the room any evaluator has. The new judges raise decision-level $\rho$ from 0.28 to 0.36
-(MetricX-23, XCOMET; GEMBA-MQM 0.22). The rule that survives both years is short: deduplicate, add one strong
-evaluator fixed in advance, refit its coefficient, and do not spend the pilot on choosing the evaluator or on
-committing to the coefficient.
+for the human-only design, 0.17 for S2 and 0.12 for S3; the observed mean rate is at or below the nominal 0.10 at every
+later budget from about 206 (en$\to$de) and 265 (zh$\to$en) labels in total, for S1 and S2 alike, and at or below
+0.125 from about 145 labels (App.~\ref{app:heldout}). The evaluator strategies are below the human-only design on
+average (by 0.1--1.5 points) and above it at 15--34\% of the cell--budget points, by more than 2 points at 1--3\%. The
+inflation is the normal bound on few items; it applies to the human-only baseline as much as to the evaluators, so it
+does not restore the certificate, and it is an observation on this simulation rather than a validated range. As a
+post-hoc sensitivity analysis we therefore re-ran the comparison under a protocol that issues no certificate before
+those budgets, the same rule for every strategy, on the same 26 cells: with the 0.10 cut-off (55 and 88 post-pilot
+items) 22 of the 26 cells certify at the first allowed budget whatever the strategy and S2's saving over S1 falls from
+3.4\% to 0.4\% [0.2, 0.6] (0.2\% over all 60 cells); with the 0.125 cut-off (23 and 29 items) it is 3.0\% [2.5, 3.4]
+(1.3\% over 60). The 3\% of Table~\ref{tab:heldout} is therefore the saving of an auditor who takes the certificate at
+face value at 140--200 labels, where its boundary type-I error is 0.11--0.12 rather than 0.10; an auditor who waits for
+the 0.10 range keeps almost none of it, because most of these 30 decisions certify earlier, and the ranking of the
+strategies is the same under every rule. The new judges raise decision-level $\rho$ from 0.28 to 0.36
+(MetricX-23, XCOMET; GEMBA-MQM 0.22). The rule that survives both years is short: deduplicate; if the decision is
+expected to need more labels than the pilot and the first hundred or so after it, add one strong evaluator fixed in
+advance and refit its coefficient; do not spend the pilot on choosing the evaluator or on committing to the
+coefficient. For a decision that settles within about 200 labels, no evaluator has room to save much.
 
 \section{Why: the level of measurement and the cost of the pilot}\label{sec:why}
 \paragraph{Evaluator quality collapses across levels.} Among the 11 WMT22 submissions the strong metrics correlate with
@@ -388,15 +392,16 @@ cost, $P/J$, which a human-only pilot prediction supplies; (iii) what the judge-
 $\Jt$ it saves has to be estimated, as here by simulation. Under (\ref{eq:law}) the increment is about $\rho^2(1-P/J)$: for the
 WMT metrics ($\rho\le0.43$, $P/J\approx0.4$) up to about 11\%, typically 2--5\%, against design savings of 5--16\%. The strategy these numbers imply,
 deduplicate, add one strong evaluator fixed in advance, refit its coefficient, saved 3\% over the design on a held-out
-year when the certificate is taken at face value, and 0.3--1.5\% under a protocol that certifies only in the budget
-range where the bound's error is validated; choosing the evaluator from the pilot instead was not measurably better,
+year when the certificate is taken at face value, and 0.4\% (3.0\% at a tolerated error of 0.125) under a protocol
+that certifies only where the bound's observed error is at nominal, since most decisions settle earlier; choosing the evaluator from the pilot instead was not measurably better,
 and freezing the coefficient cost the evaluator's whole value.
 
 \section*{Limitations}
 The menus are built from full human labels to be deliberately hard; easier decisions leave less to save for any method.
 The certificate uses a normal bound whose calibration we checked by simulation, not proved; under boundary stress its
 type-I error is above nominal below about 200 labels, for every strategy, and the savings reported at face value
-include decisions that certify in that range (\S\ref{sec:heldout}). MT savings are computed on
+include decisions that certify in that range; the budget cut-offs were read off the same boundary simulation and
+checked on a second seed, but they are observations, not a calibrated bound (\S\ref{sec:heldout}). MT savings are computed on
 the MQM-rated subsets of WMT22 (two language pairs), chat on six pairs from a 2023 Arena release, retrieval on
 re-analysed audits of an earlier study with two judges. The cost approximation is first-order; it describes
 controlled variation of $\rho$ and the scale of real savings, but does not predict them cell by cell. The LLM judges we ran are open 7--8B models; WMT23 contributes the submitted scores of the GPT-4-based GEMBA-MQM
@@ -706,7 +711,7 @@ Monte-Carlo half-width expected at 2,000 audits and the size of the smallest sav
 re-run of the 30 WMT23 decisions at 2,000 audits and in boundary stress (\texttt{code/129\_s2\_vs\_s3.py},
 \texttt{results/strategies/S2\_vs\_S3\_*}). The selection-noise test of \S\ref{sec:decisions} compares the post-hoc best with the mean
 evaluator; it is not a test against S2, and the post-hoc best is a reference, not a strategy.
-\begin{center}\footnotesize
+\begin{table*}[t]\centering\footnotesize
 \begin{tabular}{llrrrrrr}\toprule
 cells & year & $n$ & $G$ (S3 vs S2) & MC 95\% & clusters 95\% & S2 vs S1 & S3 vs S1\\\midrule
 informative & WMT22 & 33 & $-1.5$ & $[-4.4, +0.3]$ & $[-8.9, +1.3]$ & $+4.4$ $[2.1, 6.7]$ & $+3.2$ $[0.7, 5.1]$\\
@@ -714,8 +719,11 @@ informative & WMT23 & 26 & $-0.1$ & $[-0.7, +0.5]$ & $[-1.2, +1.1]$ & $+3.4$ $[2
 all 60 & WMT22 & 60 & $-2.1$ & $[-3.6, -0.5]$ & $[-4.5, 0.0]$ & $+2.4$ $[1.2, 3.8]$ & $+0.5$ $[-0.6, 2.3]$\\
 all 60 & WMT23 & 60 & $-0.1$ & $[-0.3, +0.2]$ & $[-0.6, +0.5]$ & $+1.8$ $[1.5, 2.0]$ & $+1.7$ $[1.4, 2.0]$\\\bottomrule
 \end{tabular}
-\end{center}
-Means over cells in points of $\Jt$ (positive: the first strategy is cheaper), refitted coefficient. The primary
+\caption{S2 against S3 and both against S1 on the same audits; means over cells in points of $\Jt$ (positive: the
+first strategy is cheaper), refitted coefficient, unrestricted protocol. MC: Monte-Carlo interval from the joint
+resampling of audit indices; clusters: decisions as clusters.}\label{tab:s2s3}
+\end{table*}
+Table~\ref{tab:s2s3}: means over cells in points of $\Jt$ (positive: the first strategy is cheaper), refitted coefficient. The primary
 interval (MC) is Monte-Carlo only: the benchmark is fixed, one resampling of audit indices is applied to every cell at
 once, because the audits of different cells share the simulator's random streams (same seed and draw index), and each
 replicate recomputes exactly the reported statistic, the mean over cells. The cluster interval treats the decisions as
@@ -746,34 +754,53 @@ while S2's coverage at the smallest budget goes from 0.43 to 0.86
 (\texttt{results/strategies/KNOWN\_ZERO\_COVERAGE\_CHECK.md}), and on the WMT22 re-run every strategy's excess over
 S1 is within 0.1 point of the original (\texttt{S2\_vs\_S3\_wmt22.md} against \texttt{S2\_vs\_S3\_wmt22z.md}).
 
-\paragraph{Boundary stress and the validated budget range.} The 30 WMT23 decisions re-run with the runner-up as
-candidate and $\eps$ at 0.9 times its true regret (300 audits per cell, tag \texttt{pair23b},
+\paragraph{Boundary stress and the budget range of nominal error.} The 30 WMT23 decisions re-run with the runner-up
+as candidate and $\eps$ at 0.9 times its true regret (300 audits per cell, tag \texttt{pair23b},
 \texttt{S2\_vs\_S3\_wmt23\_boundary.md}): every certificate is wrong, so the certification rate is the type-I error at
 nominal 0.10. Budgets are expected numbers of sampled items under the Poisson design; a post-pilot budget of 10 items is
-about 116 (en$\to$de) and 110 (zh$\to$en) labels in total, pilot included. Mean over the 15 cells of a language pair:
-at 10 items S1 0.18, S2 0.17, S3 and S4 0.12; the pooled rate is not significantly above 0.10 (one-sided binomial test
-over the cells' 4,500 audits, $p\ge0.05$ at every later budget) from 55 items (206 labels) on en$\to$de and 61 items
-(211 labels) on zh$\to$en for S1, from 55 and 42 items (175 labels) for S2 and from 17 and 42 items for S3; it is 0.05
-at about 450 labels and 0.01--0.02 at the largest budgets. The per-cell maximum over budgets averages 0.18 (S1), 0.18
-(S2) and 0.13 (S3), at most 0.24. Against S1 on the same cell and budget, the evaluator strategies are lower on
-average (S2 by 0.7 and 0.1 points, S3 by 1.4 and 1.5 on en$\to$de and zh$\to$en), higher at 19--34\% (S2) and
-15--19\% (S3) of the 210 cell--budget points of a pair, higher by more than 2 points at 1--3\%, and at most 3.7 points
-higher. The excess at the smallest budgets is the normal bound on few items, as in App.~\ref{app:prereg}; it applies
-to the human-only baseline as much as to the evaluators, and it means the certificate is validated only from about 200
-labels on. 
+about 116 (en$\to$de) and 110 (zh$\to$en) labels in total, pilot included. The rate of a budget is the mean over the 15
+cells of a language pair, with a 95\% Monte-Carlo interval from the joint resampling of audit indices (the cells share
+random streams, so their audits are not pooled as independent trials). At 10 items: S1 0.18 [0.16, 0.20] and
+0.18 [0.17, 0.20], S2 0.16 and 0.19, S3 and S4 0.12 and 0.13 (en$\to$de and zh$\to$en). The observed mean rate is at or
+below 0.10 at every later budget from 55 items (206 labels; S1 0.092 [0.078, 0.105]) on en$\to$de and from 88 items
+(265 labels; 0.087 [0.076, 0.099]) on zh$\to$en, for S1 and S2 alike (S3: 55 and 42); it stays at or below 0.125 from
+23 items (144 labels) and 29 items (148 labels). These are observations on this simulation, not tests that the error is
+below nominal: at the cut-offs the intervals still reach 0.10. It is 0.05 at about 450 labels and 0.01--0.02 at the
+largest budgets. The per-cell maximum over budgets averages 0.18 (S1), 0.18 (S2) and 0.13 (S3), at most 0.24. Against
+S1 on the same cell and budget, the evaluator strategies are lower on average (S2 by 0.7 and 0.1 points, S3 by 1.4 and
+1.5 on en$\to$de and zh$\to$en), higher at 19--34\% (S2) and 15--19\% (S3) of the 210 cell--budget points of a pair,
+higher by more than 2 points at 1--3\%, and at most 3.7 points higher. The excess at the smallest budgets is the normal
+bound on few items, as in App.~\ref{app:prereg}; it applies to the human-only baseline as much as to the evaluators.
+With the cut-offs fixed, a second boundary run of the 30 decisions with a different seed (tag \texttt{pair23c},
+\texttt{S2\_vs\_S3\_wmt23\_boundary\_seed2.md}) gives, at 55 and 88 items, S1 0.088 [0.075, 0.100] and
+0.079 [0.067, 0.092], S2 0.083 [0.070, 0.095] and 0.084 [0.072, 0.097], and at 23 and 29 items S1 0.119 [0.103, 0.133]
+and 0.119 [0.103, 0.135]; at ten items 0.18 again. The cut-offs are therefore reproducible as observations, with
+intervals that still touch the nominal level; they are not a calibrated bound.
 
-\paragraph{Restricted protocol.} The same minimum budget applied to every arm of the 2,000-audit WMT23 records
-(\texttt{--min\_budget}; certification below it set to zero, so $\Jt$ is at least the cost of the first allowed
-budget): \texttt{S2\_vs\_S3\_wmt23\_n2000\_restricted} (55 / 61 items, the strict range above) and
-\texttt{\_restricted\_tol} (23 / 29 items, 144 / 148 labels, the range in which the pooled boundary error stays
-below 0.125). Strict: the first allowed budget costs 193--206 labels in these decisions, 21 of the 26 informative cells
-certified earlier under the unrestricted protocol and now tie across strategies (S2 within 0.1 point of S1 in 51 of 60
-cells); over the 60 cells S2 vs S1 $+0.3$ $[0.2, 0.4]$, S3 vs S1 $+0.2$ $[0.1, 0.4]$, $G$ $-0.1$ $[-0.2, +0.0]$; the
-cells with $\Jt$ above the floor keep their savings (en$\to$de 01 at both $\eps$ and 34 at $\eps=0.02$: S2 3.0, 3.2,
-3.3\%; 12 and zh$\to$en 25, 35, 45 at $\eps=0.01$: 0.5--0.9\%). Tolerance: 56 informative cells, S2 vs S1 $+1.5$
-$[1.3, 1.7]$, S3 vs S1 $+1.5$ $[1.3, 1.8]$, $G$ $+0.0$ $[-0.2, +0.3]$, S2 cheaper in 84\% of cells and never costlier
-by 2 points. WMT22 has no boundary run of the two-system decisions (its locked-cell boundary runs are in
-App.~\ref{app:prereg}), so the range is validated on WMT23 only.
+\paragraph{Restricted protocol (post-hoc sensitivity analysis).} The same minimum budget applied to every arm of
+the 2,000-audit WMT23 records (\texttt{--min\_budget}): $\Jt$ is interpolated over the allowed budgets only, so it is
+at least the cost of the first allowed budget (an earlier version interpolated across the disallowed budgets).
+Cut-offs from the boundary run above: 55 / 88 items (en$\to$de / zh$\to$en; observed mean error at or below 0.10 at
+every later budget) and 23 / 29 items (at or below 0.125). The cell sets are fixed to the 26 informative cells of the
+unrestricted run and to all 60 (\texttt{--cells\_from}), so the three protocols are compared on the same cells (Table~\ref{tab:restricted}).
+\begin{table*}[t]\centering\footnotesize
+\begin{tabular}{lrrrrr}\toprule
+& \multicolumn{3}{c}{26 informative cells} & \multicolumn{2}{c}{all 60 cells}\\
+protocol & S2 vs S1 & S3 vs S1 & $G$ & S2 vs S1 & $G$\\\midrule
+unrestricted & $+3.4$ $[2.9, 3.9]$ & $+3.3$ $[2.7, 3.9]$ & $-0.1$ $[-0.7, +0.5]$ & $+1.8$ $[1.5, 2.0]$ & $-0.1$ $[-0.3, +0.2]$\\
+cut-off at 0.10 (55 / 88 items) & $+0.4$ $[0.2, 0.6]$ & $+0.2$ $[-0.1, 0.5]$ & $-0.2$ $[-0.4, +0.1]$ & $+0.2$ $[0.1, 0.2]$ & $-0.1$ $[-0.2, +0.0]$\\
+cut-off at 0.125 (23 / 29 items) & $+3.0$ $[2.5, 3.4]$ & $+3.0$ $[2.4, 3.5]$ & $-0.0$ $[-0.5, +0.5]$ & $+1.3$ $[1.1, 1.5]$ & $-0.0$ $[-0.2, +0.2]$\\\bottomrule
+\end{tabular}
+\caption{Post-hoc sensitivity analysis: the strategies under a protocol that issues no certificate below a minimum
+post-pilot budget (en$\to$de / zh$\to$en items), the same rule for every strategy, on fixed cell sets. Means in points
+of $\Jt$ with Monte-Carlo intervals (\texttt{S2\_vs\_S3\_wmt23\_n2000\_restricted*.md}).}\label{tab:restricted}
+\end{table*}
+Under the
+0.10 cut-off the first allowed budget costs 204--207 (en$\to$de) and 240--272 (zh$\to$en) labels, 22 of the 26 cells
+certify there under every strategy, and the saving survives only where $\Jt$ was already above it (en$\to$de 01 at both
+$\eps$ and 34 at $\eps=0.02$: S2 3.0, 3.2, 3.3\%). Under the 0.125 cut-off six cells tie and S2 is cheaper in 20. The
+0.10 and 0.125 conditions are different conditions and are not pooled. WMT22 has no boundary run of the two-system
+decisions (its locked-cell boundary runs are in App.~\ref{app:prereg}), so the cut-offs are read off WMT23 only.
 
 \paragraph{Same-condition decomposition.} Medians over informative cells of the shares of uniform-sampling labels
 ($\Jt$) saved, refitted coefficient (\texttt{results/strategies/DECOMPOSITION\_n2000.md}; WMT22 from the zeroed

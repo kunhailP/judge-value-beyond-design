@@ -52,10 +52,12 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
   every strategy's bound is nominal at the certifying budget (0.89–0.90) and 0.86–0.89 at the worst budget once known-zero
   differences are set to zero (the 300-audit records without it had S2 at 0.45–0.50 at the smallest budgets); in boundary
   stress the type-I error at ten post-pilot labels is 0.18 (S1), 0.17 (S2), 0.12 (S3), nominal from 30–60 labels on, and
-  below the human-only design on average (above it at 15–34% of cell–budget points, by over 2 points at 1–3%). The pooled
-  error is at its nominal level only from about 200 labels on (55/61 post-pilot items); a protocol that certifies only from
-  there keeps 0.3% [0.2, 0.4] of S2's saving over S1 (most decisions certify earlier), 1.5% [1.3, 1.7] with a tolerance of
-  0.125 (from about 145 labels); the strategy ranking is unchanged (`code/129_s2_vs_s3.py --min_budget`, `results/strategies/`).
+  below the human-only design on average (above it at 15–34% of cell–budget points, by over 2 points at 1–3%). The observed
+  mean error is at or below 0.10 at every later budget from about 206 (en-de) / 265 (zh-en) labels on, and at or below 0.125
+  from about 145 (an observation on this simulation, checked on a second seed; not a calibrated bound). Post-hoc sensitivity
+  analysis: a protocol that certifies only from those budgets, same rule for every strategy, on the same 26 cells keeps
+  0.4% [0.2, 0.6] of S2's 3.4% saving at the 0.10 cut-off (22 cells certify at the first allowed budget) and 3.0% [2.5, 3.4]
+  at the 0.125 cut-off; the strategy ranking is unchanged (`code/129_s2_vs_s3.py --min_budget --cells_from`, `results/strategies/`).
 * **Strong evaluators are the exception** (`code/130_decomposition.py`, `results/strategies/DECOMPOSITION_n2000.md`): on the
   same audits, the mean metric adds 1.8–2.5% on dedup (refit), the strongest of each year (MetricX-XXL, XCOMET-XXL)
   3.7–4.7%, as much as the design in a third to over half of the cells; the design still saves more than the mean evaluator
@@ -120,9 +122,10 @@ python3 code/129_s2_vs_s3.py --glob 'results/mt/mt_*_m2_p50_pairmtmez??' --fixed
 python3 code/129_s2_vs_s3.py --glob 'results/mt/mt_*23_m2_p50_pair23n??' --fixed mtme_COMET-refA --boot 1000 --out results/strategies/S2_vs_S3_wmt23_n2000
 python3 code/129_s2_vs_s3.py --glob 'results/mt/mt_*23_m2_p50_boundary_pair23b??' --fixed mtme_COMET-refA --boot 200 --out results/strategies/S2_vs_S3_wmt23_boundary
 python3 code/130_decomposition.py --glob22 'results/mt/mt_*_m2_p50_pairmtmez??' --glob23 'results/mt/mt_*23_m2_p50_pair23n??' --out results/strategies/DECOMPOSITION_n2000
-# restricted protocol: no certificate below the post-pilot budget from which the boundary type-I error is at its nominal level (S2_vs_S3_wmt23_boundary_certification_range.csv)
-python3 code/129_s2_vs_s3.py --glob 'results/mt/mt_*23_m2_p50_pair23n??' --fixed mtme_COMET-refA --boot 1000 --min_budget ende23:55 zhen23:61 --out results/strategies/S2_vs_S3_wmt23_n2000_restricted
-python3 code/128_strategies.py --glob 'results/mt/mt_*23_m2_p50_pair23n??' --design dedup --fixed mtme_COMET-refA --mode cvq --stat rho --r0 0.2 --s0 -1 --min_budget ende23:55 zhen23:61 --out results/strategies/STRATEGIES_wmt23_n2000_restricted_refit
+# restricted protocol (post-hoc sensitivity): no certificate below the post-pilot budget from which the observed boundary type-I error stays at or below 0.10 (S2_vs_S3_wmt23_boundary_certification_range.csv); cell sets fixed to the unrestricted run
+python3 code/129_s2_vs_s3.py --glob 'results/mt/mt_*23_m2_p50_pair23n??' --fixed mtme_COMET-refA --boot 1000 --min_budget ende23:55 zhen23:88 --cells_from results/strategies/S2_vs_S3_wmt23_n2000.csv --out results/strategies/S2_vs_S3_wmt23_n2000_restricted   # 0.125 cut-off: ende23:23 zhen23:29, _restricted_tol
+python3 code/128_strategies.py --glob 'results/mt/mt_*23_m2_p50_pair23n??' --design dedup --fixed mtme_COMET-refA --mode cvq --stat rho --r0 0.2 --s0 -1 --min_budget ende23:55 zhen23:88 --out results/strategies/STRATEGIES_wmt23_n2000_restricted_refit
+TAG=pair23c EXTRA_ARGS="--boundary --seed 20261011" bash code/RUN_PAIRS_23.sh; python3 code/129_s2_vs_s3.py --glob 'results/mt/mt_*23_m2_p50_boundary_pair23c??' --fixed mtme_COMET-refA --boot 200 --out results/strategies/S2_vs_S3_wmt23_boundary_seed2   # second seed for the cut-offs
 # pairmtmez: the 30 WMT22 decisions re-run with known-zero differences zeroed (110_unit_audit.py --zero_known 1, now the default; the 31 metric variants only: SUFFIX=z bash code/RUN_PAIRS_MTME.sh with the three LLM judges dropped from --judges)
 ```
 Reproduction check (2026-10-09): rebuilding the pools and the 31 metric judges from the public sources above on another

@@ -1,49 +1,49 @@
 # Auditor strategies (results/mt/mt_*23_m2_p50_pair23n??; design=dedup, fixed=mtme_COMET-refA, mode=cvq, stat=rho, r0=0.2, s0=-1.0)
 
-Cells: 60; informative (1 - P/J50_uniform >= 0.3): 56 ({'zhen23': 30, 'ende23': 26})
+Cells: 60; informative (1 - P/J50_uniform >= 0.3): 60 ({'ende23': 30, 'zhen23': 30})
 
 ## Over informative cells: cost relative to S1 (negative = cheaper than the judge-free design)
 
 | strategy             |   mean_excess_over_S1 |   median_excess |   share_cheaper_than_S1 |   share_costlier_by_2pct |   labels_saved_vs_S1_total |
 |:---------------------|----------------------:|----------------:|------------------------:|-------------------------:|---------------------------:|
-| S2_fixed             |               -0.0147 |         -0.0024 |                  0.8393 |                   0      |                    162.438 |
-| S3_select            |               -0.015  |         -0.0028 |                  0.9464 |                   0.0179 |                    159.29  |
-| S4_select_or_abstain |               -0.0146 |         -0.0028 |                  0.9464 |                   0.0179 |                    154.936 |
-| best_posthoc         |               -0.0269 |         -0.0048 |                  1      |                   0      |                    306.608 |
-| mean_judge           |               -0.0113 |         -0.0021 |                  1      |                   0      |                    124.708 |
+| S2_fixed             |               -0.0129 |               0 |                  0.3333 |                   0      |                    155.806 |
+| S3_select            |               -0.0129 |               0 |                  0.3    |                   0.0167 |                    149.644 |
+| S4_select_or_abstain |               -0.0125 |               0 |                  0.3    |                   0.0167 |                    145.424 |
+| best_posthoc         |               -0.0229 |               0 |                  0.3333 |                   0      |                    287.909 |
+| mean_judge           |               -0.0097 |              -0 |                  0.5    |                   0      |                    117.666 |
 
-### ende23: 26 cells; median design saving vs uniform 0.017
+### ende23: 30 cells; median design saving vs uniform 0.005
 
 | strategy             |   mean_excess |   median |   share_cheaper |
 |:---------------------|--------------:|---------:|----------------:|
-| S2_fixed             |       -0.0265 |  -0.0229 |          1      |
-| S3_select            |       -0.0259 |  -0.0189 |          0.9615 |
-| S4_select_or_abstain |       -0.0252 |  -0.0178 |          0.9615 |
-| best_posthoc         |       -0.0414 |  -0.0403 |          1      |
-| mean_judge           |       -0.0182 |  -0.0175 |          1      |
+| S2_fixed             |       -0.0219 |  -0.0094 |          0.5333 |
+| S3_select            |       -0.0212 |  -0.0064 |          0.5    |
+| S4_select_or_abstain |       -0.0205 |  -0.0045 |          0.5    |
+| best_posthoc         |       -0.0339 |  -0.0191 |          0.5333 |
+| mean_judge           |       -0.0149 |  -0.0065 |          0.7333 |
 
 ### zhen23: 30 cells; median design saving vs uniform 0.001
 
 | strategy             |   mean_excess |   median |   share_cheaper |
 |:---------------------|--------------:|---------:|----------------:|
-| S2_fixed             |       -0.0045 |  -0.0003 |          0.7    |
-| S3_select            |       -0.0055 |  -0.0009 |          0.9333 |
-| S4_select_or_abstain |       -0.0055 |  -0.0009 |          0.9333 |
-| best_posthoc         |       -0.0144 |  -0.0026 |          1      |
-| mean_judge           |       -0.0053 |  -0.0008 |          1      |
+| S2_fixed             |       -0.004  |        0 |          0.1333 |
+| S3_select            |       -0.0045 |        0 |          0.1    |
+| S4_select_or_abstain |       -0.0045 |        0 |          0.1    |
+| best_posthoc         |       -0.012  |        0 |          0.1333 |
+| mean_judge           |       -0.0045 |        0 |          0.2667 |
 
 ## Wrong-certificate rate at the budget nearest J50 (mean over informative cells)
 
 | strategy             |   wrong |    max |
 |:---------------------|--------:|-------:|
-| S1_design            |  0.0032 | 0.0215 |
-| S2_fixed             |  0.0028 | 0.018  |
-| S3_select            |  0.0028 | 0.019  |
-| S4_select_or_abstain |  0.0028 | 0.019  |
+| S1_design            |  0.003  | 0.0215 |
+| S2_fixed             |  0.0026 | 0.018  |
+| S3_select            |  0.0026 | 0.019  |
+| S4_select_or_abstain |  0.0026 | 0.019  |
 
-Abstention share (S4), mean over informative cells: 0.012
+Abstention share (S4), mean over informative cells: 0.011
 
-Post-hoc best evaluator distinguishable from selection noise (p < 0.05) in 0.89 of informative cells
+Post-hoc best evaluator distinguishable from selection noise (p < 0.05) in 0.27 of informative cells
 
 ## Per informative cell
 
@@ -53,102 +53,106 @@ Post-hoc best evaluator distinguishable from selection noise (p < 0.05) in 0.89 
 | ende23 |     01 |  0.02 |  460 |       97.258 |     286.323 |         0.038 |            -0.032 |             -0.029 |                        -0.027 |           0.022 |                -0.059 | mtme_XCOMET-Ensemble-refA   |              -0.025 |             0.035 |
 | ende23 |     02 |  0.01 |  460 |       97.898 |     189.081 |         0.012 |            -0.023 |             -0.023 |                        -0.023 |           0.002 |                -0.072 | mtme_MS-COMET-QE-22-src     |              -0.019 |             0     |
 | ende23 |     02 |  0.02 |  460 |       97.898 |     153.841 |         0.003 |            -0.022 |             -0.027 |                        -0.027 |           0.002 |                -0.048 | mtme_MS-COMET-QE-22-src     |              -0.017 |             0     |
-| ende23 |     03 |  0.01 |  460 |       97.808 |     141.144 |         0.002 |            -0.002 |             -0.003 |                        -0.003 |           0.008 |                -0.004 | mtme_cometoid22-wmt23-src   |              -0.002 |             0     |
-| ende23 |     03 |  0.02 |  460 |       97.808 |     139.869 |         0.002 |            -0.001 |             -0.001 |                        -0.001 |           0.008 |                -0.002 | mtme_MetricX-23-QE-b-src    |              -0.001 |             0.005 |
-| ende23 |     04 |  0.01 |  460 |       97.497 |     140.562 |         0.002 |            -0.004 |             -0.005 |                        -0.005 |           0.002 |                -0.007 | mtme_XCOMET-Ensemble-refA   |              -0.003 |             0     |
-| ende23 |     04 |  0.02 |  460 |       97.497 |     139.377 |         0.001 |            -0.003 |             -0.003 |                        -0.003 |           0.002 |                -0.004 | mtme_MetricX-23-QE-b-src    |              -0.002 |             0     |
+| ende23 |     03 |  0.01 |  460 |       97.808 |     143.462 |         0     |             0     |              0     |                         0     |           0.008 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| ende23 |     03 |  0.02 |  460 |       97.808 |     143.462 |         0     |             0     |              0     |                         0     |           0.008 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| ende23 |     04 |  0.01 |  460 |       97.497 |     143.151 |         0     |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |              -0     |             1     |
+| ende23 |     04 |  0.02 |  460 |       97.497 |     143.151 |         0     |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |              -0     |             1     |
+| ende23 |     05 |  0.01 |  460 |       98.241 |     143.895 |         0     |             0     |              0     |                         0     |           0     |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| ende23 |     05 |  0.02 |  460 |       98.241 |     143.895 |         0     |             0     |              0     |                         0     |           0     |                 0     | mtme_BERTscore-refA         |               0     |             1     |
 | ende23 |     12 |  0.01 |  460 |       96.414 |     207.692 |         0.038 |            -0.053 |             -0.06  |                        -0.058 |           0.005 |                -0.078 | mtme_MetricX-23-QE-src      |              -0.039 |             0     |
 | ende23 |     12 |  0.02 |  460 |       96.414 |     168.26  |         0.028 |            -0.097 |             -0.082 |                        -0.079 |           0.005 |                -0.119 | mtme_XCOMET-Ensemble-refA   |              -0.057 |             0.005 |
-| ende23 |     13 |  0.01 |  460 |       97.164 |     140.381 |         0.002 |            -0.004 |             -0.003 |                        -0.003 |           0.05  |                -0.004 | mtme_XCOMET-Ensemble-refA   |              -0.002 |             0     |
-| ende23 |     13 |  0.02 |  460 |       97.164 |     139.259 |         0.002 |            -0.003 |             -0.002 |                        -0.002 |           0.05  |                -0.003 | mtme_cometoid22-wmt22-src   |              -0.002 |             0     |
-| ende23 |     14 |  0.01 |  460 |       96.537 |     139.624 |         0.003 |            -0.004 |             -0.004 |                        -0.004 |           0.008 |                -0.006 | mtme_XCOMET-Ensemble-refA   |              -0.003 |             0     |
-| ende23 |     14 |  0.02 |  460 |       96.537 |     138.542 |         0.002 |            -0.004 |             -0.003 |                        -0.003 |           0.008 |                -0.004 | mtme_XCOMET-Ensemble-refA   |              -0.002 |             0     |
+| ende23 |     13 |  0.01 |  460 |       97.164 |     142.818 |         0     |             0     |              0     |                         0     |           0.05  |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| ende23 |     13 |  0.02 |  460 |       97.164 |     142.818 |         0     |             0     |              0     |                         0     |           0.05  |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| ende23 |     14 |  0.01 |  460 |       96.537 |     142.191 |         0.001 |             0     |              0     |                         0     |           0.008 |                 0     | mtme_BERTscore-refA         |              -0     |             1     |
+| ende23 |     14 |  0.02 |  460 |       96.537 |     142.191 |         0.001 |             0     |              0     |                         0     |           0.008 |                 0     | mtme_BERTscore-refA         |              -0     |             1     |
+| ende23 |     15 |  0.01 |  460 |       98.565 |     144.219 |         0     |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |              -0     |             1     |
+| ende23 |     15 |  0.02 |  460 |       98.565 |     144.219 |         0     |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |              -0     |             1     |
 | ende23 |     23 |  0.01 |  460 |       94.932 |     215.365 |         0.07  |            -0.109 |             -0.061 |                        -0.058 |           0.012 |                -0.118 | mtme_CometKiwi-XXL-src      |              -0.043 |             0.05  |
 | ende23 |     23 |  0.02 |  460 |       94.932 |     158.608 |         0.034 |            -0.019 |             -0.013 |                        -0.013 |           0.012 |                -0.034 | mtme_CometKiwi-XXL-src      |              -0.012 |             0.02  |
 | ende23 |     24 |  0.01 |  460 |       94.796 |     193.204 |         0.084 |            -0.047 |             -0.04  |                        -0.04  |           0.002 |                -0.064 | mtme_MS-COMET-QE-22-src     |              -0.031 |             0.02  |
-| ende23 |     24 |  0.02 |  460 |       94.796 |     148.858 |         0.037 |            -0.023 |             -0.023 |                        -0.023 |           0.002 |                -0.026 | mtme_MS-COMET-QE-22-src     |              -0.018 |             0.66  |
-| ende23 |     25 |  0.01 |  460 |       97.701 |     141.113 |         0.002 |            -0.005 |             -0.006 |                        -0.006 |           0.002 |                -0.007 | mtme_XCOMET-Ensemble-refA   |              -0.003 |             0     |
-| ende23 |     25 |  0.02 |  460 |       97.701 |     139.917 |         0.001 |            -0.003 |             -0.004 |                        -0.004 |           0.002 |                -0.005 | mtme_MetricX-23-QE-c-src    |              -0.002 |             0     |
+| ende23 |     24 |  0.02 |  460 |       94.796 |     148.858 |         0.037 |            -0.022 |             -0.022 |                        -0.022 |           0.002 |                -0.022 | mtme_BLEURT-20-refA         |              -0.016 |             0.845 |
+| ende23 |     25 |  0.01 |  460 |       97.701 |     143.355 |         0.001 |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| ende23 |     25 |  0.02 |  460 |       97.701 |     143.355 |         0.001 |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
 | ende23 |     34 |  0.01 |  460 |       94.72  |     537.568 |         0.127 |            -0     |              0.006 |                         0.007 |           0.076 |                -0.017 | mtme_Calibri-COMET22-QE-src |              -0.001 |             0.04  |
 | ende23 |     34 |  0.02 |  460 |       94.72  |     259.225 |         0.054 |            -0.033 |             -0.015 |                        -0.009 |           0.076 |                -0.047 | mtme_XCOMET-Ensemble-refA   |              -0.02  |             0.005 |
 | ende23 |     35 |  0.01 |  460 |       97.72  |     185.875 |         0.026 |            -0.048 |             -0.062 |                        -0.061 |           0.019 |                -0.088 | mtme_MetricX-23-QE-b-src    |              -0.039 |             0.015 |
-| ende23 |     35 |  0.02 |  460 |       97.72  |     152.417 |         0.007 |            -0.042 |             -0.054 |                        -0.054 |           0.019 |                -0.056 | mtme_MetricX-23-QE-b-src    |              -0.031 |             0     |
+| ende23 |     35 |  0.02 |  460 |       97.72  |     152.417 |         0.007 |            -0.042 |             -0.054 |                        -0.054 |           0.019 |                -0.054 | mtme_MetricX-23-QE-b-src    |              -0.031 |             0.01  |
 | ende23 |     45 |  0.01 |  460 |       97.044 |     188.355 |         0.036 |            -0.049 |             -0.075 |                        -0.075 |           0.009 |                -0.095 | mtme_XCOMET-Ensemble-refA   |              -0.045 |             0     |
-| ende23 |     45 |  0.02 |  460 |       97.044 |     152.711 |         0.022 |            -0.031 |             -0.047 |                        -0.047 |           0.009 |                -0.05  | mtme_XCOMET-Ensemble-refA   |              -0.029 |             0.075 |
+| ende23 |     45 |  0.02 |  460 |       97.044 |     152.711 |         0.022 |            -0.031 |             -0.045 |                        -0.045 |           0.009 |                -0.045 | mtme_CometKiwi-XL-src       |              -0.028 |             0.245 |
 | zhen23 |     01 |  0.01 | 1177 |       95.981 |     294.778 |         0.099 |            -0     |              0.041 |                         0.039 |           0.016 |                -0.033 | mtme_XCOMET-XXL-refA        |              -0.006 |             0.19  |
-| zhen23 |     01 |  0.02 | 1177 |       95.981 |     153.665 |         0.004 |             0     |              0.002 |                         0.003 |           0.016 |                -0.004 | mtme_XCOMET-XXL-refA        |              -0.001 |             0.025 |
-| zhen23 |     02 |  0.01 | 1177 |       97.984 |     148.26  |         0.001 |             0     |             -0.002 |                        -0.002 |           0.002 |                -0.003 | mtme_MetricX-23-QE-b-src    |              -0.001 |             0     |
-| zhen23 |     02 |  0.02 | 1177 |       97.984 |     147.508 |         0.001 |             0     |             -0     |                        -0     |           0.002 |                -0.001 | mtme_XCOMET-QE-Ensemble-src |              -0     |             0     |
-| zhen23 |     03 |  0.01 | 1177 |       97.982 |     147.951 |         0.001 |             0     |             -0.001 |                        -0.001 |           0.002 |                -0.002 | mtme_MetricX-23-QE-b-src    |              -0.001 |             0     |
-| zhen23 |     03 |  0.02 | 1177 |       97.982 |     147.363 |         0.001 |             0     |             -0     |                        -0     |           0.002 |                -0.001 | mtme_MetricX-23-b-refA      |              -0     |             0     |
-| zhen23 |     04 |  0.01 | 1177 |       97.824 |     147.872 |         0.001 |            -0     |             -0.001 |                        -0.001 |           0.002 |                -0.002 | mtme_XCOMET-QE-Ensemble-src |              -0     |             0     |
-| zhen23 |     04 |  0.02 | 1177 |       97.824 |     147.281 |         0.001 |             0     |             -0.001 |                        -0.001 |           0.002 |                -0.001 | mtme_MetricX-23-QE-b-src    |              -0     |             0.02  |
-| zhen23 |     05 |  0.01 | 1177 |       98.278 |     147.797 |         0.001 |            -0     |             -0.001 |                        -0.001 |           0.002 |                -0.001 | mtme_MetricX-23-QE-c-src    |              -0     |             0     |
-| zhen23 |     05 |  0.02 | 1177 |       98.278 |     147.484 |         0.001 |            -0     |             -0.001 |                        -0.001 |           0.002 |                -0.001 | mtme_MetricX-23-QE-b-src    |              -0     |             0.015 |
-| zhen23 |     12 |  0.01 | 1177 |       98.822 |     150.614 |         0.001 |             0     |             -0.001 |                        -0.001 |           0.002 |                -0.003 | mtme_XCOMET-QE-Ensemble-src |              -0.001 |             0     |
-| zhen23 |     12 |  0.02 | 1177 |       98.822 |     149.255 |         0.001 |            -0     |             -0.001 |                        -0.001 |           0.002 |                -0.002 | mtme_MetricX-23-b-refA      |              -0.001 |             0     |
-| zhen23 |     13 |  0.01 | 1177 |       98.822 |     150.521 |         0.001 |             0     |             -0.003 |                        -0.003 |           0.006 |                -0.004 | mtme_MetricX-23-QE-c-src    |              -0.001 |             0     |
-| zhen23 |     13 |  0.02 | 1177 |       98.822 |     149.163 |         0     |            -0     |             -0.001 |                        -0.001 |           0.006 |                -0.002 | mtme_MetricX-23-b-refA      |              -0.001 |             0     |
-| zhen23 |     14 |  0.01 | 1177 |       98.788 |     150.464 |         0.001 |             0     |             -0.001 |                        -0.001 |           0.002 |                -0.003 | mtme_MetricX-23-QE-b-src    |              -0.001 |             0     |
-| zhen23 |     14 |  0.02 | 1177 |       98.788 |     149.184 |         0.001 |            -0.001 |             -0     |                        -0     |           0.002 |                -0.002 | mtme_MetricX-23-QE-c-src    |              -0.001 |             0     |
-| zhen23 |     15 |  0.01 | 1177 |       98.822 |     149.373 |         0.001 |            -0.001 |             -0.002 |                        -0.002 |           0.004 |                -0.003 | mtme_MetricX-23-b-refA      |              -0.001 |             0     |
-| zhen23 |     15 |  0.02 | 1177 |       98.822 |     148.593 |         0     |            -0     |             -0.001 |                        -0.001 |           0.004 |                -0.002 | mtme_MetricX-23-QE-b-src    |              -0.001 |             0     |
-| zhen23 |     23 |  0.01 | 1177 |       58.362 |     113.803 |         0.045 |            -0     |             -0.001 |                        -0.001 |           0.011 |                -0.002 | mtme_MetricX-23-refA        |              -0     |             0     |
-| zhen23 |     23 |  0.02 | 1177 |       58.362 |     109.567 |         0.022 |            -0     |             -0     |                        -0     |           0.011 |                -0     | mtme_MetricX-23-QE-c-src    |              -0     |             0.13  |
-| zhen23 |     24 |  0.01 | 1177 |       64.878 |     197.953 |         0.394 |            -0.001 |             -0.001 |                        -0.001 |           0.021 |                -0.004 | mtme_CometKiwi-src          |              -0.002 |             0.215 |
-| zhen23 |     24 |  0.02 | 1177 |       64.878 |     118.389 |         0.033 |            -0     |             -0     |                        -0     |           0.021 |                -0.001 | mtme_MetricX-23-QE-src      |              -0     |             0.03  |
+| zhen23 |     01 |  0.02 | 1177 |       95.981 |     154.039 |        -0     |             0     |              0     |                         0     |           0.016 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     02 |  0.01 | 1177 |       97.984 |     156.042 |         0.001 |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     02 |  0.02 | 1177 |       97.984 |     156.042 |         0.001 |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     03 |  0.01 | 1177 |       97.982 |     156.04  |         0.001 |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |              -0     |             1     |
+| zhen23 |     03 |  0.02 | 1177 |       97.982 |     156.04  |         0.001 |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |              -0     |             1     |
+| zhen23 |     04 |  0.01 | 1177 |       97.824 |     155.882 |         0.001 |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     04 |  0.02 | 1177 |       97.824 |     155.882 |         0.001 |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     05 |  0.01 | 1177 |       98.278 |     156.336 |         0.001 |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     05 |  0.02 | 1177 |       98.278 |     156.336 |         0.001 |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     12 |  0.01 | 1177 |       98.822 |     156.88  |         0     |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     12 |  0.02 | 1177 |       98.822 |     156.88  |         0     |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     13 |  0.01 | 1177 |       98.822 |     156.88  |         0     |             0     |              0     |                         0     |           0.006 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     13 |  0.02 | 1177 |       98.822 |     156.88  |         0     |             0     |              0     |                         0     |           0.006 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     14 |  0.01 | 1177 |       98.788 |     156.846 |         0     |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     14 |  0.02 | 1177 |       98.788 |     156.846 |         0     |             0     |              0     |                         0     |           0.002 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     15 |  0.01 | 1177 |       98.822 |     156.88  |         0     |             0     |              0     |                         0     |           0.004 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     15 |  0.02 | 1177 |       98.822 |     156.88  |         0     |             0     |              0     |                         0     |           0.004 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     23 |  0.01 | 1177 |       58.362 |     116.42  |         0.002 |             0     |              0     |                         0     |           0.011 |                 0     | mtme_BERTscore-refA         |              -0     |             1     |
+| zhen23 |     23 |  0.02 | 1177 |       58.362 |     116.42  |         0.002 |             0     |              0     |                         0     |           0.011 |                 0     | mtme_BERTscore-refA         |              -0     |             1     |
+| zhen23 |     24 |  0.01 | 1177 |       64.878 |     197.953 |         0.38  |             0     |              0     |                         0     |           0.021 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     24 |  0.02 | 1177 |       64.878 |     122.936 |         0.002 |             0     |              0     |                         0     |           0.021 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
 | zhen23 |     25 |  0.01 | 1177 |       96.168 |     208.233 |         0.032 |            -0.041 |             -0.06  |                        -0.06  |           0.008 |                -0.118 | mtme_MetricX-23-QE-b-src    |              -0.045 |             0.005 |
-| zhen23 |     25 |  0.02 | 1177 |       96.168 |     153.132 |         0.003 |            -0.002 |             -0.004 |                        -0.004 |           0.008 |                -0.007 | mtme_MetricX-23-QE-b-src    |              -0.002 |             0     |
-| zhen23 |     34 |  0.01 | 1177 |       65.662 |     218.749 |         0.442 |            -0.001 |             -0.002 |                        -0.002 |           0.013 |                -0.006 | mtme_MetricX-23-refA        |              -0.002 |             0.005 |
-| zhen23 |     34 |  0.02 | 1177 |       65.662 |     119.953 |         0.036 |            -0     |             -0.001 |                        -0.001 |           0.013 |                -0.003 | mtme_MetricX-23-QE-src      |              -0.001 |             0     |
+| zhen23 |     25 |  0.02 | 1177 |       96.168 |     154.226 |         0     |             0     |              0     |                         0     |           0.008 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     34 |  0.01 | 1177 |       65.662 |     218.749 |         0.436 |             0     |              0     |                         0     |           0.013 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
+| zhen23 |     34 |  0.02 | 1177 |       65.662 |     123.72  |         0.002 |             0     |              0     |                         0     |           0.013 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
 | zhen23 |     35 |  0.01 | 1177 |       96.206 |     217.129 |         0.039 |            -0.037 |             -0.045 |                        -0.044 |           0.011 |                -0.102 | mtme_MetricX-23-QE-b-src    |              -0.037 |             0     |
-| zhen23 |     35 |  0.02 | 1177 |       96.206 |     153.496 |         0.004 |            -0.003 |             -0.004 |                        -0.004 |           0.011 |                -0.008 | mtme_MetricX-23-QE-b-src    |              -0.003 |             0     |
+| zhen23 |     35 |  0.02 | 1177 |       96.206 |     154.264 |         0     |             0     |              0     |                         0     |           0.011 |                 0     | mtme_BERTscore-refA         |               0     |             1     |
 | zhen23 |     45 |  0.01 | 1177 |       95.958 |     209.768 |         0.071 |            -0.042 |             -0.071 |                        -0.071 |           0.01  |                -0.106 | mtme_MetricX-23-QE-b-src    |              -0.048 |             0     |
-| zhen23 |     45 |  0.02 | 1177 |       95.958 |     152.794 |         0.003 |            -0.002 |             -0.002 |                        -0.002 |           0.01  |                -0.005 | mtme_MetricX-23-QE-b-src    |              -0.002 |             0.005 |
+| zhen23 |     45 |  0.02 | 1177 |       95.958 |     154.016 |         0     |             0     |              0     |                         0     |           0.01  |                 0     | mtme_BERTscore-refA         |               0     |             1     |
 
 ## Evaluators over informative cells (pilot rho median; mean HES over the dedup design)
 
 | judge                             |   rho |   HES_pilot |   HES_refit |   cells |
 |:----------------------------------|------:|------------:|------------:|--------:|
-| mtme_MetricX-23-QE-b-src          | 0.383 |       0.01  |       0.021 |      56 |
-| mtme_MetricX-23-QE-src            | 0.362 |       0.009 |       0.019 |      56 |
-| mtme_XCOMET-QE-Ensemble-src       | 0.358 |       0.011 |       0.021 |      56 |
-| mtme_XCOMET-Ensemble-refA         | 0.354 |       0.014 |       0.023 |      56 |
-| mtme_XCOMET-XXL-refA              | 0.342 |       0.011 |       0.021 |      56 |
-| mtme_MetricX-23-QE-c-src          | 0.339 |       0.009 |       0.02  |      56 |
-| mtme_XCOMET-XL-refA               | 0.314 |       0.01  |       0.021 |      56 |
-| mtme_MetricX-23-refA              | 0.281 |       0.006 |       0.016 |      56 |
-| mtme_GEMBA-MQM-src                | 0.276 |       0.002 |       0.012 |      56 |
-| mtme_MetricX-23-b-refA            | 0.273 |       0.005 |       0.017 |      56 |
-| mtme_mbr-metricx-qe-src           | 0.271 |       0.001 |       0.013 |      56 |
-| mtme_cometoid22-wmt22-src         | 0.244 |       0.001 |       0.014 |      56 |
-| mtme_CometKiwi-src                | 0.237 |       0     |       0.012 |      56 |
-| mtme_cometoid22-wmt23-src         | 0.235 |      -0.001 |       0.016 |      56 |
-| mtme_cometoid22-wmt21-src         | 0.235 |       0     |       0.013 |      56 |
-| mtme_MetricX-23-c-refA            | 0.234 |      -0.002 |       0.009 |      56 |
-| mtme_instructscore-refA           | 0.233 |       0.003 |       0.012 |      56 |
-| mtme_CometKiwi-XL-src             | 0.232 |      -0     |       0.014 |      56 |
-| mtme_CometKiwi-XXL-src            | 0.232 |       0.002 |       0.016 |      56 |
-| mtme_MaTESe-refA                  | 0.231 |       0.002 |       0.011 |      56 |
-| mtme_KG-BERTScore-src             | 0.219 |       0     |       0.011 |      56 |
-| mtme_BLEURT-20-refA               | 0.201 |       0.004 |       0.013 |      56 |
-| mtme_COMET-refA                   | 0.201 |       0.004 |       0.015 |      56 |
-| mtme_Calibri-COMET22-QE-src       | 0.193 |       0     |       0.009 |      56 |
-| mtme_MS-COMET-QE-22-src           | 0.177 |      -0.007 |       0.014 |      56 |
-| mtme_docWMT22CometKiwiDA-src      | 0.173 |      -0.001 |       0.009 |      56 |
-| mtme_sescoreX-refA                | 0.171 |       0.002 |       0.012 |      56 |
-| mtme_docWMT22CometDA-refA         | 0.17  |       0.002 |       0.012 |      56 |
-| mtme_Calibri-COMET22-refA         | 0.134 |       0     |       0.008 |      56 |
-| mtme_prismRef-refA                | 0.12  |      -0.002 |       0.006 |      56 |
-| mtme_mre-score-labse-regular-refA | 0.093 |      -0.003 |       0.005 |      56 |
-| mtme_YiSi-1-refA                  | 0.081 |      -0     |       0.006 |      56 |
-| mtme_BERTscore-refA               | 0.069 |      -0.001 |       0.004 |      56 |
-| mtme_MEE4-refA                    | 0.045 |      -0.001 |       0.004 |      56 |
-| mtme_eBLEU-refA                   | 0.041 |      -0.002 |       0.003 |      56 |
-| mtme_tokengram_F-refA             | 0.04  |      -0.002 |       0.004 |      56 |
-| mtme_XLsim-refA                   | 0.039 |      -0.002 |       0.005 |      56 |
-| mtme_chrF-refA                    | 0.038 |      -0.001 |       0.004 |      56 |
-| mtme_embed_llama-refA             | 0.035 |      -0.002 |       0.003 |      56 |
-| mtme_f200spBLEU-refA              | 0.03  |      -0.001 |       0.004 |      56 |
-| mtme_BLEU-refA                    | 0.023 |      -0.001 |       0.004 |      56 |
-| mtme_prismSrc-src                 | 0.018 |      -0.002 |       0.002 |      56 |
+| mtme_MetricX-23-QE-b-src          | 0.388 |       0.009 |       0.018 |      60 |
+| mtme_XCOMET-QE-Ensemble-src       | 0.365 |       0.01  |       0.018 |      60 |
+| mtme_MetricX-23-QE-src            | 0.363 |       0.009 |       0.017 |      60 |
+| mtme_XCOMET-Ensemble-refA         | 0.358 |       0.012 |       0.02  |      60 |
+| mtme_MetricX-23-QE-c-src          | 0.344 |       0.008 |       0.017 |      60 |
+| mtme_XCOMET-XXL-refA              | 0.344 |       0.01  |       0.018 |      60 |
+| mtme_XCOMET-XL-refA               | 0.32  |       0.009 |       0.018 |      60 |
+| mtme_MetricX-23-refA              | 0.295 |       0.006 |       0.013 |      60 |
+| mtme_MetricX-23-b-refA            | 0.287 |       0.005 |       0.014 |      60 |
+| mtme_GEMBA-MQM-src                | 0.283 |       0.002 |       0.01  |      60 |
+| mtme_mbr-metricx-qe-src           | 0.282 |       0.001 |       0.011 |      60 |
+| mtme_cometoid22-wmt22-src         | 0.249 |       0.001 |       0.012 |      60 |
+| mtme_cometoid22-wmt21-src         | 0.243 |       0.001 |       0.012 |      60 |
+| mtme_CometKiwi-src                | 0.242 |       0.001 |       0.011 |      60 |
+| mtme_cometoid22-wmt23-src         | 0.239 |      -0.001 |       0.013 |      60 |
+| mtme_CometKiwi-XXL-src            | 0.238 |       0.002 |       0.014 |      60 |
+| mtme_MetricX-23-c-refA            | 0.237 |      -0.001 |       0.007 |      60 |
+| mtme_instructscore-refA           | 0.235 |       0.003 |       0.01  |      60 |
+| mtme_CometKiwi-XL-src             | 0.234 |       0     |       0.012 |      60 |
+| mtme_MaTESe-refA                  | 0.234 |       0.002 |       0.009 |      60 |
+| mtme_KG-BERTScore-src             | 0.224 |       0.001 |       0.009 |      60 |
+| mtme_BLEURT-20-refA               | 0.207 |       0.004 |       0.011 |      60 |
+| mtme_COMET-refA                   | 0.205 |       0.004 |       0.013 |      60 |
+| mtme_Calibri-COMET22-QE-src       | 0.195 |       0     |       0.007 |      60 |
+| mtme_sescoreX-refA                | 0.187 |       0.002 |       0.01  |      60 |
+| mtme_MS-COMET-QE-22-src           | 0.183 |      -0.006 |       0.012 |      60 |
+| mtme_docWMT22CometKiwiDA-src      | 0.174 |      -0     |       0.008 |      60 |
+| mtme_docWMT22CometDA-refA         | 0.17  |       0.002 |       0.011 |      60 |
+| mtme_Calibri-COMET22-refA         | 0.142 |       0.001 |       0.007 |      60 |
+| mtme_prismRef-refA                | 0.131 |      -0.001 |       0.005 |      60 |
+| mtme_YiSi-1-refA                  | 0.1   |      -0     |       0.006 |      60 |
+| mtme_mre-score-labse-regular-refA | 0.098 |      -0.002 |       0.004 |      60 |
+| mtme_BERTscore-refA               | 0.075 |      -0     |       0.004 |      60 |
+| mtme_chrF-refA                    | 0.049 |      -0.001 |       0.003 |      60 |
+| mtme_MEE4-refA                    | 0.048 |      -0.001 |       0.003 |      60 |
+| mtme_XLsim-refA                   | 0.046 |      -0.002 |       0.004 |      60 |
+| mtme_tokengram_F-refA             | 0.043 |      -0.001 |       0.003 |      60 |
+| mtme_eBLEU-refA                   | 0.039 |      -0.002 |       0.002 |      60 |
+| mtme_f200spBLEU-refA              | 0.036 |      -0.001 |       0.003 |      60 |
+| mtme_embed_llama-refA             | 0.034 |      -0.001 |       0.002 |      60 |
+| mtme_BLEU-refA                    | 0.027 |      -0.001 |       0.003 |      60 |
+| mtme_prismSrc-src                 | 0.022 |      -0.001 |       0.002 |      60 |

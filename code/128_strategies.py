@@ -49,6 +49,11 @@ class Cell:
         self.pilot_cost = self.M.pilot_cost.to_numpy(float)
         self.L = {e: Pd[Pd.eps == e].pivot(index="draw", columns="design", values="L_pred").loc[self.dr] for e in self.eps}
         self.col = {d: k for k, d in enumerate(self.dcat)}
+        self.allowed = np.ones(len(self.bud), bool)          # restricted protocol: budgets at which a certificate may be issued
+
+    def allow_from(self, min_budget):
+        """Restricted protocol: no certificate below min_budget. J50 is interpolated over the allowed budgets only."""
+        self.allowed = self.bud >= min_budget
 
     def curve(self, e, choice):
         """choice: array of design indices per draw -> (mean cost, mean act, mean wrong) per budget."""
@@ -60,9 +65,9 @@ class Cell:
         c, a, w = self.curve(e, choice)
         if draws is not None:
             c, a, w = c[:, draws], a[:, draws], w[:, draws]
-        x, y = c.mean(1), a.mean(1)
+        x, y, wm = c.mean(1)[self.allowed], a.mean(1)[self.allowed], w.mean(1)[self.allowed]
         J = j_tau(x, y)
-        wr = float(w.mean(1)[int(np.nanargmin(np.abs(x - J)))]) if np.isfinite(J) else np.nan   # wrong-certificate rate at the budget nearest J50
+        wr = float(wm[int(np.nanargmin(np.abs(x - J)))]) if np.isfinite(J) else np.nan   # wrong-certificate rate at the allowed budget nearest J50
         return J, wr
 
 
@@ -100,7 +105,7 @@ def main():
     ap.add_argument("--boot", type=int, default=200); ap.add_argument("--judges", default="mtme_")
     ap.add_argument("--inf", type=float, default=0.3, help="informative cell: 1 - P/J50(uniform) >= inf")
     ap.add_argument("--out", required=True)
-    ap.add_argument("--min_budget", nargs="*", default=[], help="lp:budget; certification below this post-pilot budget is disallowed for every arm (restricted protocol)")
+    ap.add_argument("--min_budget", nargs="*", default=[], help="lp:budget; restricted protocol: no certificate below this post-pilot budget for any arm (J50 over the allowed budgets only)")
     a = ap.parse_args()
     stems = sorted(f[:-len("_draws.parquet")] for f in glob.glob(a.glob + "_draws.parquet"))
     minb = {kv.split(":")[0]: float(kv.split(":")[1]) for kv in a.min_budget}
@@ -110,7 +115,7 @@ def main():
         cell = Cell(stem, a.judges)
         lp = re.search(r"mt_(\w+?)_m2", os.path.basename(stem)).group(1); pair = stem[-2:]
         if lp in minb:
-            low = cell.bud < minb[lp]; cell.ACT[:, low] = 0; cell.WRONG[:, low] = 0
+            cell.allow_from(minb[lp])
         for e in cell.eps:
             S = strategies(cell, e, a.design, a.fixed, a.mode, a.stat, a.r0, a.s0)
             n = len(cell.dr); boots = [rng.integers(0, n, n) for _ in range(a.boot)]

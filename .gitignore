@@ -38,3 +38,6 @@ results/mt/mt_*23_m2_p50_boundary_pair23b*_meta.parquet
 results/mt/mt_*23_m2_p50_boundary_pair23b*_pred.parquet
 results/mt/*_pairmtmez*_draws.parquet
 results/mt/*_pairmtmez*_pred.parquet
+results/mt/mt_*23_m2_p50_boundary_pair23c*_draws.parquet
+results/mt/mt_*23_m2_p50_boundary_pair23c*_meta.parquet
+results/mt/mt_*23_m2_p50_boundary_pair23c*_pred.parquet

@@ -39,16 +39,20 @@ def main():
     ap.add_argument("--mode", default="cvq"); ap.add_argument("--stat", default="rho"); ap.add_argument("--r0", type=float, default=0.2)
     ap.add_argument("--boot", type=int, default=1000); ap.add_argument("--inf", type=float, default=0.3); ap.add_argument("--margin", type=float, default=0.02)
     ap.add_argument("--out", required=True); ap.add_argument("--alpha", type=float, default=0.10)
-    ap.add_argument("--min_budget", nargs="*", default=[], help="lp:budget; certification below this post-pilot budget is disallowed for every strategy")
+    ap.add_argument("--min_budget", nargs="*", default=[], help="lp:budget; restricted protocol: no certificate below this post-pilot budget for any strategy")
+    ap.add_argument("--cells_from", default=None, help="CSV of another run of this script whose 'informative' flags define the cell set (fixed cell set across protocols)")
     a = ap.parse_args()
     stems = sorted(f[:-len("_draws.parquet")] for f in glob.glob(a.glob + "_draws.parquet"))
     minb = {kv.split(":")[0]: float(kv.split(":")[1]) for kv in a.min_budget}
-    rng = np.random.default_rng(1); rows = []; covrows = []; wbrows = []; boots = None
+    ref = None
+    if a.cells_from:
+        R0 = pd.read_csv(a.cells_from); ref = {(r.lp, str(r.pair).zfill(2), round(float(r.eps), 6)): bool(r.informative) for r in R0.itertuples()}
+    rng = np.random.default_rng(1); rows = []; covrows = []; wbrows = []; boots = None; wcurves = {}
     for stem in stems:
         cell = CellC(stem)
         lp = re.search(r"mt_(\w+?)_m2", os.path.basename(stem)).group(1); pair = stem[-2:]
         if lp in minb:                                         # restricted protocol: no certificate below the minimum budget
-            low = cell.bud < minb[lp]; cell.ACT[:, low] = 0; cell.WRONG[:, low] = 0
+            cell.allow_from(minb[lp])                            # (J50 interpolated over the allowed budgets only)
         n = len(cell.dr)
         if boots is None:
             boots = [rng.integers(0, n, n) for _ in range(a.boot)]   # one resampling of draw indices, shared by every cell
@@ -57,6 +61,8 @@ def main():
             S = st.strategies(cell, e, a.design, a.fixed, a.mode, a.stat, a.r0, -1.0)
             uni = np.full(n, cell.col["uniform"]); Ju, _ = cell.j50(e, uni); P = cell.pilot_cost.mean()
             informative = bool(1 - P / Ju >= a.inf) if np.isfinite(Ju) else False
+            if ref is not None:
+                informative = ref.get((lp, pair, round(float(e), 6)), False)
             J = {k: cell.j50(e, S[k])[0] for k in ("S1_design", "S2_fixed", "S3_select", "S4_select_or_abstain")}
             Jb = {k: np.array([cell.j50(e, S[k], b)[0] for b in boots]) for k in ("S1_design", "S2_fixed", "S3_select")}
             G = 1 - J["S3_select"] / J["S2_fixed"]; Gb = 1 - Jb["S3_select"] / Jb["S2_fixed"]
@@ -71,10 +77,10 @@ def main():
             # coverage of the chosen arm: at every budget (mean) and at the budget nearest J50; wrong rate at J50 and max
             for k in ("S1_design", "S2_fixed", "S3_select", "S4_select_or_abstain"):
                 cv = cell.curve_cover(e, S[k]); c, act, w = cell.curve(e, S[k]); x = c.mean(1)
-                bn = int(np.nanargmin(np.abs(x - J[k]))) if np.isfinite(J[k]) else -1
+                xa = np.where(cell.allowed, x, np.nan); bn = int(np.nanargmin(np.abs(xa - J[k]))) if np.isfinite(J[k]) else -1
                 covrows.append(dict(lp=lp, pair=pair, eps=e, informative=informative, strategy=k, cover_all=float(np.nanmean(cv)), cover_min_budget=float(np.nanmin(np.nanmean(cv, 1))),
                                     cover_at_J50=float(np.nanmean(cv[bn])) if bn >= 0 else np.nan, wrong_at_J50=float(np.nanmean(w[bn])) if bn >= 0 else np.nan, wrong_max=float(np.nanmax(np.nanmean(w, 1))), wrong_mean=float(np.nanmean(w))))
-                wm = np.nanmean(w, 1); cm = np.nanmean(c, 1)
+                wm = np.nanmean(w, 1); cm = np.nanmean(c, 1); wcurves[(lp, pair, e, k)] = w
                 wbrows += [dict(lp=lp, pair=pair, eps=e, strategy=k, budget=int(cell.bud[i]), cost=float(cm[i]), wrong=float(wm[i]),
                                 n_wrong=int(np.nansum(w[i])), n_draws=int(np.isfinite(w[i]).sum())) for i in range(len(cell.bud))]
             print(f"{lp} {pair} eps={e} inf={informative} G={G:+.3f} [{r['G_lo']:+.3f},{r['G_hi']:+.3f}] D2={D2:+.3f} D3={D3:+.3f}", flush=True)
@@ -119,23 +125,28 @@ def main():
     md += [f"## Wrong-certificate rate by post-pilot budget, mean over all {len(T)} cells (boundary runs: type-I error, nominal {a.alpha})", "",
            "Budgets are expected sampled items (Poisson design); 'cost' is the realised mean number of human labels, pilot included.", "", wb.round(3).to_markdown(), "",
            "Per-cell maximum over budgets, mean / max over cells:", "", wmax.round(3).to_markdown(), ""]
-    # per language pair: pooled rate over the cells x draws of each budget, one-sided binomial test against alpha, and the budget from
-    # which no later budget is significantly above alpha (the certification range); paired comparison of each strategy with S1
-    from scipy.stats import binomtest
+    # per language pair, strategy and budget: mean over the pair's cells of the wrong-certificate rate, with a 95% Monte-Carlo interval
+    # from the joint resampling of draw indices (the cells share random streams, so draws are not independent across cells and the
+    # cells x draws are not pooled as independent trials); the range reported is the first budget from which the OBSERVED mean rate is
+    # at or below alpha at every later budget (a description of this simulation, not a test that the rate is below alpha)
     rng_rows = []; cmp_rows = []
-    for lp, Wl in WB.groupby("lp"):
-        for k, Wk in Wl.groupby("strategy"):
-            g = Wk.groupby("budget").agg(cost=("cost", "mean"), rate=("wrong", "mean"), nw=("n_wrong", "sum"), nd=("n_draws", "sum")).reset_index()
-            g["p_above"] = [binomtest(int(x), int(y), a.alpha, alternative="greater").pvalue if y > 0 else np.nan for x, y in zip(g.nw, g.nd)]
-            ok = (g.p_above >= 0.05).to_numpy(); first = next((i for i in range(len(ok)) if ok[i:].all()), len(ok) - 1)
-            rng_rows += [dict(lp=lp, strategy=k, budget=int(b), cost=round(c, 1), rate=round(r, 3), p_above=round(p, 3)) for b, c, r, p in zip(g.budget, g.cost, g.rate, g.p_above)]
-            rng_rows[-len(g) + first]["from_here_on"] = "*"
-        S1 = Wl[Wl.strategy == "S1_design"].set_index(["pair", "eps", "budget"]).wrong
+    for lp in sorted(set(k[0] for k in wcurves)):
+        keys = [k for k in wcurves if k[0] == lp]; strategies_ = sorted(set(k[3] for k in keys)); buds = sorted(set(WB[WB.lp == lp].budget))
+        for st_ in strategies_:
+            W = np.stack([wcurves[k] for k in keys if k[3] == st_])            # [cells, budget, draw]
+            rate = np.nanmean(np.nanmean(W, 2), 0)                              # mean over cells of the per-cell rate
+            mcb = np.array([np.nanmean(np.nanmean(W[:, :, bb], 2), 0) for bb in boots])   # [B, budget]
+            lo, hi = np.nanpercentile(mcb, 2.5, 0), np.nanpercentile(mcb, 97.5, 0)
+            cost = WB[(WB.lp == lp) & (WB.strategy == st_)].groupby("budget").cost.mean().reindex(buds).to_numpy()
+            ok = rate <= a.alpha; first = next((i for i in range(len(ok)) if ok[i:].all()), len(ok) - 1)
+            for i, bud in enumerate(buds):
+                rng_rows.append(dict(lp=lp, strategy=st_, budget=int(bud), cost=round(float(cost[i]), 1), rate=round(float(rate[i]), 3), mc_lo=round(float(lo[i]), 3), mc_hi=round(float(hi[i]), 3), from_here_on="*" if i == first else ""))
+        S1 = WB[(WB.lp == lp) & (WB.strategy == "S1_design")].set_index(["pair", "eps", "budget"]).wrong
         for k in ("S2_fixed", "S3_select", "S4_select_or_abstain"):
-            d = (Wl[Wl.strategy == k].set_index(["pair", "eps", "budget"]).wrong - S1).dropna()
+            d = (WB[(WB.lp == lp) & (WB.strategy == k)].set_index(["pair", "eps", "budget"]).wrong - S1).dropna()
             cmp_rows.append(dict(lp=lp, strategy=k, cells_x_budgets=len(d), mean_diff_vs_S1=round(float(d.mean()), 4), share_above_S1=round(float((d > 0).mean()), 3), share_above_S1_by_2pts=round(float((d > 0.02).mean()), 3), max_diff=round(float(d.max()), 3)))
-    R = pd.DataFrame(rng_rows); R["from_here_on"] = R.get("from_here_on", "").fillna("")
-    md += ["### Pooled rate per budget and language pair (one-sided binomial test of rate > alpha over cells x draws; * = from this budget on, no later budget is significantly above alpha)", "",
+    R = pd.DataFrame(rng_rows)
+    md += [f"### Mean rate per budget and language pair, 95% Monte-Carlo interval from the joint resampling of draw indices (* = from this budget on, the observed mean rate is at or below {a.alpha} at every later budget; an observation on this simulation, not a test)", "",
            R.to_markdown(index=False), "",
            "### Each strategy against S1 on the same cell and budget (difference of wrong-certificate rates)", "", pd.DataFrame(cmp_rows).to_markdown(index=False), ""]
     R.to_csv(a.out + "_certification_range.csv", index=False)
