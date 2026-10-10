@@ -21,8 +21,9 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
   of the upper bounds near nominal; cross-fitting recovers it only partly (`results/ROBUSTNESS.md`).
 * **Across 30 two-system decisions (exploratory; `code/RUN_PAIRS_MTME.sh`, `code/122_decisions.py`, `results/DECISIONS.md`).**
   In the 33 informative decision × ε cells (19 decisions) the judge-free design saves a median 5.5% and beats the mean
-  of 34 evaluators in 82–94% of cells; the post-hoc best evaluator's lead is within selection noise. Refitted HES
-  follows the tax-free ceiling ρ²(1 − P/J), which is below 5% in 94% of decision–evaluator pairs.
+  of 34 evaluators in 82–94% of cells; at 300 audits the post-hoc best evaluator's lead is within selection noise, at
+  2,000 audits it exceeds it in 72% of cells (`results/DECISIONS_n2000.md`). Refitted HES follows the tax-free
+  approximation ρ²(1 − P/J), which is below 5% in 94% of decision–evaluator pairs.
 * **Pre-submission checks (2026-10-09; `results/VARIANTS.md`, `results/LOCKED_VARIANTS.md`, `results/EXCLUSION.md`).**
   The weighted design's dissimilarity bins are three, not four (description corrected; `prereg/LOCK_HISTORY.md`); a
   four-quartile variant, pilots of 10 and 25 segments, 2,000 audits per cell and the same-design comparison of all 31
@@ -71,7 +72,8 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
 | Path | Content |
 |---|---|
 | `docs/DESIGN_v0.1.md` | Initial study design (superseded by the locks) |
-| `prereg/` | Locks v0.8 (MT, Arena), v0.9 (Arena close pairs), v1.0 (frontier judges, not yet run), v1.1 (all 31 WMT22 metrics) and `LOCK_HISTORY.md` |
+| `prereg/` | Locks v0.8 (MT, Arena), v0.9 (Arena close pairs), v1.0 (frontier judges, not yet run), v1.1 (all 31 WMT22 metrics), v1.2 (held-out year, with addendum) and `LOCK_HISTORY.md` |
+| `docs/` | Design log and the revision notes of 2026-10-09 and 2026-10-10 (internal; excluded from the supplementary archive) |
 | `code/110_unit_audit.py` | Fixed-budget certification audits (designs, pilot-fixed λ control variate, certificates, pilot predictions) |
 | `code/111_summarize.py` | J_τ, HES, inflation, selection, pilot-prediction scores with paired bootstrap intervals |
 | `code/121_robustness.py`, `code/122_decisions.py`, `code/RUN_PAIRS_MTME.sh`, `code/RUN_ARENA_ROBUST2.sh` | Exploratory: coefficient rules (pilot / refit / cross-fit / oracle), 30 two-system decisions, coverage, selection-noise test |
@@ -83,8 +85,10 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
 | `code/mt_*.py`, `code/arena_*.py` | Pool builders (WMT22 MQM, LMArena 55k) and judges (COMET-22, GEMBA-DA, pairwise LLM judge) |
 | `code/frontier_*.py`, `code/run_frontier.py` | Frontier-judge export, runner and scoring (lock v1.0) |
 | `code/RUN_LOCKED.sh` | Every locked run |
-| `results/` | Per-draw records (`*_draws.parquet`), pilot predictions, summaries, verdicts |
-| `paper/` | ACL-format manuscript |
+| `results/` | Per-draw records (`*_draws.parquet`), pilot predictions, summaries, verdicts; `results/strategies/` holds the held-out-year strategy, S2-vs-S3, boundary, restricted-protocol and decomposition outputs |
+| `paper/` | ACL-format manuscript, figures, checklist |
+| `submission/` | Compiled manuscript of the tagged submission commit (`submission/README.md`) |
+| `make_supplementary.sh` | Builds the anonymised supplementary archive from the committed tree |
 
 ## Data
 Pools and judge outputs live under `$JV_DATA` (default `./data`) and are not redistributed:
@@ -132,6 +136,13 @@ Reproduction check (2026-10-09): rebuilding the pools and the 31 metric judges f
 machine (numpy 2.5.3) and re-running `110_unit_audit.py mt zhen --judges <31 metrics> --pilot 50 --eps 0.01 0.02 --oracle`
 reproduced `results/mt/mt_zhen_m4_p50_mtme_draws.parquet` exactly (every cost, certificate and pilot quantity).
 Every summary in `results/` is regenerated from the committed per-draw records by `111_summarize.py` without the data.
+
+## Paper and submission
+`paper/main.tex` compiles with pdflatex + bibtex (ACL style included). The submitted build is `submission/main.pdf`;
+the GitHub release `arr-2026-10-submission-v2` carries that PDF and the anonymised supplementary archive produced by
+`SUPP_IDENT_REGEX='<identifying strings>' ./make_supplementary.sh supplementary.zip` (the earlier release
+`arr-2026-10-submission` is the 2026-10-09 build). Per-draw records of the held-out-year runs (`pair23*`, `pairmtmez`)
+are not committed (regenerable with the commands above; ~1,200 CPU-hours); their summaries are in `results/strategies/`.
 
 ## Licence
 Code: MIT. Results: CC BY 4.0.
