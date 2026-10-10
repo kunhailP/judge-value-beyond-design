@@ -43,9 +43,15 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
 * **Chat.** Pairwise LLM judges reach ρ 0.07–0.29 on close LMArena pairs; averaging both presentation orders raises ρ.
 * **Held-out year (2026-10-10; `prereg/PROSPECTIVE_LOCK_v1.2.md`, `results/HELDOUT_WMT23.md`).** Four auditor strategies fixed on
   WMT22 and applied unchanged to WMT23 en→de / zh→en (42 metrics, 30 two-system decisions, 26 informative cells): with a
-  refitted coefficient, dedup + a pre-fixed COMET-22 costs 3.1% less than dedup alone (cheaper in 92% of cells) and pilot
-  selection of the evaluator 3.3% less (85%); with a frozen coefficient pilot selection costs 3.4% more (cheaper in 19%).
-  The post-hoc best (−7.9%) is within selection noise; the new judges (MetricX-23, XCOMET) reach ρ 0.36.
+  refitted coefficient, dedup + a pre-fixed COMET-22 costs 3.1% [0.9, 5.5] less than dedup alone (cheaper in 92% of cells);
+  choosing the evaluator from the pilot instead changes the cost by +0.2% [−2.7, +3.3] in a paired comparison (WMT22:
+  −1.5% [−9.1, +1.1]); with a frozen coefficient pilot selection costs 3.4% more. The post-hoc best (−7.9%) is a reference,
+  not a strategy. Coverage of the refitted bound is nominal at the certifying budget (0.89–0.90) but falls to 0.45–0.50 at
+  the smallest budgets (`code/129_s2_vs_s3.py`, `results/strategies/`).
+* **Strong evaluators are the exception** (`code/130_decomposition.py`, `results/strategies/DECOMPOSITION.md`): on the
+  same audits, the mean metric adds 1.8–2.4% on dedup (refit), the strongest of each year (MetricX-XXL, XCOMET-XXL)
+  3.7–5.6%, as much as the design in a third to a half of the cells; the design still saves more than the mean evaluator
+  in 65–79% of cells and than every evaluator with a frozen coefficient.
 * **Failed pre-registered hypotheses are reported:** H2 (inflation over uniform), H4 in chat, H5 (pilot-based judge
   selection), H6 (chat savings ≥ 5% in ≥ 3/6 pairs).
 * Terminology: "best fixed judge-free baseline" is a benchmark chosen per cell from realised costs, not a procedure an
@@ -60,7 +66,7 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
 | `code/111_summarize.py` | J_τ, HES, inflation, selection, pilot-prediction scores with paired bootstrap intervals |
 | `code/121_robustness.py`, `code/122_decisions.py`, `code/RUN_PAIRS_MTME.sh`, `code/RUN_ARENA_ROBUST2.sh` | Exploratory: coefficient rules (pilot / refit / cross-fit / oracle), 30 two-system decisions, coverage, selection-noise test |
 | `code/123_decision_sensitivity.py`, `code/124_human_ceiling.py` | Exploratory: informativeness threshold, evaluator set and identical-string label (`--ident pick`) sensitivity; human noise ceiling for decision-level ρ |
-| `code/mt_build_pool23.py`, `code/mtme_import23.py`, `code/RUN_PAIRS_23.sh`, `code/128_strategies.py` | Held-out year: WMT23 pools and metrics, the 30 WMT23 decisions, pre-fixed auditor strategies (dev grid `results/strategies/devgrid/`) |
+| `code/mt_build_pool23.py`, `code/mtme_import23.py`, `code/RUN_PAIRS_23.sh`, `code/128_strategies.py`, `code/129_s2_vs_s3.py`, `code/130_decomposition.py` | Held-out year: WMT23 pools and metrics, the 30 WMT23 decisions, pre-fixed auditor strategies (dev grid `results/strategies/devgrid/`), paired S2 vs S3 comparison with coverage, same-condition A–B–C–D decomposition (Figure 1) |
 | `code/125_exclusion.py`, `code/126_variants.py`, `code/127_locked_variants.py`, `code/RUN_PAIRS_EXTRA.sh` | Pre-submission: one-sided upper bounds on evaluator savings (what the decisions rule out), the 30 decisions with pilots 10/25, four bins and 2,000 audits (`--bins`, `--draws`), matched-base comparison of all 31 metrics in the locked cells |
 | `code/112–120`, `mtme_import.py` | Judge anatomy, cost law, ρ dial, position bias, estimation tax, hypothesis verdicts, boundary calibration, v1.1 verdicts, figures; WMT22 metric import |
 | `code/101_ir_hes.py` | Retrieval block: J_τ, HES and selection from the per-draw records of an earlier retrieval study |

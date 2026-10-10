@@ -44,3 +44,22 @@ is as good as or better than pilot selection; abstention does not help.
 6. Decision-level ρ of the strongest new judges (XCOMET-XXL, MetricX-23, GEMBA-MQM, CometKiwi-XXL) and their HES
    over dedup, against the ρ ≤ 0.43 of the WMT22 metrics.
 The WMT23 numbers were not seen when this file was written; they are reported whatever they are.
+
+## Addendum (2026-10-10, after the 300-audit WMT23 results were examined; declared before the runs below)
+The 300-audit results (results/HELDOUT_WMT23.md) left two questions that the precision of 300 audits cannot answer:
+whether pilot selection (S3) differs from the pre-fixed evaluator (S2), and whether the post-hoc best's lead is more than
+selection noise. Declared now, before running:
+* The 30 WMT23 decisions are re-run with 2,000 audits per cell (tag `pair23n`; otherwise identical), and in boundary
+  stress (tag `pair23b`: runner-up as candidate, ε = 0.9 × its regret, 300 audits) for the type-I error of every strategy.
+  Known-zero differences are set to 0 for every evaluator in these runs (`--zero_known 1`, now the default).
+* Primary comparison: G_c = 1 − J50(S3, c) / J50(S2, c) per cell, paired over audits (both strategies on the same
+  draws), with a 1,000-draw paired bootstrap; reported for the informative cells and all 60, per language pair and
+  pooled; the pooled interval is a cluster bootstrap over decisions (both ε of a decision resampled together), since
+  cells share systems and segments.
+* Margin of practical equivalence: 2 points of J50 (the Monte-Carlo half-width at 2,000 audits and the size of the
+  smallest savings the paper calls real). Conclusions: S3 better if the interval excludes 0 from above; S2 "as good"
+  if the interval excludes +2 points; otherwise undecided. This margin is set now, not pre-registered in v1.2.
+* The selection-noise test (128_strategies.py) compares the post-hoc best with the MEAN evaluator, as in
+  122_decisions.py; it is not a test of best vs S2 and is reported as a reference only.
+* Coverage of every strategy's upper bound (the `cover` column of the chosen arm) at the budget nearest its J50 and at
+  every budget; wrong-certificate rates in boundary stress.

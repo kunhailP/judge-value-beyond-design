@@ -2,10 +2,11 @@
 # Held-out year: every two-system decision among the top-6 systems of WMT23 en-de / zh-en (15 pairs x 2 LPs) with every
 # WMT23 submitted metric (refA / src variants; mtme_import23.py) and chrF, the same audit parameters, eps and coefficient
 # arms as the WMT22 decisions (RUN_PAIRS_MTME.sh): pilot 50, eps 0.01 0.02, --extra --oracle.
-# usage: [DRAWS=300] [TAG=pair23] [PROCS=128] RUN_PAIRS_23.sh
+# usage: [DRAWS=300] [TAG=pair23] [PROCS=128] [EXTRA_ARGS="--boundary"] [REV=1] RUN_PAIRS_23.sh
+# pre-declared precision run: DRAWS=2000 TAG=pair23n; boundary stress: TAG=pair23b EXTRA_ARGS="--boundary"
 set -euo pipefail; cd "$(dirname "$0")"
 export OMP_NUM_THREADS=1
-DRAWS=${DRAWS:-300}; TAG=${TAG:-pair23}
+DRAWS=${DRAWS:-300}; TAG=${TAG:-pair23}; EXTRA_ARGS=${EXTRA_ARGS:-}
 for lp in ${LPS:-ende23 zhen23}; do
   SYS=$(python3 -c "
 import sys; sys.path.insert(0,'.'); from mt_common import load_pool
@@ -17,6 +18,6 @@ d=load_pool('$lp'); print(' '.join(d.groupby('system').u.mean().sort_values(asce
   for ij in $PAIRS; do i=${ij:0:1}; j=${ij:1:1}
     stem=../results/mt/mt_${lp}_m2_p50_${TAG}${i}${j}
     [ -f ${stem}_info.json ] && continue
-    python3 110_unit_audit.py mt $lp --menu "${S[$i]}" "${S[$j]}" --judges $J chrf --pilot 50 --eps 0.01 0.02 --draws $DRAWS --extra --oracle --procs ${PROCS:-128} --tag "_${TAG}${i}${j}" > /dev/null
+    python3 110_unit_audit.py mt $lp --menu "${S[$i]}" "${S[$j]}" --judges $J chrf --pilot 50 --eps 0.01 0.02 --draws $DRAWS --extra --oracle $EXTRA_ARGS --procs ${PROCS:-128} --tag "_${TAG}${i}${j}" > /dev/null
   done
 done

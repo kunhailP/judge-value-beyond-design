@@ -207,6 +207,8 @@ def run_draw(args):
     JD, lam, acc, rho = {}, {}, {}, {}
     for f, sc in J.items():
         jd = np.stack([sc[:, j] - sc[:, c] for j in comp], 1)
+        if cfg.get("zero_known", True):
+            jd = np.where(same, 0.0, jd)        # known-zero differences: the evaluator's difference is set to 0 as well (eq. est)
         JD[f] = jd
         lam[f] = np.zeros(len(comp))
         r_ = []
@@ -349,6 +351,7 @@ def main():
     ap.add_argument("--oracle", action="store_true", help="exploratory: add population-lambda arms *_cvo")
     ap.add_argument("--ident", choices=["mean", "pick"], default="mean", help="mt sensitivity: identical strings share the mean rating or one random rating")
     ap.add_argument("--ident_seed", type=int, default=0)
+    ap.add_argument("--zero_known", type=int, choices=[0, 1], default=1, help="set the evaluator difference to 0 where the outputs coincide (D = 0 known); 0 reproduces the locked records, which differ by at most 7e-6 in the mean difference")
     ap.add_argument("--syn_noise", choices=["string", "output"], default="string", help="semi-synthetic judges (syn<rho>): one noise draw per distinct output string (identical outputs share a score; default since 2026-10-10) or per output (the earlier runs; biased on known-zero differences under dedup/weighted/active sampling)")
     ap.add_argument("--bins", type=int, choices=[3, 4], default=3, help="weighted design: positive dissimilarity bins; 3 = the locked runs (below the median, third and fourth quartile), 4 = quartiles (sensitivity)")
     ap.add_argument("--tag", default="")
@@ -358,7 +361,7 @@ def main():
     data = load_mt(a.unit, a.menu_k, a.menu, a.judges, ident=a.ident, ident_seed=a.ident_seed, syn_noise=a.syn_noise) if a.domain == "mt" else load_arena(a.unit, a.judges)
     N = data["Y"].shape[0]
     budgets = a.budgets or sorted({int(x) for x in np.geomspace(10, N - a.pilot, 14)})
-    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, boundary_frac=a.boundary_frac, oracle=a.oracle, bound=a.bound, extra=a.extra, bins=a.bins, syn_noise=a.syn_noise)
+    cfg = dict(pilot=a.pilot, eps=a.eps, budgets=budgets, seed=a.seed, boundary=a.boundary, boundary_frac=a.boundary_frac, oracle=a.oracle, bound=a.bound, extra=a.extra, bins=a.bins, syn_noise=a.syn_noise, zero_known=bool(a.zero_known))
     with Pool(a.procs) as pool:
         res = pool.map(run_draw, [(data, cfg, i) for i in range(a.draws)])
     # tuples rather than dicts: the same columns, several times faster to assemble for millions of rows

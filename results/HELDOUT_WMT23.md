@@ -65,14 +65,22 @@ WMT23 top 10 by pilot rho:
 | mtme_MetricX-23-refA        | 0.3   |   0.038 |   0.014 |
 | mtme_cometoid22-wmt22-src   | 0.251 |   0.037 |  -0.003 |
 
+## Direct comparison S2 vs S3, coverage, decomposition (addendum; 300 audits, to be replaced by the 2,000-audit run)
+See `results/strategies/S2_vs_S3_wmt23_n300.md`, `S2_vs_S3_wmt22.md`, `DECOMPOSITION.md`. Pooled G = 1 − J50(S3)/J50(S2):
+WMT23 informative +0.2% [−2.7, +3.3] (undecided at the 2-point margin), all 60 +0.1% [−1.2, +1.4] (S2 as good);
+WMT22 informative −1.5% [−9.1, +1.1] (S2 as good). Coverage of the chosen arm's bound at J50: 0.89–0.90 for every
+strategy; over all budgets 0.86–0.88 (refit strategies) vs 0.90–0.91 (S1); at the smallest budgets 0.45–0.50 (S2),
+0.66–0.73 (S3). Strong evaluators: XCOMET-XXL adds a mean 5.6% refitted on WMT23 and the design saves more labels in only
+11/26 cells; for the ten evaluators with the highest pilot rho, 47% of pairs (WMT22: MetricX-XXL 5.1%, 22/33, 67%).
+
 ## Reading
 
 * The development pattern reproduces on the held-out year: with refitting, a strong evaluator fixed in advance and pilot
   selection both save about 3% of labels over the judge-free design (cheaper in 85-92% of cells); with a frozen
   coefficient pilot selection costs labels (cheaper in 19-27% of cells, costlier by over 2% in 45-50%).
 * Abstaining on weak pilot evidence (rho < 0.2) changes little: the rule abstains in 2-4% of audits.
-* Pilot selection does not reach the post-hoc best (-7.7% / -7.9%), whose lead over S2 is within selection noise at 300
-  audits in every cell; the new strong judges (XCOMET, MetricX-23) raise decision-level rho to 0.36 and the best
-  refitted HES to 5-6%, still below the WMT22 design saving in most cells.
+* Pilot selection does not reach the post-hoc best (-7.7% / -7.9%), a reference chosen from the outcome; the selection-noise
+  test compares it with the MEAN evaluator (not with S2) and is uninformative at 300 audits. The strong judges (XCOMET,
+  MetricX-23) raise decision-level rho to 0.36 and add 5-6% refitted, as much as the design in about half of the cells.
 * What an auditor should do, by these two years: use the dedup design; add one strong evaluator and refit its
   coefficient; do not spend the pilot on choosing the evaluator, and do not freeze the coefficient.
