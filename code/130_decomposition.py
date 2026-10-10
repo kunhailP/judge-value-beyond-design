@@ -51,10 +51,10 @@ def main():
     # figure: refit, both years; bars A→C→D for mean / COMET-22 / strongest / best (medians of shares), plus per-cell dots for h
     import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
     fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.6), sharey=True)
-    order = ["mean", "COMET-22", "strongest", "best post hoc"]; lab = {"22": "WMT22 (33 cells)", "23": "WMT23 (26 cells)"}
+    order = ["mean", "COMET-22", "strongest", "best post hoc"]; lab = {y: f"WMT{y} ({int(g[(g.year.astype(str) == y) & (g['mode'] == 'cvq')].cells.iloc[0])} cells)" for y in ("22", "23")}
     for ax, year in zip(axes, ("22", "23")):
         X = Ti[(Ti["mode"] == "cvq") & (Ti.year == year)]
-        sD = X.s_D.median(); ax.axhline(sD, color="0.3", lw=1, ls="--"); ax.text(-0.42, sD + 0.004, "design alone (dedup)", ha="left", va="bottom", fontsize=7, color="0.3")
+        sD = X.s_D.median(); ax.axhline(sD, color="0.3", lw=1, ls="--")
         for k, ev in enumerate(order):
             Y = X[X.evaluator == ev]
             ax.bar(k, Y.s_D.median(), color="#9ecae1", width=0.6)
@@ -64,7 +64,7 @@ def main():
         ax.set_xticks(range(4)); ax.set_xticklabels(["mean\nevaluator", "COMET-22\n(fixed)", "strongest\n(reference)", "post-hoc best\n(reference)"], fontsize=7)
         ax.set_title(lab[year], fontsize=9); ax.set_ylim(-0.05, 0.45); ax.tick_params(axis="y", labelsize=7); ax.axhline(0, color="k", lw=0.5)
     axes[0].set_ylabel("share of uniform-sampling labels saved", fontsize=8)
-    fig.text(0.5, -0.02, "light: judge-free dedup design (A→C); dark: evaluator added on the same design with a refitted coefficient (C→D); dots: cells", ha="center", fontsize=7)
+    fig.text(0.5, -0.02, "light bars and dashed line: judge-free dedup design alone (A→C); dark: evaluator added on the same design with a refitted coefficient (C→D); dots: cells", ha="center", fontsize=7)
     fig.tight_layout(); fig.savefig(os.path.join(HERE, "..", "paper", "figures", "F6_decomposition.pdf"), bbox_inches="tight"); fig.savefig(os.path.join(HERE, "..", "paper", "figures", "F6_decomposition.png"), dpi=150, bbox_inches="tight")
 
 

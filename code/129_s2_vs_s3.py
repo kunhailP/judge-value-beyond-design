@@ -36,7 +36,7 @@ def main():
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
     stems = sorted(f[:-len("_draws.parquet")] for f in glob.glob(a.glob + "_draws.parquet"))
-    rng = np.random.default_rng(1); rows = []; covrows = []
+    rng = np.random.default_rng(1); rows = []; covrows = []; wbrows = []
     for stem in stems:
         cell = CellC(stem)
         lp = re.search(r"mt_(\w+?)_m2", os.path.basename(stem)).group(1); pair = stem[-2:]
@@ -62,9 +62,11 @@ def main():
                 bn = int(np.nanargmin(np.abs(x - J[k]))) if np.isfinite(J[k]) else -1
                 covrows.append(dict(lp=lp, pair=pair, eps=e, informative=informative, strategy=k, cover_all=float(np.nanmean(cv)), cover_min_budget=float(np.nanmin(np.nanmean(cv, 1))),
                                     cover_at_J50=float(np.nanmean(cv[bn])) if bn >= 0 else np.nan, wrong_at_J50=float(np.nanmean(w[bn])) if bn >= 0 else np.nan, wrong_max=float(np.nanmax(np.nanmean(w, 1))), wrong_mean=float(np.nanmean(w))))
+                wm = np.nanmean(w, 1)
+                wbrows += [dict(lp=lp, pair=pair, eps=e, strategy=k, budget=int(cell.bud[i]), wrong=float(wm[i])) for i in range(len(cell.bud))]
             print(f"{lp} {pair} eps={e} inf={informative} G={G:+.3f} [{r['G_lo']:+.3f},{r['G_hi']:+.3f}] D2={D2:+.3f} D3={D3:+.3f}", flush=True)
-    T = pd.DataFrame(rows); C = pd.DataFrame(covrows)
-    T.drop(columns=["Gb", "D2b", "D3b"]).to_csv(a.out + ".csv", index=False); C.to_csv(a.out + "_coverage.csv", index=False)
+    T = pd.DataFrame(rows); C = pd.DataFrame(covrows); WB = pd.DataFrame(wbrows)
+    T.drop(columns=["Gb", "D2b", "D3b"]).to_csv(a.out + ".csv", index=False); C.to_csv(a.out + "_coverage.csv", index=False); WB.to_csv(a.out + "_wrong_by_budget.csv", index=False)
     # pooled: cluster bootstrap over decisions (both eps together), combined with the within-cell paired bootstrap
     md = [f"# S2 (fixed {a.fixed}) vs S3 (pilot selection by {a.stat}), {a.mode}; {a.glob}", "",
           f"G = 1 - J50(S3)/J50(S2) per cell, paired over audits ({T.n_audits.iloc[0]} per cell, {a.boot} bootstrap draws); positive = selection cheaper. "
@@ -93,7 +95,11 @@ def main():
            f"cells with G interval above 0: {(Ti.G_lo > 0).sum()}/{len(Ti)}; below 0: {(Ti.G_hi < 0).sum()}/{len(Ti)}; D2 above 0: {(Ti.D2_lo > 0).sum()}; D3 above 0: {(Ti.D3_lo > 0).sum()}", ""]
     Ci = C[C.informative]
     md += ["## Coverage of the chosen arm's upper bound (nominal 0.90) and wrong certificates, informative cells", "",
-           Ci.groupby("strategy")[["cover_all", "cover_min_budget", "cover_at_J50", "wrong_at_J50", "wrong_max", "wrong_mean"]].agg(["mean", "min", "max"]).round(3).to_markdown(), "",
+           Ci.groupby("strategy")[["cover_all", "cover_min_budget", "cover_at_J50", "wrong_at_J50", "wrong_max", "wrong_mean"]].agg(["mean", "min", "max"]).round(3).to_markdown(), ""]
+    # wrong-certificate rate at every post-pilot budget, all cells (boundary runs: type-I error at nominal alpha = 0.10, since every certificate is wrong there)
+    wb = WB.pivot_table(index="budget", columns="strategy", values="wrong", aggfunc="mean"); wmax = WB.groupby(["strategy", "lp", "pair", "eps"]).wrong.max().groupby("strategy").agg(["mean", "max"])
+    md += [f"## Wrong-certificate rate by post-pilot budget, mean over all {len(T)} cells (boundary runs: type-I error, nominal 0.10)", "", wb.round(3).to_markdown(), "",
+           "Per-cell maximum over budgets, mean / max over cells:", "", wmax.round(3).to_markdown(), "",
            "## Per cell", "", T.drop(columns=["Gb", "D2b", "D3b"]).round(3).to_markdown(index=False)]
     open(a.out + ".md", "w").write("\n".join(md)); print("\n".join(md[:12]))
 

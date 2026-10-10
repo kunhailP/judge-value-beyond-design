@@ -42,16 +42,19 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
   few points of zero and Monte-Carlo noise dominates cell-level prediction.
 * **Chat.** Pairwise LLM judges reach ρ 0.07–0.29 on close LMArena pairs; averaging both presentation orders raises ρ.
 * **Held-out year (2026-10-10; `prereg/PROSPECTIVE_LOCK_v1.2.md`, `results/HELDOUT_WMT23.md`).** Four auditor strategies fixed on
-  WMT22 and applied unchanged to WMT23 en→de / zh→en (42 metrics, 30 two-system decisions, 26 informative cells): with a
-  refitted coefficient, dedup + a pre-fixed COMET-22 costs 3.1% [0.9, 5.5] less than dedup alone (cheaper in 92% of cells);
-  choosing the evaluator from the pilot instead changes the cost by +0.2% [−2.7, +3.3] in a paired comparison (WMT22:
-  −1.5% [−9.1, +1.1]); with a frozen coefficient pilot selection costs 3.4% more. The post-hoc best (−7.9%) is a reference,
-  not a strategy. Coverage of the refitted bound is nominal at the certifying budget (0.89–0.90) but falls to 0.45–0.50 at
-  the smallest budgets (`code/129_s2_vs_s3.py`, `results/strategies/`).
-* **Strong evaluators are the exception** (`code/130_decomposition.py`, `results/strategies/DECOMPOSITION.md`): on the
-  same audits, the mean metric adds 1.8–2.4% on dedup (refit), the strongest of each year (MetricX-XXL, XCOMET-XXL)
-  3.7–5.6%, as much as the design in a third to a half of the cells; the design still saves more than the mean evaluator
-  in 65–79% of cells and than every evaluator with a frozen coefficient.
+  WMT22 and applied unchanged to WMT23 en→de / zh→en (42 metrics, 30 two-system decisions, 26 informative cells, 2,000
+  simulated audits per cell): with a refitted coefficient, dedup + a pre-fixed COMET-22 costs 3.4% [2.1, 4.4] less than
+  dedup alone (cheaper in every cell); choosing the evaluator from the pilot instead changes the cost by −0.1% [−1.3, +1.0]
+  in a paired comparison (WMT22: −1.5% [−9.1, +1.0]), both intervals excluding the pre-declared 2-point margin; with a
+  frozen coefficient pilot selection costs 4.2% more. The post-hoc best (−7.0%) is a reference, not a strategy. Coverage of
+  every strategy's bound is nominal at the certifying budget (0.89–0.90) and 0.86–0.89 at the worst budget once known-zero
+  differences are set to zero (the 300-audit records without it had S2 at 0.45–0.50 at the smallest budgets); in boundary
+  stress the type-I error at ten post-pilot labels is 0.18 (S1), 0.17 (S2), 0.12 (S3), nominal from 30–60 labels on, and
+  never higher for an evaluator strategy than for the human-only design (`code/129_s2_vs_s3.py`, `results/strategies/`).
+* **Strong evaluators are the exception** (`code/130_decomposition.py`, `results/strategies/DECOMPOSITION_n2000.md`): on the
+  same audits, the mean metric adds 1.8–2.5% on dedup (refit), the strongest of each year (MetricX-XXL, XCOMET-XXL)
+  3.7–4.7%, as much as the design in a third to over half of the cells; the design still saves more than the mean evaluator
+  in 69–79% of cells and than every evaluator with a frozen coefficient.
 * **Failed pre-registered hypotheses are reported:** H2 (inflation over uniform), H4 in chat, H5 (pilot-based judge
   selection), H6 (chat savings ≥ 5% in ≥ 3/6 pairs).
 * Terminology: "best fixed judge-free baseline" is a benchmark chosen per cell from realised costs, not a procedure an
@@ -105,8 +108,14 @@ python3 code/126_variants.py
 for lp in ende zhen; do for v in "3 _mtmex" "4 _mtmeb4"; do set -- $v; python3 code/110_unit_audit.py mt $lp --judges $(python3 -c "import json;print(' '.join(json.load(open('results/mt/mt_${lp}_m4_p50_mtme_info.json'))['judges']))") --pilot 50 --eps 0.01 0.02 --oracle --extra --bins $1 --tag $2; done; done
 python3 code/127_locked_variants.py
 # held-out year: WMT23 pools, 30 decisions, strategies fixed on WMT22 (per-draw records regenerable; ~2 min per cell on 128 cores)
-python3 -I code/mt_build_pool23.py; python3 -I code/mtme_import23.py; bash code/RUN_PAIRS_23.sh
-for m in cvq cvl; do python3 code/128_strategies.py --glob 'results/mt/mt_*_m2_p50_pairmtme??' --design dedup --fixed mtme_COMET-22-refA --mode $m --stat rho --r0 0.2 --out results/strategies/STRATEGIES_wmt22_$m; python3 code/128_strategies.py --glob 'results/mt/mt_*23_m2_p50_pair23??' --design dedup --fixed mtme_COMET-refA --mode $m --stat rho --r0 0.2 --out results/strategies/STRATEGIES_wmt23_$m; done
+python3 -I code/mt_build_pool23.py; python3 -I code/mtme_import23.py; bash code/RUN_PAIRS_23.sh                     # 300 audits (tag pair23)
+DRAWS=2000 TAG=pair23n bash code/RUN_PAIRS_23.sh; TAG=pair23b EXTRA_ARGS=--boundary bash code/RUN_PAIRS_23.sh   # 2,000 audits; boundary stress
+for m in cvq cvl; do python3 code/128_strategies.py --glob 'results/mt/mt_*_m2_p50_pairmtmez??' --design dedup --fixed mtme_COMET-22-refA --mode $m --stat rho --r0 0.2 --s0 -1 --out results/strategies/STRATEGIES_wmt22z_$( [ $m = cvq ] && echo refit || echo pilot ); python3 code/128_strategies.py --glob 'results/mt/mt_*23_m2_p50_pair23n??' --design dedup --fixed mtme_COMET-refA --mode $m --stat rho --r0 0.2 --s0 -1 --out results/strategies/STRATEGIES_wmt23_n2000_$( [ $m = cvq ] && echo refit || echo pilot ); done
+python3 code/129_s2_vs_s3.py --glob 'results/mt/mt_*_m2_p50_pairmtmez??' --fixed mtme_COMET-22-refA --boot 400 --out results/strategies/S2_vs_S3_wmt22z
+python3 code/129_s2_vs_s3.py --glob 'results/mt/mt_*23_m2_p50_pair23n??' --fixed mtme_COMET-refA --boot 1000 --out results/strategies/S2_vs_S3_wmt23_n2000
+python3 code/129_s2_vs_s3.py --glob 'results/mt/mt_*23_m2_p50_boundary_pair23b??' --fixed mtme_COMET-refA --boot 200 --out results/strategies/S2_vs_S3_wmt23_boundary
+python3 code/130_decomposition.py --glob22 'results/mt/mt_*_m2_p50_pairmtmez??' --glob23 'results/mt/mt_*23_m2_p50_pair23n??' --out results/strategies/DECOMPOSITION_n2000
+# pairmtmez: the 30 WMT22 decisions re-run with known-zero differences zeroed (110_unit_audit.py --zero_known 1, now the default; the 31 metric variants only: SUFFIX=z bash code/RUN_PAIRS_MTME.sh with the three LLM judges dropped from --judges)
 ```
 Reproduction check (2026-10-09): rebuilding the pools and the 31 metric judges from the public sources above on another
 machine (numpy 2.5.3) and re-running `110_unit_audit.py mt zhen --judges <31 metrics> --pilot 50 --eps 0.01 0.02 --oracle`

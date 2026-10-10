@@ -31,3 +31,10 @@ results/*.log
 results/mt/mt_*23_m2_p50_pair23*_draws.parquet
 results/mt/mt_*23_m2_p50_pair23*_meta.parquet
 results/mt/mt_*23_m2_p50_pair23*_pred.parquet
+# held-out year, boundary stress (tag pair23b) and the WMT22 re-run with zeroed known-zero differences (pairmtmez): per-draw
+# and pilot-prediction records are regenerable (code/RUN_PAIRS_23.sh, RUN_PAIRS_MTME.sh); summaries in results/strategies/
+results/mt/mt_*23_m2_p50_boundary_pair23b*_draws.parquet
+results/mt/mt_*23_m2_p50_boundary_pair23b*_meta.parquet
+results/mt/mt_*23_m2_p50_boundary_pair23b*_pred.parquet
+results/mt/*_pairmtmez*_draws.parquet
+results/mt/*_pairmtmez*_pred.parquet

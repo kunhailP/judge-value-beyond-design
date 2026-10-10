@@ -7,6 +7,7 @@
 set -euo pipefail; cd "$(dirname "$0")"
 export OMP_NUM_THREADS=1
 DRAWS=${DRAWS:-300}; TAG=${TAG:-pair23}; EXTRA_ARGS=${EXTRA_ARGS:-}
+BND=""; case " $EXTRA_ARGS " in *" --boundary "*) BND="_boundary";; esac   # 110_unit_audit.py puts _boundary before the tag
 for lp in ${LPS:-ende23 zhen23}; do
   SYS=$(python3 -c "
 import sys; sys.path.insert(0,'.'); from mt_common import load_pool
@@ -16,7 +17,7 @@ d=load_pool('$lp'); print(' '.join(d.groupby('system').u.mean().sort_values(asce
   PAIRS=""; for ((i=0;i<6;i++)); do for ((j=i+1;j<6;j++)); do PAIRS="$PAIRS $i$j"; done; done
   [ "${REV:-0}" = 1 ] && PAIRS=$(echo $PAIRS | tr ' ' '\n' | tac | tr '\n' ' ')     # REV=1: a second runner works from the other end
   for ij in $PAIRS; do i=${ij:0:1}; j=${ij:1:1}
-    stem=../results/mt/mt_${lp}_m2_p50_${TAG}${i}${j}
+    stem=../results/mt/mt_${lp}_m2_p50${BND}_${TAG}${i}${j}
     [ -f ${stem}_info.json ] && continue
     python3 110_unit_audit.py mt $lp --menu "${S[$i]}" "${S[$j]}" --judges $J chrf --pilot 50 --eps 0.01 0.02 --draws $DRAWS --extra --oracle $EXTRA_ARGS --procs ${PROCS:-128} --tag "_${TAG}${i}${j}" > /dev/null
   done

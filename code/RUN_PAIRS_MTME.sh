@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Exploratory (post-lock): the 31 mt-metrics-eval variants + COMET-22 and the two GEMBA judges on every two-system
 # decision among the top-6 systems of each language pair (15 pairs x 2 LPs), with refit / cross-fit / oracle arms.
-# usage: [LPS="ende zhen"] [PROCS=120] [IDENT=pick] RUN_PAIRS_MTME.sh
+# usage: [LPS="ende zhen"] [PROCS=120] [IDENT=pick] [SUFFIX=z] RUN_PAIRS_MTME.sh
+# SUFFIX=z: stems pairmtmez<ij>; the 2026-10-10 re-run with known-zero differences zeroed (110_unit_audit.py --zero_known 1, now the
+#   default) used the 31 metric variants only (comet22 qwen3_8b mistral_7b dropped from --judges)
 # IDENT=pick: identical strings share one random rating instead of their mean (sensitivity; tag _pairmtmepick<ij>)
 set -euo pipefail; cd "$(dirname "$0")"
 for lp in ${LPS:-ende zhen}; do
@@ -12,6 +14,7 @@ d=load_pool('$lp'); d=d[~d.system.str.endswith('_bestmbr')]; print(' '.join(d.gr
   MTJ=$(python3 -c "import json;print(' '.join(json.load(open('../results/mt/mt_${lp}_m4_p50_mtme_info.json'))['judges']))")
   for ((i=0;i<6;i++)); do for ((j=i+1;j<6;j++)); do
     V=${IDENT:+$IDENT}; [ "${IDENT:-mean}" = mean ] && V=""
+    V="$V${SUFFIX:-}"
     stem=../results/mt/mt_${lp}_m2_p50_pairmtme${V}${i}${j}
     [ -f ${stem}_summary.csv ] && continue
     [ "${SUMMARIZE:-1}" = 0 ] && [ -f ${stem}_info.json ] && continue
