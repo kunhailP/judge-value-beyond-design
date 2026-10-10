@@ -1,7 +1,7 @@
 """Export the exact judge inputs for frontier-model judges (lock v1.0).
 
 Same prompts and same truncation as the open judges (Arena responses truncated with the Qwen3-8B tokenizer, so every
-judge sees identical text). Output: 06_naacl/frontier/inputs/{mt_ende,mt_zhen,arena_v09}.jsonl, one request per line:
+judge sees identical text). Output: frontier/inputs/{mt_ende,mt_zhen,arena_v09}.jsonl, one request per line:
   {"id": ..., "task": "mt"|"arena", "user": <user message>, "assistant_prefix": "Score: " (mt only)}
 MT: the 6 best WMT submissions per language pair (MBR systems excluded) = the menus of every locked MT analysis.
 Arena: lock v0.9 battles, both orders (id = <battle_id>|1 shows x as A, <battle_id>|2 shows y as A).

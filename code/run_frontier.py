@@ -5,7 +5,7 @@
   python3 run_frontier.py --provider anthropic --model claude-sonnet-4-5            --task arena_v09
   python3 run_frontier.py --provider openai    --model <id> --base_url <OpenAI-compatible endpoint> --task mt_zhen
 Keys: OPENAI_API_KEY / ANTHROPIC_API_KEY (or --api_key_env). temperature 0, max_tokens 8.
-Output: 06_naacl/frontier/outputs/<task>__<judge_name>.jsonl, one line per request:
+Output: frontier/outputs/<task>__<judge_name>.jsonl, one line per request:
   {"id", "text", "top": [[token, logprob], ...] (first generated token, OpenAI only), "error"}
 Scoring is done afterwards by frontier_to_parquet.py (the rule is fixed in lock v1.0), never here.
 """

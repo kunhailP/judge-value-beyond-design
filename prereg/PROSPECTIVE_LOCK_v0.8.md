@@ -5,14 +5,14 @@ Committed before any LLM or COMET judgment has been joined with a human label in
 ## What had been seen when this lock was written
 * MT: the human MQM pools (system means, identical-output rates, paired-difference sd), and development audits of the
   human-only designs (`uniform`, `dedup`, `weighted`) and of the chrF judge at pilots 50 and 100 (outputs
-  `06_naacl/results/mt/*_dev*`). chrF is therefore a development judge and is reported as such, not as a test.
+  `results/mt/*_dev*`). chrF is therefore a development judge and is reported as such, not as a test.
   Seen: human designs save about 8–19% of J50 over uniform; chrF saves about 0.
 * Arena: pool construction and per-pair battle counts only. No judge output has been compared with a vote.
 * One bug was found and fixed during development: the weighted design gave weight 0 to outputs that differ only in
   characters chrF ignores; zero weight is now restricted to identical strings (wrong-certificate rate 0.147 → 0.007).
 
 ## Fixed elements
-* Code: `06_naacl/code/110_unit_audit.py` and `111_summarize.py` at this commit. α = 0.10, normal bounds with Bonferroni
+* Code: `code/110_unit_audit.py` and `111_summarize.py` at this commit. α = 0.10, normal bounds with Bonferroni
   over competitors, pilot-fixed λ ≥ 0, finite-population estimand, 300 draws, seed 20261007, budgets = the default grid.
 * MT data: WMT22 generalMT MQM (google/wmt-mqm-human-evaluation @ 29acd69), en→de and zh→en, Google weights, u = −min(MQM,25)/25,
   identical strings of a segment share the mean rating. MBR systems excluded. Menu = top-4 WMT submissions by mean u

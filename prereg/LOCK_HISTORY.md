@@ -26,7 +26,9 @@ Corrections to the lock documents themselves:
   (table above). The files were renamed without the date; their content is unchanged.
 * 2026-10-10: paths of the development machine and repository were replaced by repository paths in two lock files:
   `PROSPECTIVE_LOCK_v0.9.md` (pool builder and pool file, now `code/arena_pool_v09.py` → `$JV_DATA/arena/pool_v09.parquet`)
-  and `PROSPECTIVE_LOCK_v1.0.md` (input directory, now `frontier/inputs/`); nothing else in the files changed.
+  and `PROSPECTIVE_LOCK_v1.0.md` (input directory, now `frontier/inputs/`), and the development-repository prefix
+  `06_naacl/` was dropped from the code and result paths quoted in `PROSPECTIVE_LOCK_v0.8.md`; nothing else in the files
+  changed.
 
 Description corrected after submission review (2026-10-09; code unchanged):
 * The weighted design's `bin_index` + `np.maximum(., 1)` in `110_unit_audit.py` folds the dissimilarities below the
