@@ -67,11 +67,16 @@ WMT23 top 10 by pilot rho (2,000 audits):
 
 ## Direct comparison S2 vs S3, coverage, boundary stress, decomposition (addendum to lock v1.2)
 See `results/strategies/S2_vs_S3_wmt23_n2000.md`, `S2_vs_S3_wmt22z.md`, `S2_vs_S3_wmt23_boundary.md`, `DECOMPOSITION_n2000.md`
-(the 300-audit WMT23 comparison is kept in `S2_vs_S3_wmt23_n300.md`). Pooled G = 1 − J50(S3)/J50(S2), refitted coefficient:
-WMT23 informative −0.1% [−1.3, +1.0], all 60 −0.1% [−0.6, +0.5]; WMT22 informative −1.5% [−9.1, +1.0], all 60 −2.1% [−4.5, +0.2];
-every interval excludes the 2-point margin (S2 as good as S3). S2 vs S1 on WMT23: +3.4% [2.1, 4.4]; S3 vs S1: +3.3% [1.5, 4.8].
-At 300 audits the WMT23 informative interval was +0.2% [−2.7, +3.3] (undecided). Per-cell widths: 4–6 points at 2,000 audits
-(two of 26 cells with G above zero, none below), 13–17 at 300.
+(the 300-audit WMT23 comparison is kept in `S2_vs_S3_wmt23_n300.md`). Pooled G = 1 − J50(S3)/J50(S2), refitted coefficient,
+mean over cells with the 95% Monte-Carlo interval from one resampling of audit indices applied to every cell at once (the cells
+share the simulator's random streams; the benchmark is fixed): WMT23 informative −0.1% [−0.7, +0.5], all 60 −0.1% [−0.3, +0.2];
+WMT22 informative −1.5% [−4.4, +0.3], all 60 −2.1% [−3.6, −0.5]. Treating decisions as clusters (point = mean over decisions of
+the within-decision mean; cluster bootstrap × joint draws): WMT23 −0.1% [−1.2, +1.1], WMT22 −2.1% [−8.9, +1.3]. Every interval
+lies below the 2-point margin (set after the 300-audit results, before the 2,000-audit run; a one-sided check, not an equivalence
+test). S2 vs S1 on WMT23: +3.4% [2.9, 3.9] (clusters [2.1, 4.4]); S3 vs S1: +3.3% [2.7, 3.9]. At 300 audits the WMT23
+informative G was +0.2% (cluster interval [−2.7, +3.3], undecided). Per-cell widths: 4–6 points at 2,000 audits (two of 26
+cells with G above zero, none below; S2 beats S1 in 21), 15–18 at 300. An earlier version paired the cell-mean estimate with a
+cluster interval; the cluster point estimate (mean over decisions) is −2.1 / +5.2 on WMT22 for G / S2 vs S1.
 
 Coverage of the chosen arm's bound (nominal 0.90), WMT22 / WMT23: at J50 0.89–0.90 for every strategy; over all budgets
 0.90 / 0.90–0.91; at the worst budget of a cell 0.86 / 0.88–0.89, the same as the human-only design. The 300-audit records
@@ -82,7 +87,16 @@ removes it at unchanged costs. Wrong certificates at J50: 0.003 (WMT22), 0.006 (
 Boundary stress (runner-up as candidate, eps = 0.9 × its regret, 300 audits, tag `pair23b`): every certificate is wrong, so the
 certification rate is the type-I error (nominal 0.10). Mean over the 30 cells at 10 post-pilot labels: S1 0.18, S2 0.17,
 S3/S4 0.12; 0.10 by about 60 (S1) and 30 (S2–S4) labels, 0.05 by about 200, 0.01–0.02 at the largest budgets; per-cell
-maxima average 0.18 / 0.18 / 0.13 (S1 / S2 / S3), at most 0.24. No evaluator strategy exceeds the human-only design.
+maxima average 0.18 / 0.18 / 0.13 (S1 / S2 / S3), at most 0.24. Against S1 on the same cell and budget the evaluator strategies
+are lower on average (0.1–1.5 points) and higher at 15–34% of the 210 cell–budget points of a pair, by over 2 points at 1–3%.
+Budgets are expected items; 10 items ≈ 110–116 labels in total. The pooled rate is not significantly above 0.10 from 55 (en-de,
+206 labels) / 61 (zh-en, 211 labels) post-pilot items on for S1 (`S2_vs_S3_wmt23_boundary_certification_range.csv`).
+
+Restricted protocol (no certificate below that budget, same rule for every arm; `S2_vs_S3_wmt23_n2000_restricted*`,
+`STRATEGIES_wmt23_n2000_restricted*`): strict 55/61 items — 21 of the 26 informative cells tie, S2 vs S1 +0.3% [0.2, 0.4],
+G −0.1% [−0.2, +0.0] over 60 cells, savings kept only where J50 > ~200 labels (en-de 01, 34: 3.0–3.3%); tolerance 0.125
+(23/29 items, ~145 labels) — S2 vs S1 +1.5% [1.3, 1.7], G +0.0% [−0.2, +0.3] over 56 cells. The ranking of the strategies is the
+same under every rule.
 
 Strong evaluators (2,000 audits): XCOMET-XXL adds a median 4.7% (mean 5.4%) refitted on WMT23 and the design saves more labels
 in only 11/26 cells; for the ten evaluators with the highest pilot rho, 44% of (cell, evaluator) pairs (WMT22: MetricX-XXL

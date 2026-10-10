@@ -43,14 +43,19 @@ cheapest annotation design that uses no judge, in retrieval, machine translation
 * **Chat.** Pairwise LLM judges reach ρ 0.07–0.29 on close LMArena pairs; averaging both presentation orders raises ρ.
 * **Held-out year (2026-10-10; `prereg/PROSPECTIVE_LOCK_v1.2.md`, `results/HELDOUT_WMT23.md`).** Four auditor strategies fixed on
   WMT22 and applied unchanged to WMT23 en→de / zh→en (42 metrics, 30 two-system decisions, 26 informative cells, 2,000
-  simulated audits per cell): with a refitted coefficient, dedup + a pre-fixed COMET-22 costs 3.4% [2.1, 4.4] less than
-  dedup alone (cheaper in every cell); choosing the evaluator from the pilot instead changes the cost by −0.1% [−1.3, +1.0]
-  in a paired comparison (WMT22: −1.5% [−9.1, +1.0]), both intervals excluding the pre-declared 2-point margin; with a
+  simulated audits per cell): with a refitted coefficient, dedup + a pre-fixed COMET-22 costs 3.4% [2.9, 3.9] less than
+  dedup alone (cheaper in all 26 informative cells); choosing the evaluator from the pilot instead changes the cost by
+  −0.1% [−0.7, +0.5] in a paired comparison (WMT22: −1.5% [−4.4, +0.3]; Monte-Carlo intervals from one resampling of audit
+  indices shared by every cell; treating decisions as clusters widens them to [−1.2, +1.1] and [−8.9, +1.3]), every interval
+  below the 2-point margin set after the 300-audit results; with a
   frozen coefficient pilot selection costs 4.2% more. The post-hoc best (−7.0%) is a reference, not a strategy. Coverage of
   every strategy's bound is nominal at the certifying budget (0.89–0.90) and 0.86–0.89 at the worst budget once known-zero
   differences are set to zero (the 300-audit records without it had S2 at 0.45–0.50 at the smallest budgets); in boundary
   stress the type-I error at ten post-pilot labels is 0.18 (S1), 0.17 (S2), 0.12 (S3), nominal from 30–60 labels on, and
-  never higher for an evaluator strategy than for the human-only design (`code/129_s2_vs_s3.py`, `results/strategies/`).
+  below the human-only design on average (above it at 15–34% of cell–budget points, by over 2 points at 1–3%). The pooled
+  error is at its nominal level only from about 200 labels on (55/61 post-pilot items); a protocol that certifies only from
+  there keeps 0.3% [0.2, 0.4] of S2's saving over S1 (most decisions certify earlier), 1.5% [1.3, 1.7] with a tolerance of
+  0.125 (from about 145 labels); the strategy ranking is unchanged (`code/129_s2_vs_s3.py --min_budget`, `results/strategies/`).
 * **Strong evaluators are the exception** (`code/130_decomposition.py`, `results/strategies/DECOMPOSITION_n2000.md`): on the
   same audits, the mean metric adds 1.8–2.5% on dedup (refit), the strongest of each year (MetricX-XXL, XCOMET-XXL)
   3.7–4.7%, as much as the design in a third to over half of the cells; the design still saves more than the mean evaluator
@@ -115,6 +120,9 @@ python3 code/129_s2_vs_s3.py --glob 'results/mt/mt_*_m2_p50_pairmtmez??' --fixed
 python3 code/129_s2_vs_s3.py --glob 'results/mt/mt_*23_m2_p50_pair23n??' --fixed mtme_COMET-refA --boot 1000 --out results/strategies/S2_vs_S3_wmt23_n2000
 python3 code/129_s2_vs_s3.py --glob 'results/mt/mt_*23_m2_p50_boundary_pair23b??' --fixed mtme_COMET-refA --boot 200 --out results/strategies/S2_vs_S3_wmt23_boundary
 python3 code/130_decomposition.py --glob22 'results/mt/mt_*_m2_p50_pairmtmez??' --glob23 'results/mt/mt_*23_m2_p50_pair23n??' --out results/strategies/DECOMPOSITION_n2000
+# restricted protocol: no certificate below the post-pilot budget from which the boundary type-I error is at its nominal level (S2_vs_S3_wmt23_boundary_certification_range.csv)
+python3 code/129_s2_vs_s3.py --glob 'results/mt/mt_*23_m2_p50_pair23n??' --fixed mtme_COMET-refA --boot 1000 --min_budget ende23:55 zhen23:61 --out results/strategies/S2_vs_S3_wmt23_n2000_restricted
+python3 code/128_strategies.py --glob 'results/mt/mt_*23_m2_p50_pair23n??' --design dedup --fixed mtme_COMET-refA --mode cvq --stat rho --r0 0.2 --s0 -1 --min_budget ende23:55 zhen23:61 --out results/strategies/STRATEGIES_wmt23_n2000_restricted_refit
 # pairmtmez: the 30 WMT22 decisions re-run with known-zero differences zeroed (110_unit_audit.py --zero_known 1, now the default; the 31 metric variants only: SUFFIX=z bash code/RUN_PAIRS_MTME.sh with the three LLM judges dropped from --judges)
 ```
 Reproduction check (2026-10-09): rebuilding the pools and the 31 metric judges from the public sources above on another

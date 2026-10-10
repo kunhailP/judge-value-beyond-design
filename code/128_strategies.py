@@ -100,13 +100,17 @@ def main():
     ap.add_argument("--boot", type=int, default=200); ap.add_argument("--judges", default="mtme_")
     ap.add_argument("--inf", type=float, default=0.3, help="informative cell: 1 - P/J50(uniform) >= inf")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--min_budget", nargs="*", default=[], help="lp:budget; certification below this post-pilot budget is disallowed for every arm (restricted protocol)")
     a = ap.parse_args()
     stems = sorted(f[:-len("_draws.parquet")] for f in glob.glob(a.glob + "_draws.parquet"))
+    minb = {kv.split(":")[0]: float(kv.split(":")[1]) for kv in a.min_budget}
     rows, jrows = [], []
     rng = np.random.default_rng(0)
     for stem in stems:
         cell = Cell(stem, a.judges)
         lp = re.search(r"mt_(\w+?)_m2", os.path.basename(stem)).group(1); pair = stem[-2:]
+        if lp in minb:
+            low = cell.bud < minb[lp]; cell.ACT[:, low] = 0; cell.WRONG[:, low] = 0
         for e in cell.eps:
             S = strategies(cell, e, a.design, a.fixed, a.mode, a.stat, a.r0, a.s0)
             n = len(cell.dr); boots = [rng.integers(0, n, n) for _ in range(a.boot)]
