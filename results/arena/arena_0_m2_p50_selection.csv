@@ -1,0 +1,17 @@
+eps,selector,regret,lo,hi,oracle,picks
+0.02,uniform,0.0,0.0,0.0,uniform,
+0.02,uniform_cvl:inv_qwen3_8b,0.0,0.0,0.0,uniform,
+0.02,uniform_cvl:longer,0.0,0.0,0.0,uniform,
+0.02,uniform_cvl:mistral_7b,0.0,0.0,0.0,uniform,
+0.02,uniform_cvl:qwen3_8b,0.0,0.0,0.0,uniform,
+0.02,sel_accuracy,0.0,0.0,0.0,uniform,"{'uniform_cvl:mistral_7b': np.float64(0.37), 'uniform_cvl:qwen3_8b': np.float64(0.34), 'uniform_cvl:longer': np.float64(0.29)}"
+0.02,sel_rho,0.0,0.0,0.0,uniform,"{'uniform_cvl:qwen3_8b': np.float64(0.59), 'uniform_cvl:mistral_7b': np.float64(0.3), 'uniform_cvl:longer': np.float64(0.09), 'uniform_cvl:inv_qwen3_8b': np.float64(0.02)}"
+0.02,sel_pilotcost,0.0,0.0,0.0,uniform,"{'uniform': np.float64(0.95), 'uniform_cvl:qwen3_8b': np.float64(0.04), 'uniform_cvl:mistral_7b': np.float64(0.01)}"
+0.05,uniform,0.0,0.0,0.0,uniform,
+0.05,uniform_cvl:inv_qwen3_8b,0.0,0.0,0.0,uniform,
+0.05,uniform_cvl:longer,0.0,0.0,0.0,uniform,
+0.05,uniform_cvl:mistral_7b,0.0,0.0,0.0,uniform,
+0.05,uniform_cvl:qwen3_8b,0.0,0.0,0.0,uniform,
+0.05,sel_accuracy,0.0,0.0,0.0,uniform,"{'uniform_cvl:mistral_7b': np.float64(0.37), 'uniform_cvl:qwen3_8b': np.float64(0.34), 'uniform_cvl:longer': np.float64(0.29)}"
+0.05,sel_rho,0.0,0.0,0.0,uniform,"{'uniform_cvl:qwen3_8b': np.float64(0.59), 'uniform_cvl:mistral_7b': np.float64(0.3), 'uniform_cvl:longer': np.float64(0.09), 'uniform_cvl:inv_qwen3_8b': np.float64(0.02)}"
+0.05,sel_pilotcost,0.0,0.0,0.0,uniform,"{'uniform': np.float64(0.98), 'uniform_cvl:qwen3_8b': np.float64(0.02), 'uniform_cvl:mistral_7b': np.float64(0.0)}"

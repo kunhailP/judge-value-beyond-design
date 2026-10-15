@@ -1,0 +1,17 @@
+eps,selector,regret,lo,hi,oracle,picks
+0.02,uniform,0.0,0.0,0.0,uniform,
+0.02,uniform_cvl:inv_qwen3_8b,0.0,0.0,0.0,uniform,
+0.02,uniform_cvl:longer,0.0,0.0,0.0,uniform,
+0.02,uniform_cvl:mistral_7b,0.0,0.0,0.0,uniform,
+0.02,uniform_cvl:qwen3_8b,0.0,0.0,0.0,uniform,
+0.02,sel_accuracy,0.0,0.0,0.0,uniform,"{'uniform_cvl:longer': np.float64(0.4), 'uniform_cvl:mistral_7b': np.float64(0.35), 'uniform_cvl:qwen3_8b': np.float64(0.24), 'uniform_cvl:inv_qwen3_8b': np.float64(0.01)}"
+0.02,sel_rho,0.0,0.0,0.0,uniform,"{'uniform_cvl:qwen3_8b': np.float64(0.52), 'uniform_cvl:mistral_7b': np.float64(0.28), 'uniform_cvl:longer': np.float64(0.15), 'uniform_cvl:inv_qwen3_8b': np.float64(0.05)}"
+0.02,sel_pilotcost,0.0,0.0,0.0,uniform,"{'uniform': np.float64(0.65), 'uniform_cvl:qwen3_8b': np.float64(0.22), 'uniform_cvl:mistral_7b': np.float64(0.07), 'uniform_cvl:longer': np.float64(0.05)}"
+0.05,uniform,0.0,0.0,0.0,uniform,
+0.05,uniform_cvl:inv_qwen3_8b,0.0,0.0,0.0,uniform,
+0.05,uniform_cvl:longer,0.0,0.0,0.0,uniform,
+0.05,uniform_cvl:mistral_7b,0.0,0.0,0.0,uniform,
+0.05,uniform_cvl:qwen3_8b,0.0,0.0,0.0,uniform,
+0.05,sel_accuracy,0.0,0.0,0.0,uniform,"{'uniform_cvl:longer': np.float64(0.4), 'uniform_cvl:mistral_7b': np.float64(0.35), 'uniform_cvl:qwen3_8b': np.float64(0.24), 'uniform_cvl:inv_qwen3_8b': np.float64(0.01)}"
+0.05,sel_rho,0.0,0.0,0.0,uniform,"{'uniform_cvl:qwen3_8b': np.float64(0.52), 'uniform_cvl:mistral_7b': np.float64(0.28), 'uniform_cvl:longer': np.float64(0.15), 'uniform_cvl:inv_qwen3_8b': np.float64(0.05)}"
+0.05,sel_pilotcost,0.0,0.0,0.0,uniform,"{'uniform': np.float64(0.72), 'uniform_cvl:qwen3_8b': np.float64(0.18), 'uniform_cvl:mistral_7b': np.float64(0.06), 'uniform_cvl:longer': np.float64(0.05)}"

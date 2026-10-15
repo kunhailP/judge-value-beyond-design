@@ -1,0 +1,47 @@
+{
+ "menu": [
+  "llama-2-70b-chat",
+  "vicuna-33b"
+ ],
+ "N": 377,
+ "mu": [
+  0.5106100795755968,
+  0.48938992042440316
+ ],
+ "cfg": {
+  "pilot": 50,
+  "eps": [
+   0.02,
+   0.05,
+   0.1
+  ],
+  "budgets": [
+   10,
+   13,
+   17,
+   22,
+   29,
+   38,
+   50,
+   65,
+   85,
+   111,
+   146,
+   191,
+   250,
+   327
+  ],
+  "seed": 20261007,
+  "boundary": false,
+  "oracle": true
+ },
+ "judges": [
+  "qwen3_8b",
+  "qwen3_8b@o1",
+  "qwen3_8b@o2",
+  "mistral_7b",
+  "mistral_7b@o1",
+  "mistral_7b@o2",
+  "longer"
+ ]
+}

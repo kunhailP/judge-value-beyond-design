@@ -1,0 +1,74 @@
+{
+ "menu": [
+  "Online-W",
+  "Online-Y"
+ ],
+ "N": 1315,
+ "mu": [
+  -0.03147286059947642,
+  -0.05221211462808416
+ ],
+ "cfg": {
+  "pilot": 50,
+  "eps": [
+   0.01,
+   0.02
+  ],
+  "budgets": [
+   10,
+   14,
+   21,
+   30,
+   44,
+   64,
+   93,
+   135,
+   196,
+   285,
+   413,
+   600,
+   871,
+   1265
+  ],
+  "seed": 20261007,
+  "boundary": false,
+  "boundary_frac": 0.9,
+  "oracle": true,
+  "bound": "normal",
+  "extra": true,
+  "bins": 3
+ },
+ "judges": [
+  "mtme_BERTScore-refA",
+  "mtme_BLEU-refA",
+  "mtme_BLEURT-20-refA",
+  "mtme_COMET-20-refA",
+  "mtme_COMET-22-refA",
+  "mtme_COMET-QE-src",
+  "mtme_COMETKiwi-src",
+  "mtme_Cross-QE-src",
+  "mtme_HWTSC-TLM-src",
+  "mtme_HWTSC-Teacher-Sim-src",
+  "mtme_KG-BERTScore-src",
+  "mtme_MATESE-QE-src",
+  "mtme_MATESE-refA",
+  "mtme_MEE-refA",
+  "mtme_MEE2-refA",
+  "mtme_MEE4-refA",
+  "mtme_MS-COMET-22-refA",
+  "mtme_MS-COMET-QE-22-src",
+  "mtme_REUSE-src",
+  "mtme_SEScore-refA",
+  "mtme_UniTE-ref-refA",
+  "mtme_UniTE-refA",
+  "mtme_UniTE-src-src",
+  "mtme_YiSi-1-refA",
+  "mtme_chrF-refA",
+  "mtme_f101spBLEU-refA",
+  "mtme_f200spBLEU-refA",
+  "mtme_metricx_xl_DA_2019-refA",
+  "mtme_metricx_xl_MQM_2020-refA",
+  "mtme_metricx_xxl_DA_2019-refA",
+  "mtme_metricx_xxl_MQM_2020-refA"
+ ]
+}

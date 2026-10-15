@@ -1,0 +1,15 @@
+eps,selector,excess_vs_best_fixed,lo,hi,best_fixed,picks
+0.05,uniform,0.05704100277215814,0.014243762919656986,0.16621443715880604,uniform_cvl:qwen3_8b,
+0.05,uniform_cvl:longer,0.04069537355812768,0.0,0.15671512632407414,uniform_cvl:qwen3_8b,
+0.05,uniform_cvl:mistral_7b,0.042111880291486437,0.0,0.14656836107759696,uniform_cvl:qwen3_8b,
+0.05,uniform_cvl:qwen3_8b,0.0,0.0,0.00397086243990564,uniform_cvl:qwen3_8b,
+0.05,sel_accuracy,0.014496959796289547,-0.0035769092935348376,0.09437912965236338,uniform_cvl:qwen3_8b,"{'uniform_cvl:qwen3_8b': np.float64(0.67), 'uniform_cvl:longer': np.float64(0.2), 'uniform_cvl:mistral_7b': np.float64(0.13)}"
+0.05,sel_rho,0.012355363462746845,-0.00019848353950368232,0.10694784887496751,uniform_cvl:qwen3_8b,"{'uniform_cvl:qwen3_8b': np.float64(0.77), 'uniform_cvl:longer': np.float64(0.15), 'uniform_cvl:mistral_7b': np.float64(0.08)}"
+0.05,sel_pilotcost,0.042111880291486437,0.009968669892910955,0.14675005939881425,uniform_cvl:qwen3_8b,"{'uniform': np.float64(0.71), 'uniform_cvl:qwen3_8b': np.float64(0.24), 'uniform_cvl:mistral_7b': np.float64(0.03), 'uniform_cvl:longer': np.float64(0.03)}"
+0.1,uniform,0.029491317305620157,0.0,0.14133081225535557,uniform_cvl:qwen3_8b,
+0.1,uniform_cvl:longer,0.03631526396587454,0.0,0.13997446084607837,uniform_cvl:qwen3_8b,
+0.1,uniform_cvl:mistral_7b,0.038837157296837836,0.0009971460335534417,0.1496275511450738,uniform_cvl:qwen3_8b,
+0.1,uniform_cvl:qwen3_8b,0.0,0.0,0.037495933111400766,uniform_cvl:qwen3_8b,
+0.1,sel_accuracy,0.038837157296837836,0.004638980554605687,0.13314813267974349,uniform_cvl:qwen3_8b,"{'uniform_cvl:qwen3_8b': np.float64(0.67), 'uniform_cvl:longer': np.float64(0.2), 'uniform_cvl:mistral_7b': np.float64(0.13)}"
+0.1,sel_rho,0.010320363477481371,-0.006077247409106735,0.1201213213390584,uniform_cvl:qwen3_8b,"{'uniform_cvl:qwen3_8b': np.float64(0.77), 'uniform_cvl:longer': np.float64(0.15), 'uniform_cvl:mistral_7b': np.float64(0.08)}"
+0.1,sel_pilotcost,0.035306506633489006,-0.002854849653710121,0.14957015751921324,uniform_cvl:qwen3_8b,"{'uniform': np.float64(0.85), 'uniform_cvl:qwen3_8b': np.float64(0.14), 'uniform_cvl:mistral_7b': np.float64(0.01), 'uniform_cvl:longer': np.float64(0.01)}"

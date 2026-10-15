@@ -1,0 +1,16 @@
+eps,selector,regret,lo,hi,oracle,picks
+0.005,dedup,0.0,0.0,0.06988775152980894,dedup,
+0.005,weighted_cvl:chrf,0.053345179911413576,0.0,0.07421017435307661,dedup,
+0.005,sel_accuracy,0.053345179911413576,0.0,0.07421017435307661,dedup,{'weighted_cvl:chrf': np.float64(1.0)}
+0.005,sel_rho,0.053345179911413576,0.0,0.07421017435307661,dedup,{'weighted_cvl:chrf': np.float64(1.0)}
+0.005,sel_pilotcost,0.010010323026106403,-0.013591512345829867,0.0943352048434358,dedup,"{'dedup': np.float64(0.63), 'weighted_cvl:chrf': np.float64(0.37)}"
+0.01,weighted,0.04221269378687633,0.0,0.10961519526815422,weighted_cvl:chrf,
+0.01,weighted_cvl:chrf,0.0,0.0,0.07259829084731684,weighted_cvl:chrf,
+0.01,sel_accuracy,0.0,0.0,0.07259829084731684,weighted_cvl:chrf,{'weighted_cvl:chrf': np.float64(1.0)}
+0.01,sel_rho,0.0,0.0,0.07259829084731684,weighted_cvl:chrf,{'weighted_cvl:chrf': np.float64(1.0)}
+0.01,sel_pilotcost,0.04221269378687633,0.0,0.10961519526815422,weighted_cvl:chrf,"{'weighted': np.float64(0.98), 'weighted_cvl:chrf': np.float64(0.02)}"
+0.02,dedup,0.0,0.0,0.042886428623907014,dedup,
+0.02,weighted_cvl:chrf,0.027578358772892324,0.0,0.06659926578984332,dedup,
+0.02,sel_accuracy,0.027578358772892324,0.0,0.06659926578984332,dedup,{'weighted_cvl:chrf': np.float64(1.0)}
+0.02,sel_rho,0.027578358772892324,0.0,0.06659926578984332,dedup,{'weighted_cvl:chrf': np.float64(1.0)}
+0.02,sel_pilotcost,-0.005587570003625829,-0.028680531762758914,0.04349387787262545,dedup,"{'dedup': np.float64(0.82), 'weighted_cvl:chrf': np.float64(0.18)}"

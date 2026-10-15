@@ -1,0 +1,19 @@
+eps,selector,regret,lo,hi,oracle,picks
+0.01,weighted,0.0,0.0,0.006986595912675108,weighted,
+0.01,weighted_cvl:chrf,0.0,0.0,0.3266811523746431,weighted,
+0.01,weighted_cvl:comet22,0.0,0.0,0.2956503418113764,weighted,
+0.01,weighted_cvl:inv_comet22,0.0,0.0,0.01277286343032823,weighted,
+0.01,weighted_cvl:mistral_7b,0.0,0.0,0.29841614837197633,weighted,
+0.01,weighted_cvl:qwen3_8b,0.0,0.0,0.3293386139341251,weighted,
+0.01,sel_accuracy,0.0,0.0,0.37591136871073605,weighted,"{'weighted_cvl:comet22': np.float64(0.58), 'weighted_cvl:chrf': np.float64(0.23), 'weighted_cvl:qwen3_8b': np.float64(0.12), 'weighted_cvl:mistral_7b': np.float64(0.04), 'weighted_cvl:inv_comet22': np.float64(0.03)}"
+0.01,sel_rho,0.0,0.0,0.41850283417400136,weighted,"{'weighted_cvl:comet22': np.float64(0.42), 'weighted_cvl:qwen3_8b': np.float64(0.3), 'weighted_cvl:mistral_7b': np.float64(0.14), 'weighted_cvl:chrf': np.float64(0.12), 'weighted_cvl:inv_comet22': np.float64(0.02)}"
+0.01,sel_pilotcost,0.0,0.0,0.31600720443506725,weighted,"{'weighted': np.float64(0.75), 'weighted_cvl:comet22': np.float64(0.1), 'weighted_cvl:qwen3_8b': np.float64(0.08), 'weighted_cvl:mistral_7b': np.float64(0.06), 'weighted_cvl:chrf': np.float64(0.0)}"
+0.02,weighted,0.0,0.0,0.0,weighted,
+0.02,weighted_cvl:chrf,0.0,0.0,0.0,weighted,
+0.02,weighted_cvl:comet22,0.0,0.0,0.0,weighted,
+0.02,weighted_cvl:inv_comet22,0.0,0.0,0.0,weighted,
+0.02,weighted_cvl:mistral_7b,0.0,0.0,0.0,weighted,
+0.02,weighted_cvl:qwen3_8b,0.0,0.0,0.0,weighted,
+0.02,sel_accuracy,0.0,0.0,0.0,weighted,"{'weighted_cvl:comet22': np.float64(0.58), 'weighted_cvl:chrf': np.float64(0.23), 'weighted_cvl:qwen3_8b': np.float64(0.12), 'weighted_cvl:mistral_7b': np.float64(0.04), 'weighted_cvl:inv_comet22': np.float64(0.03)}"
+0.02,sel_rho,0.0,0.0,0.0,weighted,"{'weighted_cvl:comet22': np.float64(0.42), 'weighted_cvl:qwen3_8b': np.float64(0.3), 'weighted_cvl:mistral_7b': np.float64(0.14), 'weighted_cvl:chrf': np.float64(0.12), 'weighted_cvl:inv_comet22': np.float64(0.02)}"
+0.02,sel_pilotcost,0.0,0.0,0.0,weighted,"{'weighted': np.float64(0.94), 'weighted_cvl:qwen3_8b': np.float64(0.03), 'weighted_cvl:comet22': np.float64(0.02), 'weighted_cvl:mistral_7b': np.float64(0.01)}"

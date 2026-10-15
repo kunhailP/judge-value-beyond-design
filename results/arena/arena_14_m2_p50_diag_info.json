@@ -1,0 +1,47 @@
+{
+ "menu": [
+  "mistral-medium",
+  "mixtral-8x7b-instruct-v0.1"
+ ],
+ "N": 312,
+ "mu": [
+  0.5400641025641025,
+  0.4599358974358974
+ ],
+ "cfg": {
+  "pilot": 50,
+  "eps": [
+   0.02,
+   0.05,
+   0.1
+  ],
+  "budgets": [
+   10,
+   12,
+   16,
+   21,
+   27,
+   35,
+   45,
+   58,
+   74,
+   95,
+   123,
+   158,
+   203,
+   262
+  ],
+  "seed": 20261007,
+  "boundary": false,
+  "oracle": true
+ },
+ "judges": [
+  "qwen3_8b",
+  "qwen3_8b@o1",
+  "qwen3_8b@o2",
+  "mistral_7b",
+  "mistral_7b@o1",
+  "mistral_7b@o2",
+  "longer"
+ ]
+}

@@ -1,0 +1,4 @@
+cells,lp,n,G_mean,G_lo,G_hi,share_G_pos,D2_mean,D2_lo,D2_hi,D3_mean,D3_lo,D3_hi,verdict,G_dec,G_dec_lo,G_dec_hi,D2_dec,D2_dec_lo,D2_dec_hi,D3_dec,D3_dec_lo,D3_dec_hi
+all 60,pooled,30,,,,0.0,,,,,,,undecided,,,,,,,,,
+all 60,ende23,15,,,,0.0,,,,,,,undecided,,,,,,,,,
+all 60,zhen23,15,,,,0.0,,,,,,,undecided,,,,,,,,,
